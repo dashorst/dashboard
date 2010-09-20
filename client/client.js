@@ -15,4 +15,15 @@ var myTweets = {
 	});
   }
 };
-myTweets.refresh();
+//myTweets.refresh();
+
+function eduarteBuilds() {
+	var url = 'http://builds/job/EduArte%20v2.03%20-%20trunk%20(ontwikkel)/rssAll?flavor=rss20'
+	var script = document.createElement('script');
+    script.setAttribute('src', url);
+    document.getElementsByTagName('head')[0].appendChild(script);
+
+	// convert string to XML object
+	var xmlobject = (new DOMParser()).parseFromString(xmlstring, "text/xml");
+	
+}

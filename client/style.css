@@ -1,9 +1,11 @@
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
-html, body { background-color: black; color : white; font-size : 14pt;}
-.widget { width : 100%; }
+html, body { background-color: black; color : white; font-size : 20pt;}
+
+.widget { width : 75%; margin : 0 auto; clear : both;}
 .widget h1 { text-align : center;}
 
-#twitter ul { height : 2em; 
+#twitter ul {
+	height : 2em; 
 	-webkit-marquee-direction:left;
 	-webkit-marquee-increment:small;
 	-webkit-marquee-repetition:0;
@@ -13,5 +15,34 @@ html, body { background-color: black; color : white; font-size : 14pt;}
 	overflow:hidden;
 	overflow-x:-webkit-marquee;
 	}
-#twitter li { display: inline; padding-right : 3em;}
+#twitter li { 
+	display: inline;
+	padding-right : 3em;
+}
 #twitter a, #twitter a:visited { color : #88f;}
+
+#statusses { height : 10em; width : 100%; }
+#statusses div.col { 
+	float:left;
+	height:100%;
+	width:6em;
+	margin-right : 0.25em;
+	padding:1em 1em;
+	border-radius: 0.5em;
+	line-height : 2em;
+}
+.col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
+
+#statusses div.row {margin : 0.25em -1.10em; background-color : rgba(64,64,64,0.5); padding : 0.25em 0em 0.25em 1.10em; line-height : 1.5em;  border : none; clear:both;}
+#statusses #projects { text-align : right; }
+
+#statusses #sessies { background-color : #fe6f1f;}
+#statusses #fouten { background-color : #800020;}
+#statusses #responsetijd { background-color : #400040;}
+
+#statusses #builds { background-color : #303000;}
+#statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.5em 0; display: block; float : left;}
+
+.success { background-color : green; }
+.failure { background-color : yellow; }
+.error { background-color : red; }
