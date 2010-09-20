@@ -2,3 +2,16 @@ html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffees
 html, body { background-color: black; color : white; font-size : 14pt;}
 .widget { width : 100%; }
 .widget h1 { text-align : center;}
+
+#twitter ul { height : 2em; 
+	-webkit-marquee-direction:left;
+	-webkit-marquee-increment:small;
+	-webkit-marquee-repetition:0;
+	-webkit-marquee-speed:fast;
+	-webkit-marquee-style:slide;
+	white-space: nowrap;
+	overflow:hidden;
+	overflow-x:-webkit-marquee;
+	}
+#twitter li { display: inline; padding-right : 3em;}
+#twitter a, #twitter a:visited { color : #88f;}
