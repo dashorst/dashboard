@@ -45,5 +45,6 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 #statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
 
 .success { background-color : green; }
-.failure { background-color : yellow; }
-.error { background-color : red; }
+.unstable { background-color : yellow; }
+.failure { background-color : red; }
+.building { background-color : gray;}
