@@ -43,8 +43,14 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 
 #statusses #builds { background-color : #303000;}
 #statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
+#builds div:after {
+	content: ".";
+	visibility: hidden;
+}
+
 
 .success { background-color : green; }
 .unstable { background-color : yellow; }
 .failure { background-color : red; }
 .building { background-color : gray;}
+

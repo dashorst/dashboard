@@ -1,0 +1,9 @@
+{
+	"label": "Builds",
+	"data": [
+		"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+		"<span class='success'></span><span class='unstable'></span><span class='unstable'></span><span class='unstable'></span><span class='success'></span>",
+		"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+		"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>"
+	]
+}
