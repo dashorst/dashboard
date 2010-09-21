@@ -8,15 +8,9 @@ function getBuildsForProjects() {
 function getBuildsForProject(name) {
 	var cleanedName = name.replace(/\(|\)|\.|\-|\%/g, '');
 	var id = 'hudson_' + cleanedName;
-	var exists = document.getElementById(id) != null;
 	var markup = $("<div id='" + id + "' class='row'>&nbsp;</div>");
-	if(exists) {
-		$('#' + id).replaceWith(markup);
-	}
-	else {
-		markup.appendTo("#builds");
-	}
-	$.getJSON("http://builds.topicus.local/job/" + name + "/api/json", 
+	$("#builds").empty().append(markup);
+	$.getJSON("http://builds/job/" + name + "/api/json", 
 		function ( data ) {
 			for(var i = 0; i < 5; i++) {
 				var url = data.builds[i].url;
