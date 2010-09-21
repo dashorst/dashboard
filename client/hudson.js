@@ -1,5 +1,5 @@
 $(function () {
-	// var project = getBuildsForProject("DUO");
+	var project = getBuildsForProject("DUO");
 });
 
 function getBuildsForProject(name) {
