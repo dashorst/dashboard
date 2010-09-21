@@ -27,6 +27,7 @@ var myBuilds = {
 }
 
 $(function () {
-	myTweets.refresh();
-	myBuilds.refresh();
+	$("div.info.col").dashboard();
+	// myTweets.refresh();
+	// myBuilds.refresh();
 });
