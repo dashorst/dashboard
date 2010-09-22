@@ -8,6 +8,7 @@
  * http://docs.jquery.com/UI/Progressbar
  *
  * Depends:
+ *   jquery.timers.js
  *   jquery.ui.core.js
  *   jquery.ui.widget.js
  */
@@ -20,15 +21,12 @@ $.widget( "ui.dashboard", {
 	},
 
 	_create: function() {
-		var self = this;
 		this.element
 			.addClass( "ui-dashboard ui-widget" );
 
 		this.options.identifier = this.element.attr("id");
-		this.response = function() {
-			return self._redraw.apply( self, arguments );
-		};
 		this._update();
+		this._initHeartBeat();
 	},
 
 	destroy: function() {
@@ -47,6 +45,10 @@ $.widget( "ui.dashboard", {
 	},
 
 	_update: function() {
+		var self = this;
+		this.response = function() {
+			return self._redraw.apply( self, arguments );
+		};
 		$.getJSON("data-"+this.options.identifier+".json", this.response);
 	},
 
@@ -66,6 +68,30 @@ $.widget( "ui.dashboard", {
 				});
 			});
 		}
+	},
+
+	_initHeartBeat: function() {
+		var self = this;
+		var onHeartBeat = function() {
+			return self._onHeartBeat.apply( self, arguments );
+		};
+		if (!$(document).data("dashboard-heartbeat")) {
+			$(document)
+				.data("dashboard-heartbeat", true)
+				.everyTime("5s", "heartbeat", this._heartBeat);
+		}
+		$(document).bind("dashboard-heartbeat", function() {
+				var index = self.element.prevAll().length;
+				$(document).oneTime(index * 200, onHeartBeat);
+		});
+	},
+
+	_heartBeat: function() {
+		$(document).triggerHandler("dashboard-heartbeat");
+	},
+
+	_onHeartBeat: function() {
+		this.element.toggleClass("rotated");
 	}
 });
 

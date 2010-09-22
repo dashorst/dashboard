@@ -74,7 +74,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	position: relative;
 }
 
-#sessies {
+.rotated {
 	-webkit-transform: rotateY(180deg);
 }
 /* #twitter {
