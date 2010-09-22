@@ -51,14 +51,19 @@ $.widget( "ui.dashboard", {
 	},
 
 	_redraw: function( data ) {
-		var self = this;
 		console.log(data);
-		this.element
-			.empty()
-			.append("<h3>"+data.label+"</h3>");
-		if (data.data) {
-			$.each(data.data, function(index, value) {
-				self.element.append("<div class='row'>"+value+"</div>");
+		this.element.empty();
+		var flips = $("<div class='flips' />");
+		this.element.append(flips);
+
+		if (data.sets) {
+			$.each(data.sets, function(index, value) {
+				var flip = $("<div class='flip flip-"+index+"' />");
+				flips.append(flip);
+				flip.append("<h3>"+value.label+"</h3>");
+				$.each(value.data, function(index2, value2) {
+					flip.append("<div class='row'>"+value2+"</div>");
+				});
 			});
 		}
 	}
