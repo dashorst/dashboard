@@ -34,9 +34,8 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	padding:1em 1em;
 	border-radius: 0.5em;
 	line-height : 2em;
-	-webkit-transform-style: preserve-3d;
 	-webkit-transition-property: -webkit-transform;
-	-webkit-transition-duration: 1.5s;
+	-webkit-transition-duration: 1s;
 }
 .col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
 
@@ -60,7 +59,6 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 }
 #statusses .flip.flip-1 {
 	-webkit-transform: rotateY(180deg);
-	display: none;
 }
 #builds div:after {
 	content: ".";
@@ -76,4 +74,9 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	position: relative;
 }
 
-
+#sessies {
+	-webkit-transform: rotateY(180deg);
+}
+/* #twitter {
+	display:none;
+} */
