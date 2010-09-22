@@ -28,6 +28,10 @@ var myBuilds = {
 
 $(function () {
 	$("div.info.col").dashboard();
+	$("#stoplink").click(function() {
+		$(document).data("dashboard-heartbeat-enabled",
+			!$(document).data("dashboard-heartbeat-enabled"));
+		});
 	// myTweets.refresh();
 	// myBuilds.refresh();
 });

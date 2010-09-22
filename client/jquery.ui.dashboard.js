@@ -78,11 +78,14 @@ $.widget( "ui.dashboard", {
 		if (!$(document).data("dashboard-heartbeat")) {
 			$(document)
 				.data("dashboard-heartbeat", true)
+				.data("dashboard-heartbeat-enabled", true)
 				.everyTime("5s", "heartbeat", this._heartBeat);
 		}
 		$(document).bind("dashboard-heartbeat", function() {
+			if ($(document).data("dashboard-heartbeat-enabled")) {
 				var index = self.element.prevAll().length;
 				$(document).oneTime(index * 200, onHeartBeat);
+			}
 		});
 	},
 
