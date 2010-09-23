@@ -45,8 +45,8 @@ $.widget( "ui.dashboardmaster", {
 				.data("dashboard-heartbeat", true)
 				.data("dashboard-heartbeat-enabled", true)
 				.data("dashboard-project-index", this.options.length-1)
-				.everyTime("5s", "heartbeat", this._heartBeatRotate)
-				.everyTime("10s", "heartbeat", this._heartBeatProjects);
+				.everyTime("5s", "heartbeat-rotate", this._heartBeatRotate)
+				.everyTime("10s", "heartbeat-projects", this._heartBeatProjects);
 		}
 	},
 
