@@ -75,22 +75,12 @@ $.widget( "ui.dashboard", {
 		var onHeartBeat = function() {
 			return self._onHeartBeat.apply( self, arguments );
 		};
-		if (!$(document).data("dashboard-heartbeat")) {
-			$(document)
-				.data("dashboard-heartbeat", true)
-				.data("dashboard-heartbeat-enabled", true)
-				.everyTime("5s", "heartbeat", this._heartBeat);
-		}
-		$(document).bind("dashboard-heartbeat", function() {
+		$(document).bind("dashboard-heartbeat-rotate", function() {
 			if ($(document).data("dashboard-heartbeat-enabled")) {
 				var index = self.element.prevAll().length;
 				$(document).oneTime(index * 200, onHeartBeat);
 			}
 		});
-	},
-
-	_heartBeat: function() {
-		$(document).triggerHandler("dashboard-heartbeat");
 	},
 
 	_onHeartBeat: function() {
