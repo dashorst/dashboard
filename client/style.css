@@ -6,7 +6,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 .widget { width : 75%; margin : 0 auto; clear : both;}
 .widget h1 { text-align : center;}
 
-#twitter ul {
+.effects-enabled #twitter ul {
 	height : 2em; 
 	-webkit-marquee-direction:left;
 	-webkit-marquee-increment:small;
@@ -26,6 +26,8 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 #statusses {
 	height : 10em;
 	width : 100%;
+}
+.effects-enabled #statusses {
 	-webkit-perspective: 600;
 }
 #statusses div.col { 
@@ -36,35 +38,67 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	padding: 1em 1em;
 	border-radius: 0.5em;
 	line-height : 2em;
+}
+.effects-enabled #statusses div.col { 
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1s;
 }
 .col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
 
 #statusses div.row {
-	margin : 0.25em -1.4em;
-	background-color : rgba(64,64,64,0.5);
-	padding : 0.25em 0em 0.25em 1.10em;
-	line-height : 1.5em;
+	margin : 0 -1.4em;
 	border : none;
-	clear:both;
-	-webkit-backface-visibility: hidden;
-	-webkit-transition-property: -webkit-transform;
-	-webkit-transition-duration: 1s;
+	clear: both;
+	height: 2.3em;
 }
-#statusses div.col:first-child .row {
+#statusses .row .inner-row {
+	position: absolute;
+	height: 1.5em;
+	line-height : 1.5em;
+	width: 6.6em;
+	background-color : rgba(64,64,64,0.5);
+	padding : 0.25em 1.1em;
+}
+.effects-enabled #statusses div.inner-row {
+	-webkit-backface-visibility: hidden;
+}
+#statusses div.col:first-child .inner-row {
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-bottom-left-radius: 10px;
 }
-#statusses div.col:last-child .row {
+#statusses div.col:last-child .inner-row {
 	-webkit-border-top-right-radius: 10px;
 	-webkit-border-bottom-right-radius: 10px;
 }
 #statusses #projects { text-align : right; }
 #statusses #projects .row {
 	padding-right: 1em;
-	-webkit-backface-visibility: visible;
 }
+#statusses .row {
+	-webkit-transition-property: -webkit-transform, opacity, height;
+	-webkit-transition-duration: 1s;
+}
+#statusses .row:first-child {
+	-webkit-transform: scaleY(0);
+	opacity: 0;
+	height: 0em!important;
+}
+#statusses.animate .row:first-child {
+	-webkit-transform: scaleY(1);
+	opacity: 1;
+	height: 2.3em!important;
+}
+#statusses .row:last-child {
+	-webkit-transform: scaleY(1);
+	opacity: 1;
+	height: 2.3em!important;
+}
+#statusses.animate .row:last-child {
+	-webkit-transform: scaleY(0);
+	opacity: 0;
+	height: 0em!important;
+}
+
 
 #statusses .number .row { text-align : right; padding-right : 1.1em;}
 #statusses #sessies { background-color : #fe6f1f;}
@@ -78,15 +112,18 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 }
 #statusses .flip {
 	position: absolute;
-	-webkit-backface-visibility: hidden;
 	width:6em;
 }
-#statusses .flip.flip-1 {
-	-webkit-transform: rotateY(180deg);
+.effects-enabled #statusses .flip {
+	-webkit-backface-visibility: hidden;
 }
-#builds div:after {
-	content: ".";
-	visibility: hidden;
+
+#statusses .flip.flip-1 {
+	display: none;
+}
+.effects-enabled #statusses .flip.flip-1 {
+	display: block;
+	-webkit-transform: rotateY(180deg);
 }
 
 .success { background-color : green; }
@@ -98,7 +135,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	position: relative;
 }
 
-.rotated {
+.effects-enabled .rotated {
 	-webkit-transform: rotateY(180deg);
 }
 /* #twitter {

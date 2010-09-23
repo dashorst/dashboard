@@ -30,12 +30,12 @@ $.widget( "ui.dashboardmaster", {
 	},
 
 	_initDraw: function() {
-		var self = this;
 		this.element.empty();
 		$("<h3/>").append("&nbsp;").appendTo(this.element);
+		var data = $("<div class='data' />").appendTo(this.element);
 		$.each(this.options.projects, function(index, value) {
-			if (index < 4)
-				$("<div class='row'/>").append(value).appendTo(self.element);
+			if (index < 5)
+				data.append("<div class='row'><div class='inner-row'>"+value+"</div></div>");
 		});
 	},
 

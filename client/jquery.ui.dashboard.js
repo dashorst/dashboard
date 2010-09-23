@@ -63,8 +63,9 @@ $.widget( "ui.dashboard", {
 				var flip = $("<div class='flip flip-"+index+"' />");
 				flips.append(flip);
 				flip.append("<h3>"+value.label+"</h3>");
+				var data = $("<div class='data' />").appendTo(flip);
 				$.each(value.data, function(index2, value2) {
-					flip.append("<div class='row'>"+value2+"</div>");
+					data.append("<div class='row'><div class='inner-row'>"+value2+"</div></div>");
 				});
 			});
 		}
