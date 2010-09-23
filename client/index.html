@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Topicus Onderwijs Dashboard</title>
-		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:extralight,light,regular,bold' rel='stylesheet' type='text/css' />
+		<!-- link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:extralight,light,regular,bold' rel='stylesheet' type='text/css' / -->
 		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8" />
 		<script defer type="text/javascript" charset="utf-8" src="jquery-1.4.2.js"></script>
 		<script defer type="text/javascript" charset="utf-8" src="jquery.ui.core.js"></script>
@@ -16,7 +16,6 @@
 	</head>
 	<body>
 		<div id="cb">
-			<a id="stoplink" href="#">Stop/resume animation</a>
 			<div class="widget"><h1>Topicus Onderwijs Dashboard</h1></div>
 			<div class="widget"></div>
 			<div class="widget">
@@ -35,13 +34,21 @@
 						<div class="row">2311</div>
 						<div class="row">1231</div>
 					</div>
+					<div id="fouten" class="info col number">
+						<h3>Fouten</h3>
+						<div class="row">15 (0.15%)</div>
+						<div class="row">10 (0.20%)</div>
+						<div class="row">35 (1.22%)</div>
+						<div class="row">0 (0.00%)</div>
+					</div>
+					<div id="responsetijd" class="info col number">
+						<h3>Responsetijden</h3>
+						<div class="row">123ms</div>
+						<div class="row">154ms</div>
+						<div class="row">221ms</div>
+						<div class="row">71ms</div>
+					</div>
 					<div id="builds" class="info col">
-						<h3>Builds</h3>
-					</div>
-					<div id="fouten" class="info col">
-						<h3>Builds</h3>
-					</div>
-					<div id="responsetijd" class="info col">
 						<h3>Builds</h3>
 					</div>
 				</div>
