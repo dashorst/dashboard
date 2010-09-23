@@ -27,6 +27,8 @@ var myBuilds = {
 }
 
 $(function () {
+	$("#projects").dashboardmaster(
+		{projects: ["DUO", "EduArte", "@VO", "PassePartout", "Test"]});
 	$("div.info.col").dashboard();
 	$("#stoplink").click(function() {
 		$(document).data("dashboard-heartbeat-enabled",
