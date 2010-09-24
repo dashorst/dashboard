@@ -21,8 +21,7 @@ $.widget( "ui.dashboard", {
 	},
 
 	_create: function() {
-		this.element
-			.addClass( "ui-dashboard ui-widget" );
+		this.element.addClass( "ui-dashboard ui-widget" );
 
 		this.options.identifier = this.element.attr("id");
 		this._update();
@@ -30,8 +29,7 @@ $.widget( "ui.dashboard", {
 	},
 
 	destroy: function() {
-		this.element
-			.removeClass( "ui-dashboard ui-widget" );
+		this.element.removeClass( "ui-dashboard ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},
@@ -65,7 +63,6 @@ $.widget( "ui.dashboard", {
 		var onInsertProject = function() {
 			return self._onInsertProject.apply( self, arguments );
 		};
-		console.log("binding handler for "+this.options.identifier);
 		$(document).bind("dashboard-insert-project", onInsertProject);
 	},
 
@@ -101,7 +98,20 @@ $.widget( "ui.dashboard", {
 	},
 
 	_onHeartBeat: function() {
-		this.element.toggleClass("rotated");
+		var self = this;
+		self.element.addClass("rotate-enabled");
+		if (this.element.hasClass("rotated")) {
+			this.element.removeClass("rotated");
+			$(this.element).oneTime("1100ms", function() {
+				self.element.removeClass("rotate-enabled rotate-invert");
+			});
+		} else {
+			this.element.addClass("rotated");
+			$(this.element).oneTime("1100ms", function() {
+				self.element.removeClass("rotate-enabled");
+				self.element.addClass("rotate-invert");
+			});
+		}
 	},
 
 	_onInsertProject: function(target, project) {

@@ -39,7 +39,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	border-radius: 0.5em;
 	line-height : 2em;
 }
-.effects-enabled #statusses div.col { 
+.effects-enabled #statusses div.rotate-enabled.col { 
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1s;
 }
@@ -136,6 +136,9 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 
 .effects-enabled .rotated {
 	-webkit-transform: rotateY(180deg);
+}
+.effects-enabled .rotated.rotate-invert {
+	-webkit-transform: rotateY(-180deg);
 }
 /* #twitter {
 	display:none;

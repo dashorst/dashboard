@@ -9,16 +9,14 @@ $.widget( "ui.dashboardmaster", {
 	},
 
 	_create: function() {
-		this.element
-			.addClass( "ui-dashboard-master ui-widget" );
+		this.element.addClass( "ui-dashboard ui-widget" );
 
 		this._initDraw();
 		this._initHeartBeat();
 	},
 
 	destroy: function() {
-		this.element
-			.removeClass( "ui-dashboard-master ui-widget" );
+		this.element.removeClass( "ui-dashboard ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},
@@ -101,7 +99,7 @@ $.widget( "ui.dashboardmaster", {
 		});
 		$(document).oneTime("1100ms", function() {
 			$("body").removeClass("project-transition animate");
-			$(".data .row:last-child").remove();
+			$(".ui-dashboard .data .row:last-child").remove();
 		});
 	}
 });
