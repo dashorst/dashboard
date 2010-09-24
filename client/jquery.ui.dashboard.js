@@ -26,7 +26,7 @@ $.widget( "ui.dashboard", {
 
 		this.options.identifier = this.element.attr("id");
 		this._update();
-		this._initHeartBeat();
+		this._initHandlers();
 	},
 
 	destroy: function() {
@@ -46,46 +46,70 @@ $.widget( "ui.dashboard", {
 
 	_update: function() {
 		var self = this;
-		this.response = function() {
+		var response = function() {
 			return self._redraw.apply( self, arguments );
 		};
-		$.getJSON("data-"+this.options.identifier+".json", this.response);
+		$.getJSON("data-"+this.options.identifier+".json", response);
 	},
 
-	_redraw: function( data ) {
-		console.log(data);
-		this.element.empty();
-		var flips = $("<div class='flips' />");
-		this.element.append(flips);
-
-		if (data.sets) {
-			$.each(data.sets, function(index, value) {
-				var flip = $("<div class='flip flip-"+index+"' />");
-				flips.append(flip);
-				flip.append("<h3>"+value.label+"</h3>");
-				var data = $("<div class='data' />").appendTo(flip);
-				$.each(value.data, function(index2, value2) {
-					data.append("<div class='row'><div class='inner-row'>"+value2+"</div></div>");
-				});
-			});
-		}
-	},
-
-	_initHeartBeat: function() {
+	_initHandlers: function() {
 		var self = this;
 		var onHeartBeat = function() {
 			return self._onHeartBeat.apply( self, arguments );
 		};
 		$(document).bind("dashboard-heartbeat-rotate", function() {
-			if ($(document).data("dashboard-heartbeat-enabled")) {
-				var index = self.element.prevAll().length;
-				$(document).oneTime(index * 200, onHeartBeat);
-			}
+			var index = self.element.prevAll().length;
+			$(document).oneTime(index * 200, onHeartBeat);
 		});
+
+		var onInsertProject = function() {
+			return self._onInsertProject.apply( self, arguments );
+		};
+		console.log("binding handler for "+this.options.identifier);
+		$(document).bind("dashboard-insert-project", onInsertProject);
+	},
+
+	_redraw: function( data ) {
+		console.log(data);
+		var self = this;
+		this.element.empty();
+		var flips = $("<div class='flips' />");
+		this.element.append(flips);
+
+		if (data.sets) {
+			this.jsonData = data;
+			$.each(data.sets, function(flipIndex, value) {
+				var flip = $("<div class='flip flip-"+flipIndex+"' />");
+				flips.append(flip);
+				flip.append("<h3>"+value.label+"</h3>");
+				var dataDiv = $("<div class='data' />").appendTo(flip);
+				var projects = $(document).data("dashboard-projects").slice();
+				projects.reverse();
+				$.each(projects, function(index, project) {
+					self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+				});
+			});
+		}
+	},
+
+	_insertRow: function(dataDiv, flipIndex, project, extraClass) {
+		var rowValue = this.jsonData.sets[flipIndex].data[project];
+		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
+		if (extraClass)
+			rowDiv.addClass(extraClass);
+		dataDiv.prepend(rowDiv);
 	},
 
 	_onHeartBeat: function() {
 		this.element.toggleClass("rotated");
+	},
+
+	_onInsertProject: function(target, project) {
+		var self = this;
+		$.each(this.jsonData.sets, function(flipIndex, value) {
+			var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
+			self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+		});
 	}
 });
 

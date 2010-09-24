@@ -2,15 +2,21 @@
 	"sets": [
 	{
 		"label": "Builds",
-		"data": [
-			"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
-			"<span class='success'></span><span class='unstable'></span><span class='unstable'></span><span class='unstable'></span><span class='success'></span>",
-			"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
-			"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>",
-			"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>"
-		]
+		"data": {
+			"duo":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+			"eduarte":"<span class='success'></span><span class='unstable'></span><span class='unstable'></span><span class='unstable'></span><span class='success'></span>",
+			"atvo":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+			"passepartout":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>",
+			"test":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>"
+		}
 	},{
 		"label": "Builds2",
-		"data": [1,2,3,4,5]
+		"data": {
+			"duo":1,
+			"eduarte":2,
+			"atvo":3,
+			"passepartout":4,
+			"test":5
+		}
 	}]
 }

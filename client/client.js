@@ -27,8 +27,14 @@ var myBuilds = {
 }
 
 $(function () {
-	$("#projects").dashboardmaster(
-		{projects: ["DUO", "EduArte", "@VO", "PassePartout", "Test"]});
+	$("#projects").dashboardmaster({
+		projects: {
+			"duo":"DUO",
+		 	"eduarte":"EduArte",
+			"atvo":"@VO",
+			"passepartout":"PassePartout",
+			"test":"Test"
+		}});
 	$("div.info.col").dashboard();
 	$("#stoplink").click(function() {
 		$(document).data("dashboard-heartbeat-enabled",

@@ -74,31 +74,30 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 #statusses #projects .row {
 	padding-right: 1em;
 }
-#statusses .row {
+.project-transition #statusses .row {
 	-webkit-transition-property: -webkit-transform, opacity, height;
 	-webkit-transition-duration: 1s;
 }
-#statusses .row:first-child {
+.project-transition #statusses .row:first-child {
 	-webkit-transform: scaleY(0);
 	opacity: 0;
 	height: 0em!important;
 }
-#statusses.animate .row:first-child {
+.project-transition.animate #statusses .row:first-child {
 	-webkit-transform: scaleY(1);
 	opacity: 1;
 	height: 2.3em!important;
 }
-#statusses .row:last-child {
+.project-transition #statusses .row:last-child {
 	-webkit-transform: scaleY(1);
 	opacity: 1;
 	height: 2.3em!important;
 }
-#statusses.animate .row:last-child {
+.project-transition.animate #statusses .row:last-child {
 	-webkit-transform: scaleY(0);
 	opacity: 0;
 	height: 0em!important;
 }
-
 
 #statusses .number .row { text-align : right; padding-right : 1.1em;}
 #statusses #sessies { background-color : #fe6f1f;}
