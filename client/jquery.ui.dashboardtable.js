@@ -14,14 +14,14 @@
  */
 (function( $, undefined ) {
 
-$.widget( "ui.dashboard", {
+$.widget( "ui.dashboardTable", {
 
 	options: {
 		identifier: ""
 	},
 
 	_create: function() {
-		this.element.addClass( "ui-dashboard ui-widget" );
+		this.element.addClass( "ui-dashboard-table ui-widget" );
 
 		this.options.identifier = this.element.attr("id");
 		this._update();
@@ -29,7 +29,7 @@ $.widget( "ui.dashboard", {
 	},
 
 	destroy: function() {
-		this.element.removeClass( "ui-dashboard ui-widget" );
+		this.element.removeClass( "ui-dashboard-table ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},
@@ -55,7 +55,7 @@ $.widget( "ui.dashboard", {
 		var onHeartBeat = function() {
 			return self._onHeartBeat.apply( self, arguments );
 		};
-		$(document).bind("dashboard-heartbeat-rotate", function() {
+		$(document).bind("dashboard-table-heartbeat-rotate", function() {
 			var index = self.element.prevAll().length;
 			$(document).oneTime(index * 200, onHeartBeat);
 		});
@@ -63,7 +63,7 @@ $.widget( "ui.dashboard", {
 		var onInsertProject = function() {
 			return self._onInsertProject.apply( self, arguments );
 		};
-		$(document).bind("dashboard-insert-project", onInsertProject);
+		$(document).bind("dashboard-table-insert-project", onInsertProject);
 	},
 
 	_redraw: function( data ) {
@@ -87,7 +87,7 @@ $.widget( "ui.dashboard", {
 				flips.append(flip);
 				flip.append("<h3>"+value.label+"</h3>");
 				var dataDiv = $("<div class='data' />").appendTo(flip);
-				var projects = $(document).data("dashboard-projects").slice();
+				var projects = $(document).data("dashboard-table-projects").slice();
 				projects.reverse();
 				$.each(projects, function(index, project) {
 					self._insertRow.apply(self, [dataDiv, flipIndex, project]);

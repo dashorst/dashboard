@@ -27,7 +27,7 @@ var myBuilds = {
 }
 
 $(function () {
-	$("#projects").dashboardmaster({
+	$("#projects").dashboardTableMaster({
 		projects: {
 			"duo":"DUO",
 		 	"eduarte":"EduArte",
@@ -35,10 +35,10 @@ $(function () {
 			"passepartout":"PassePartout",
 			"test":"Test"
 		}});
-	$("div.info.col").dashboard();
+	$("div.info.col").dashboardTable();
 	$("#stoplink").click(function() {
-		$(document).data("dashboard-heartbeat-enabled",
-			!$(document).data("dashboard-heartbeat-enabled"));
+		$(document).data("dashboard-table-heartbeat-enabled",
+			!$(document).data("dashboard-table-heartbeat-enabled"));
 		});
 	// myTweets.refresh();
 	// myBuilds.refresh();
