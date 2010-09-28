@@ -18,5 +18,14 @@
 			"passepartout":1231,
 			"test":321
 		}
+	},{
+		"label": "Sessies3",
+		"data": {
+			"duo":"x1",
+		 	"eduarte":"x2101",
+			"atvo":"x2311",
+			"passepartout":"x1231",
+			"test":"x321"
+		}
 	}]
 }

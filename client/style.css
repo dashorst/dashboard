@@ -117,12 +117,14 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	-webkit-backface-visibility: hidden;
 }
 
-#statusses .flip.flip-1 {
+.effects-disabled #statusses .flip.flip-back {
 	display: none;
 }
-.effects-enabled #statusses .flip.flip-1 {
-	display: block;
+.effects-enabled #statusses .flip.flip-back {
 	-webkit-transform: rotateY(180deg);
+}
+#statusses .flip.flip-hidden {
+	display: none;
 }
 
 .success { background-color : green; }

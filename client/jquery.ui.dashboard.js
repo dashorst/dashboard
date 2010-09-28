@@ -75,8 +75,15 @@ $.widget( "ui.dashboard", {
 
 		if (data.sets) {
 			this.jsonData = data;
+			this.nextFlip = 2;
 			$.each(data.sets, function(flipIndex, value) {
 				var flip = $("<div class='flip flip-"+flipIndex+"' />");
+				if (flipIndex == 0)
+					flip.addClass("flip-front");
+				else if (flipIndex == 1)
+					flip.addClass("flip-back");
+				else if (flipIndex > 1)
+					flip.addClass("flip-hidden");
 				flips.append(flip);
 				flip.append("<h3>"+value.label+"</h3>");
 				var dataDiv = $("<div class='data' />").appendTo(flip);
@@ -98,28 +105,41 @@ $.widget( "ui.dashboard", {
 	},
 
 	_onHeartBeat: function() {
-		var self = this;
-		self.element.addClass("rotate-enabled");
-		if (this.element.hasClass("rotated")) {
-			this.element.removeClass("rotated");
-			$(this.element).oneTime("1100ms", function() {
-				self.element.removeClass("rotate-enabled rotate-invert");
-			});
-		} else {
-			this.element.addClass("rotated");
-			$(this.element).oneTime("1100ms", function() {
-				self.element.removeClass("rotate-enabled");
-				self.element.addClass("rotate-invert");
-			});
+		if (this.jsonData) {
+			if (this.nextFlip >= this.jsonData.sets.length) {
+				this.nextFlip = 0;
+			}
+			var doNextFlip = this.nextFlip;
+			this.nextFlip++;
+			var self = this;
+			self.element.addClass("rotate-enabled");
+			if (this.element.hasClass("rotated")) {
+				this.element.removeClass("rotated");
+				$(this.element).oneTime("1100ms", function() {
+					self.element.removeClass("rotate-enabled rotate-invert");
+					self.element.find(".flip-back").removeClass("flip-back").addClass("flip-hidden");
+					self.element.find(".flip-"+doNextFlip).removeClass("flip-hidden").addClass("flip-back");
+				});
+			} else {
+				this.element.addClass("rotated");
+				$(this.element).oneTime("1100ms", function() {
+					self.element.removeClass("rotate-enabled");
+					self.element.addClass("rotate-invert");
+					self.element.find(".flip-front").removeClass("flip-front").addClass("flip-hidden");
+					self.element.find(".flip-"+doNextFlip).removeClass("flip-hidden").addClass("flip-front");
+				});
+			}
 		}
 	},
 
 	_onInsertProject: function(target, project) {
 		var self = this;
-		$.each(this.jsonData.sets, function(flipIndex, value) {
-			var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
-			self._insertRow.apply(self, [dataDiv, flipIndex, project]);
-		});
+		if (this.jsonData) {
+			$.each(this.jsonData.sets, function(flipIndex, value) {
+				var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
+				self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+			});
+		}
 	}
 });
 
