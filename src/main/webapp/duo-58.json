@@ -1,0 +1,71 @@
+{
+    "actions": [{
+        "causes": [{
+            "shortDescription": "Started by an SCM change"
+        }]
+    },
+    {},
+    {},
+    {},
+    {
+        "failCount": 0,
+        "skipCount": 0,
+        "totalCount": 1045,
+        "urlName": "testReport"
+    },
+    {},
+    {},
+    {},
+    {
+        "participants": [{
+            "absoluteUrl": "http://192.168.55.113/user/papegaaij",
+            "fullName": "De refactor papegaaij"
+        }],
+        "scorecard": {
+            "scores": [{
+                "description": "The build was successful",
+                "ruleName": "Build result",
+                "rulesetName": "Build result",
+                "value": 1.0
+            }],
+            "totalPoints": 1.0
+        }
+    }],
+    "artifacts": [],
+    "building": false,
+    "description": null,
+    "duration": 126696,
+    "fullDisplayName": "DUO #58",
+    "id": "2010-09-17_12-01-00",
+    "keepLog": false,
+    "number": 58,
+    "result": "SUCCESS",
+    "timestamp": 1284717660170,
+    "url": "http://192.168.55.113/job/DUO/58/",
+    "builtOn": "",
+    "changeSet": {
+        "items": [{
+            "date": "2010-09-17T09:41:01.293789Z",
+            "msg": "upgrade naar onderwijs-parent 0.7",
+            "paths": [{
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/pom.xml"
+            }],
+            "revision": 183275,
+            "user": "De refactor papegaaij"
+        }],
+        "kind": "svn",
+        "revisions": [{
+            "module": "http://cvs.topicus.nl/svn/onderwijs/duo/trunk",
+            "revision": 183275
+        },
+        {
+            "module": "http://cvs.topicus.nl/svn/onderwijs/settings",
+            "revision": 181794
+        }]
+    },
+    "culprits": [{
+        "absoluteUrl": "http://192.168.55.113/user/papegaaij",
+        "fullName": "De refactor papegaaij"
+    }]
+}

@@ -1,0 +1,22 @@
+{
+	"sets": [
+	{
+		"label": "Builds",
+		"data": {
+			"duo":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+			"eduarte":"<span class='success'></span><span class='unstable'></span><span class='unstable'></span><span class='unstable'></span><span class='success'></span>",
+			"atvo":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='failure'></span><span class='failure'></span>",
+			"passepartout":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>",
+			"test":"<span class='building'></span><span class='success'></span><span class='unstable'></span><span class='success'></span><span class='success'></span>"
+		}
+	},{
+		"label": "Builds2",
+		"data": {
+			"duo":1,
+			"eduarte":2,
+			"atvo":3,
+			"passepartout":4,
+			"test":5
+		}
+	}]
+}
