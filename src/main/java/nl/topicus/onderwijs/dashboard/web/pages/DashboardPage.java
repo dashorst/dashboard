@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.web;
+package nl.topicus.onderwijs.dashboard.web.pages;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;

@@ -1,5 +1,7 @@
 package nl.topicus.onderwijs.dashboard.web;
 
+import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
+
 import org.apache.wicket.protocol.http.WebApplication;
 
 /**
