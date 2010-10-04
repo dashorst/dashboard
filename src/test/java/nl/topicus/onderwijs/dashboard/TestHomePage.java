@@ -1,7 +1,7 @@
 package nl.topicus.onderwijs.dashboard;
 
 import junit.framework.TestCase;
-import nl.topicus.onderwijs.dashboard.web.HomePage;
+import nl.topicus.onderwijs.dashboard.web.DashboardPage;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.apache.wicket.util.tester.WicketTester;
@@ -22,10 +22,10 @@ public class TestHomePage extends TestCase
 	public void testRenderMyPage()
 	{
 		//start and render the test page
-		tester.startPage(HomePage.class);
+		tester.startPage(DashboardPage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(DashboardPage.class);
 
 		//assert rendered label component
 		tester.assertLabel("message", "If you see this message wicket is properly configured and running");
