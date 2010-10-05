@@ -2,28 +2,39 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import static nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils.getStatuspage;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.Repository;
 
-public class VocusStatusRetriever implements Retriever {
-	private String[] statusUrls = { "https://start.vocuslis.nl/app/status",
-			"https://start2.vocuslis.nl/app/status" };
+public class VocusStatusRetriever implements
+		Repository<TopicusApplicationStatus> {
+	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
+
+	public VocusStatusRetriever() {
+		statusUrls.put(new Project("atvo", "@VO"), Arrays.asList(
+				"https://start.vocuslis.nl/app/status",
+				"https://start2.vocuslis.nl/app/status"));
+
+	}
 
 	public static void main(String[] args) {
 		VocusStatusRetriever retriever = new VocusStatusRetriever();
-		retriever.getStatus();
+		retriever.getProjectData(new Project("atvo", "@VO"));
 	}
 
 	@Override
-	public TopicusApplicationStatus getStatus() {
-
+	public TopicusApplicationStatus getProjectData(Project project) {
+		List<String> urls = statusUrls.get(project);
 		TopicusApplicationStatus status = new TopicusApplicationStatus();
-		status.setApplicationName("@VO");
-		status.setNumberOfServers(statusUrls.length);
-		for (String statusUrl : statusUrls) {
+		status.setNumberOfServers(urls.size());
+		for (String statusUrl : urls) {
 			try {
 				String page = getStatuspage(statusUrl);
 				Source source = new Source(page);
@@ -67,7 +78,9 @@ public class VocusStatusRetriever implements Retriever {
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
-		status.setVersion(versieCell.getContent().getTextExtractor().toString());
+		status
+				.setVersion(versieCell.getContent().getTextExtractor()
+						.toString());
 	}
 
 }

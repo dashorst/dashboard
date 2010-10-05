@@ -9,7 +9,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 public class TopicusApplicationStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String applicationName;
 	private String version;
 	private Integer numberOfUsers;
 	private Integer numberOfRequests;
@@ -18,14 +17,6 @@ public class TopicusApplicationStatus implements Serializable {
 	private Integer numberOfServersOnline;
 	private Integer averageRequestDuration;
 	private Long uptime;
-
-	public String getApplicationName() {
-		return applicationName;
-	}
-
-	public void setApplicationName(String applicationName) {
-		this.applicationName = applicationName;
-	}
 
 	public String getVersion() {
 		return version;
