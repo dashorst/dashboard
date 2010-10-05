@@ -17,12 +17,14 @@
 $.widget( "ui.dashboardTable", {
 
 	options: {
+		dataUrl: "",
 		identifier: ""
 	},
 
 	_create: function() {
 		this.element.addClass( "ui-dashboard-table ui-widget" );
 
+		console.log("create");
 		this.options.identifier = this.element.attr("id");
 		this._update();
 		this._initHandlers();
@@ -35,8 +37,12 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_setOption: function( key, value ) {
+		console.log(key +"="+value);
 		if ( key === "identifier" ) {
 			this.options.identifier = value;
+		}
+		else if ( key === "dataUrl" ) {
+			this.options.dataUrl = value;
 		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
@@ -47,7 +53,7 @@ $.widget( "ui.dashboardTable", {
 		var response = function() {
 			return self._redraw.apply( self, arguments );
 		};
-		$.getJSON("data-"+this.options.identifier+".json", response);
+		$.getJSON(this.options.dataUrl, response);
 	},
 
 	_initHandlers: function() {
@@ -73,10 +79,10 @@ $.widget( "ui.dashboardTable", {
 		var flips = $("<div class='flips' />");
 		this.element.append(flips);
 
-		if (data.sets) {
+		if (data) {
 			this.jsonData = data;
 			this.nextFlip = 2;
-			$.each(data.sets, function(flipIndex, value) {
+			$.each(data, function(flipIndex, value) {
 				var flip = $("<div class='flip flip-"+flipIndex+"' />");
 				if (flipIndex == 0)
 					flip.addClass("flip-front");
@@ -97,7 +103,7 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_insertRow: function(dataDiv, flipIndex, project, extraClass) {
-		var rowValue = this.jsonData.sets[flipIndex].data[project];
+		var rowValue = this.jsonData[flipIndex].data[project];
 		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
 		if (extraClass)
 			rowDiv.addClass(extraClass);
@@ -106,7 +112,7 @@ $.widget( "ui.dashboardTable", {
 
 	_onHeartBeat: function() {
 		if (this.jsonData) {
-			if (this.nextFlip >= this.jsonData.sets.length) {
+			if (this.nextFlip >= this.jsonData.length) {
 				this.nextFlip = 0;
 			}
 			var doNextFlip = this.nextFlip;
@@ -135,7 +141,7 @@ $.widget( "ui.dashboardTable", {
 	_onInsertProject: function(target, project) {
 		var self = this;
 		if (this.jsonData) {
-			$.each(this.jsonData.sets, function(flipIndex, value) {
+			$.each(this.jsonData, function(flipIndex, value) {
 				var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
 				self._insertRow.apply(self, [dataDiv, flipIndex, project]);
 			});
