@@ -1,5 +1,7 @@
 package nl.topicus.onderwijs.dashboard.web;
 
+import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
+
 import org.apache.wicket.protocol.http.WebApplication;
 
 /**
@@ -16,12 +18,14 @@ public class WicketApplication extends WebApplication
 	{
 	}
 	
-	/**
-	 * @see org.apache.wicket.Application#getHomePage()
-	 */
 	public Class<DashboardPage> getHomePage()
 	{
 		return DashboardPage.class;
 	}
 
+	@Override
+	protected void init() {
+		super.init();
+		getMarkupSettings().setStripWicketTags(true);
+	}
 }

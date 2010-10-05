@@ -1,8 +1,8 @@
 package nl.topicus.onderwijs.dashboard;
 
 import junit.framework.TestCase;
-import nl.topicus.onderwijs.dashboard.web.DashboardPage;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
+import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
 
 import org.apache.wicket.util.tester.WicketTester;
 

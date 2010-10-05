@@ -6,7 +6,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 .widget { width : 75%; margin : 0 auto; clear : both;}
 .widget h1 { text-align : center;}
 
-.effects-enabled #twitter ul {
+.effects-enabled #twitter ul .disabled {
 	height : 2em; 
 	-webkit-marquee-direction:left;
 	-webkit-marquee-increment:small;
@@ -23,107 +23,107 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 }
 #twitter a, #twitter a:visited { color : #88f;}
 
-#statusses {
-	height : 10em;
+.statusses {
+	height : 12em;
 	width : 100%;
 }
-.effects-enabled #statusses {
+.effects-enabled .statusses {
 	-webkit-perspective: 600;
 }
-#statusses div.col { 
+.statusses div.col { 
 	float:left;
-	height:100%;
+	height:10em;
 	width:6em;
 	margin: 0 0.43em;
 	padding: 1em 1em;
 	border-radius: 0.5em;
 	line-height : 2em;
 }
-.effects-enabled #statusses div.rotate-enabled.col { 
+.effects-enabled .statusses div.rotate-enabled.col { 
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1s;
 }
 .col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
 
-#statusses div.row {
+.statusses div.row {
 	margin : 0 -1.4em;
 	border : none;
 	clear: both;
-	height: 2.3em;
+	height: 2.1em;
 }
-#statusses .row .inner-row {
+.statusses .row .inner-row {
 	position: absolute;
 	height: 1.5em;
 	line-height : 1.5em;
-	width: 6.6em;
+	width: 6.63em;
 	background-color : rgba(64,64,64,0.5);
-	padding : 0.25em 1.1em;
+	padding : 0.20em 1.1em;
 }
-.effects-enabled #statusses div.inner-row {
+.effects-enabled .statusses div.inner-row {
 	-webkit-backface-visibility: hidden;
 }
-#statusses div.col:first-child .inner-row {
+.statusses div.col:first-child .inner-row {
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-bottom-left-radius: 10px;
 }
-#statusses div.col:last-child .inner-row {
+.statusses div.col:last-child .inner-row {
 	-webkit-border-top-right-radius: 10px;
 	-webkit-border-bottom-right-radius: 10px;
 }
-#statusses #projects { text-align : right; }
-#statusses #projects .row {
+.statusses #projects { text-align : right; }
+.statusses #projects .row {
 	padding-right: 1em;
 }
-.project-transition #statusses .row {
+.project-transition .statusses .row {
 	-webkit-transition-property: -webkit-transform, opacity, height;
 	-webkit-transition-duration: 1s;
 }
-.project-transition #statusses .row:first-child {
+.project-transition .statusses .row:first-child {
 	-webkit-transform: scaleY(0);
 	opacity: 0;
 	height: 0em!important;
 }
-.project-transition.animate #statusses .row:first-child {
+.project-transition.animate .statusses .row:first-child {
 	-webkit-transform: scaleY(1);
 	opacity: 1;
-	height: 2.3em!important;
+	height: 2.1em!important;
 }
-.project-transition #statusses .row:last-child {
+.project-transition .statusses .row:last-child {
 	-webkit-transform: scaleY(1);
 	opacity: 1;
-	height: 2.3em!important;
+	height: 2.1em!important;
 }
-.project-transition.animate #statusses .row:last-child {
+.project-transition.animate .statusses .row:last-child {
 	-webkit-transform: scaleY(0);
 	opacity: 0;
 	height: 0em!important;
 }
 
-#statusses .number .row { text-align : right; padding-right : 1.1em;}
-#statusses #sessies { background-color : #fe6f1f;}
-#statusses #fouten { background-color : #800020;}
-#statusses #responsetijd { background-color : #400040;}
+.statusses .number .row { text-align : right; padding-right : 1.1em;}
+.statusses .color-1 { background-color : #fe6f1f;}
+.statusses .color-2 { background-color : #800020;}
+.statusses .color-3 { background-color : #400040;}
+.statusses .color-4 { background-color : #303000;}
 
-#statusses #builds { background-color : #303000;}
-#statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
-#statusses .flips {
+.statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
+.statusses .flips {
 	position: relative;
 }
-#statusses .flip {
+.statusses .flip {
 	position: absolute;
 	width:6em;
 }
-.effects-enabled #statusses .flip {
+.effects-enabled .statusses .flip {
 	-webkit-backface-visibility: hidden;
 }
 
-.effects-disabled #statusses .flip.flip-back {
+.effects-disabled .statusses .flip.flip-back {
 	display: none;
 }
-.effects-enabled #statusses .flip.flip-back {
+.effects-enabled .statusses .flip.flip-back {
 	-webkit-transform: rotateY(180deg);
 }
-#statusses .flip.flip-hidden {
+.statusses .flip.flip-hidden {
 	display: none;
 }
 
@@ -132,7 +132,7 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 .failure { background-color : red; }
 .building { background-color : gray;}
 
-#statusses .flips {
+.statusses .flips {
 	position: relative;
 }
 
