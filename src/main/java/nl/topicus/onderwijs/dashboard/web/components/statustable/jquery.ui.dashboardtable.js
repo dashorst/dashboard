@@ -26,7 +26,7 @@ $.widget( "ui.dashboardTable", {
 
 		console.log("create");
 		this.options.identifier = this.element.attr("id");
-		this._update();
+		this._initialRead();
 		this._initHandlers();
 	},
 
@@ -48,7 +48,7 @@ $.widget( "ui.dashboardTable", {
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
 
-	_update: function() {
+	_initialRead: function() {
 		var self = this;
 		var response = function() {
 			return self._redraw.apply( self, arguments );
@@ -91,15 +91,19 @@ $.widget( "ui.dashboardTable", {
 				else if (flipIndex > 1)
 					flip.addClass("flip-hidden");
 				flips.append(flip);
-				flip.append("<h3>"+value.label+"</h3>");
-				var dataDiv = $("<div class='data' />").appendTo(flip);
-				var projects = $(document).data("dashboard-table-projects").slice();
-				projects.reverse();
-				$.each(projects, function(index, project) {
-					self._insertRow.apply(self, [dataDiv, flipIndex, project]);
-				});
+				self._fillFlip(self, flipIndex, flip);
 			});
 		}
+	},
+	
+	_fillFlip: function(self, flipIndex, flipDiv) {
+		flipDiv.append("<h3>"+this.jsonData[flipIndex].label+"</h3>");
+		var dataDiv = $("<div class='data' />").appendTo(flipDiv);
+		var projects = $(document).data("dashboard-table-projects").slice();
+		projects.reverse();
+		$.each(projects, function(index, project) {
+			self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+		});
 	},
 
 	_insertRow: function(dataDiv, flipIndex, project, extraClass) {
@@ -124,7 +128,9 @@ $.widget( "ui.dashboardTable", {
 				$(this.element).oneTime("1100ms", function() {
 					self.element.removeClass("rotate-enabled rotate-invert");
 					self.element.find(".flip-back").removeClass("flip-back").addClass("flip-hidden");
-					self.element.find(".flip-"+doNextFlip).removeClass("flip-hidden").addClass("flip-back");
+					var flipDiv = self.element.find(".flip-"+doNextFlip);
+					flipDiv.empty().removeClass("flip-hidden").addClass("flip-back");
+					self._fillFlip(self, doNextFlip, flipDiv);
 				});
 			} else {
 				this.element.addClass("rotated");
@@ -132,7 +138,9 @@ $.widget( "ui.dashboardTable", {
 					self.element.removeClass("rotate-enabled");
 					self.element.addClass("rotate-invert");
 					self.element.find(".flip-front").removeClass("flip-front").addClass("flip-hidden");
-					self.element.find(".flip-"+doNextFlip).removeClass("flip-hidden").addClass("flip-front");
+					var flipDiv = self.element.find(".flip-"+doNextFlip);
+					flipDiv.empty().removeClass("flip-hidden").addClass("flip-front");
+					self._fillFlip(self, doNextFlip, flipDiv);
 				});
 			}
 		}
@@ -146,6 +154,14 @@ $.widget( "ui.dashboardTable", {
 				self._insertRow.apply(self, [dataDiv, flipIndex, project]);
 			});
 		}
+		var response = function() {
+			return self._updateJson.apply( self, arguments );
+		};
+		$.getJSON(this.options.dataUrl, response);
+	},
+	
+	_updateJson: function(data) {
+		this.jsonData = data;
 	}
 });
 

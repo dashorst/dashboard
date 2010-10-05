@@ -33,7 +33,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 					@Override
 					public List<ColumnData> getObject() {
 						List<ColumnData> ret = new ArrayList<ColumnData>();
-						for (int count = 0; count < 3; count++) {
+						for (int count = 0; count < 4; count++) {
 							ColumnData curData = new ColumnData();
 							curData.setLabel("Label-" + count);
 							for (String curProject : Arrays.asList("eduarte",
