@@ -3,7 +3,7 @@
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
 html, body { background-color: black; color : white; font-size : 20pt;}
 
-.widget { width : 75%; margin : 0 auto; clear : both;}
+.widget { width : 75%; margin : 0 auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
 
 .effects-enabled #twitter ul .disabled {
@@ -27,8 +27,9 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	height : 12em;
 	width : 100%;
 }
-.effects-enabled .statusses {
-	-webkit-perspective: 600;
+.effects-enabled {
+	-webkit-perspective: 1000;
+	-webkit-perspective-origin: center 45%;
 }
 .statusses div.col { 
 	float:left;
@@ -141,6 +142,47 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 }
 .effects-enabled .rotated.rotate-invert {
 	-webkit-transform: rotateY(-180deg);
+}
+
+.bargraph {
+	height: 13em;
+}
+.bargraph h1 {
+	position: absolute;
+	display: block;
+	width: 25em;
+	text-align: center;
+	color: #777;
+	top: -1em;
+}
+.bargraph .bar-box {
+	height: 11em;
+	float: left;
+	width: 7em;
+	position: relative;
+	margin: 0 1em;
+}
+.bargraph .bar-box h3 {
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0.5em;
+}
+.bargraph .bar-box span.value {
+	display: block;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+.bargraph .bar {
+	position: absolute;
+	bottom: 0em;
+	width: 100%;
+	background-color: red;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
 }
 /* #twitter {
 	display:none;
