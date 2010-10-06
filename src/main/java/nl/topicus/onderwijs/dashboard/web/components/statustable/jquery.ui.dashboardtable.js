@@ -24,7 +24,6 @@ $.widget( "ui.dashboardTable", {
 	_create: function() {
 		this.element.addClass( "ui-dashboard-table ui-widget" );
 
-		console.log("create");
 		this.options.identifier = this.element.attr("id");
 		this._initialRead();
 		this._initHandlers();
@@ -37,7 +36,6 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_setOption: function( key, value ) {
-		console.log(key +"="+value);
 		if ( key === "identifier" ) {
 			this.options.identifier = value;
 		}
@@ -73,7 +71,6 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_redraw: function( data ) {
-		console.log(data);
 		var self = this;
 		this.element.empty();
 		var flips = $("<div class='flips' />");
