@@ -32,7 +32,7 @@ class RetrieverUtils {
 		HttpResponse response = httpclient.execute(httpget);
 
 		// Examine the response status
-		if (response.getStatusLine().getStatusCode() == 200)
+		if (response.getStatusLine().getStatusCode() == 503)
 			System.out.println(response.getStatusLine());
 
 		// Get hold of the response entity
