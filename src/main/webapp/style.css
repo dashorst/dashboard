@@ -1,7 +1,7 @@
 @import url('fonts/stylesheet.css');
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
-html, body { background-color: black; color : white; font-size : 20pt;}
+html, body { background-color: black; color : white; font-size : 20pt; overflow: hidden;}
 
 .widget { width : 75%; margin : 0 auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
