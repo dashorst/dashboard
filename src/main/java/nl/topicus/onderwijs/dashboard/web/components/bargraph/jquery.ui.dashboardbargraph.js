@@ -61,13 +61,13 @@ $.widget( "ui.dashboardBarGraph", {
 				valueElement.text(data.value);
 			} else {
 				var count = 0;
-				this.element.everyTime("40ms", "bar-redraw-value", function() {
+				this.element.everyTime("60ms", "bar-redraw-value", function() {
 					count++;
 					var oldValue = parseInt(oldData.value);
 					var newValue = parseInt(data.value);
-					var curValue = Math.round(oldValue+(newValue - oldValue)/45*count);
+					var curValue = Math.round(oldValue+(newValue - oldValue)/30*count);
 					valueElement.text(curValue);
-				}, 45);
+				}, 30);
 			}
 		}
 	}
