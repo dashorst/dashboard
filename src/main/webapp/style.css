@@ -5,7 +5,10 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 
 .widget { width : 75%; margin : 0 auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
-
+.ui-widget {
+font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
+font-size: 1.1em;
+}
 .effects-enabled #twitter ul .disabled {
 	height : 2em; 
 	-webkit-marquee-direction:left;
@@ -161,14 +164,16 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	width: 7em;
 	position: relative;
 	margin: 0 1em;
+	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.9, transparent), to(rgba(255,255,255,0.5)));
 }
 .bargraph .bar-box h3 {
 	display: block;
 	position: absolute;
-	bottom: 0px;
+	bottom: -0.5em;
 	width: 100%;
 	text-align: center;
 	margin-bottom: 0.5em;
+	text-shadow: 0px 0px 3px #000;
 }
 .bargraph .bar-box span.value {
 	display: block;
@@ -181,8 +186,8 @@ html, body { background-color: black; color : white; font-size : 20pt;}
 	bottom: 0em;
 	width: 100%;
 	background-color: red;
-	-webkit-border-top-left-radius: 10px;
-	-webkit-border-top-right-radius: 10px;
+	-webkit-border-top-left-radius: 1px;
+	-webkit-border-top-right-radius: 1px;
 }
 /* #twitter {
 	display:none;
