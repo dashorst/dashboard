@@ -1,7 +1,7 @@
 @import url('fonts/stylesheet.css');
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
-html, body { background-color: black; color : white; font-size : 20pt;}
+html, body { background-color: black; color : white; font-size : 20pt; overflow: hidden;}
 
 .widget { width : 75%; margin : 0 auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
@@ -176,12 +176,16 @@ font-size: 1.1em;
 	text-shadow: 0px 0px 3px #000;
 }
 .bargraph .bar-box span.value {
+	-webkit-transition-property: bottom;
+	-webkit-transition-duration: 2s;
 	display: block;
 	position: absolute;
 	width: 100%;
 	text-align: center;
 }
 .bargraph .bar {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 2s;
 	position: absolute;
 	bottom: 0em;
 	width: 100%;

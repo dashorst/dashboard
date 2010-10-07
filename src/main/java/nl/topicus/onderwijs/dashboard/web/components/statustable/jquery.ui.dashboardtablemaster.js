@@ -45,7 +45,6 @@ $.widget( "ui.dashboardTableMaster", {
 			}
 			index++;
 		});
-		console.log(startProjects);
 		$(document).data("dashboard-table-projects", startProjects);
 	},
 
@@ -87,7 +86,6 @@ $.widget( "ui.dashboardTableMaster", {
 			newProjectIndex = this.options.projectKeys.length-1;	
 		$(document).data("dashboard-table-projects", newProjects);
 		$(document).data("dashboard-table-project-index", newProjectIndex);
-		console.log(newProjects);
 		$(document).triggerHandler("dashboard-table-insert-project", newProjects[0]);
 
 		$("body").addClass("project-transition");
