@@ -184,14 +184,19 @@ font-size: 1.1em;
 	text-align: center;
 }
 .bargraph .bar {
-	-webkit-transition-property: height;
+	-webkit-transition-property: height, background-color;
 	-webkit-transition-duration: 2s;
 	position: absolute;
 	bottom: 0em;
 	width: 100%;
-	background-color: red;
 	-webkit-border-top-left-radius: 1px;
 	-webkit-border-top-right-radius: 1px;
+}
+.color-1 .bargraph .bar {
+	background-color: red;
+}
+.color-2 .bargraph .bar {
+	background-color: yellow;
 }
 /* #twitter {
 	display:none;
