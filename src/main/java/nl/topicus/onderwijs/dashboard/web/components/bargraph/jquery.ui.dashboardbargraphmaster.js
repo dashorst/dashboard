@@ -34,10 +34,15 @@ $.widget( "ui.dashboardBarGraphMaster", {
 		$(document)
 			.data("dashboard-bar-graph-heartbeat-enabled", true)
 			.data("dashboard-bar-graph-data-set-index", 0)
+			.data("dashboard-bar-graph-heartbeat-count", 0)
 			.data("dashboard-bar-graph-data-set", this.options.dataSets[0].key)
-			.everyTime("30s", "heartbeat-bar-graph-data-set",
+			.everyTime("5s", "heartbeat-bar-graph",
 					function() {
-						$(document).oneTime("2s", heartBeatDataSet);
+						var count = $(document).data("dashboard-bar-graph-heartbeat-count") + 1;
+						$(document).data("dashboard-bar-graph-heartbeat-count", count);
+						if (count % 6 == 0)
+							heartBeatDataSet();
+						$(document).triggerHandler("dashboard-bar-graph-heartbeat-update");
 					});
 		this.element.find("h1").text(this.options.dataSets[0].label);
 		this.element.addClass(this.options.dataSets[0].scheme);

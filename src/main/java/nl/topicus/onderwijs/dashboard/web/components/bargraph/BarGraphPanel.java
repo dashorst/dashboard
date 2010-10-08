@@ -10,6 +10,7 @@ import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePane
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.util.ListModel;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -33,7 +34,8 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 
 			@Override
 			protected void populateItem(ListItem<String> item) {
-				item.add(new BarGraphBarPanel("bar", item.getModel()));
+				item.add(new BarGraphBarPanel("bar", item.getModel(),
+						new ListModel<String>(Arrays.asList("set1", "set2"))));
 			}
 		};
 		add(bars);
