@@ -19,7 +19,7 @@ public class TopicusApplicationStatus implements Serializable {
 	private Long uptime;
 
 	public String getVersion() {
-		return version;
+		return version == null ? "n/a" : version;
 	}
 
 	public void setVersion(String version) {
@@ -81,7 +81,7 @@ public class TopicusApplicationStatus implements Serializable {
 	public void setUptime(Long uptime) {
 		this.uptime = uptime;
 	}
-	
+
 	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();

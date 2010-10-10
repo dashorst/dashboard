@@ -23,9 +23,14 @@ public class Project {
 			return ((Project) obj).getCode().equals(getCode());
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getCode().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

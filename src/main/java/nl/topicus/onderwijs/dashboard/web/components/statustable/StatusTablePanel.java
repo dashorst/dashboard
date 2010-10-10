@@ -25,8 +25,8 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		projects = new WebMarkupContainer("projects");
 		add(projects);
 
-		ListView<String> columns = new ListView<String>("columns", Arrays
-				.asList("color-1", "color-2", "color-3", "color-4")) {
+		ListView<String> columns = new ListView<String>("columns",
+				Arrays.asList("color-1", "color-2", "color-3", "color-4")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -49,11 +49,12 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public JsStatement statement() {
 		Options projectList = new Options();
-		projectList.putLiteral("eduarte", "EduArte");
+		// projectList.putLiteral("eduarte", "EduArte");
 		projectList.putLiteral("atvo", "@VO");
-		projectList.putLiteral("duo", "DUO");
-		projectList.putLiteral("passepartout", "PassePartout");
-		projectList.putLiteral("test", "Test");
+		projectList.putLiteral("atvo_ouders", "@VO Ouderportaal");
+		// projectList.putLiteral("duo", "DUO");
+		// projectList.putLiteral("passepartout", "PassePartout");
+		// projectList.putLiteral("test", "Test");
 
 		Options options = new Options();
 		options.put("projects", projectList.getJavaScriptOptions().toString());

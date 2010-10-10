@@ -10,30 +10,27 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class RetrieverUtils {
-	static String getStatuspage(String url) throws Exception {
+	private static final Logger log = LoggerFactory
+			.getLogger(RetrieverUtils.class);
+
+	static StatusPageResponse getStatuspage(String url) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		HttpClient httpclient = new DefaultHttpClient();
 
-		System.out.println("Standaard User-Agent: "
-				+ httpclient.getParams().getParameter("http.useragent"));
-		httpclient.getParams().setParameter("http.useragent",
-				"Topicus Dashboard/1.0");
-		
 		httpclient.getParams().setParameter("http.socket.timeout", 5000);
 		httpclient.getParams().setParameter("http.connection.timeout", 5000);
 
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(url);
 
-
 		// Execute the request
 		HttpResponse response = httpclient.execute(httpget);
 
-		// Examine the response status
-		if (response.getStatusLine().getStatusCode() == 503)
-			System.out.println(response.getStatusLine());
+		log.info("{} returns {}", url, response.getStatusLine());
 
 		// Get hold of the response entity
 		HttpEntity entity = response.getEntity();
@@ -72,7 +69,7 @@ class RetrieverUtils {
 			// immediate deallocation of all system resources
 			httpclient.getConnectionManager().shutdown();
 		}
-		return sb.toString();
+		return new StatusPageResponse(response.getStatusLine().getStatusCode(),
+				sb.toString());
 	}
-
 }
