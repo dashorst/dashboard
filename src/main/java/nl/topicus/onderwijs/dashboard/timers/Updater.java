@@ -24,4 +24,8 @@ public class Updater {
 				.getMilliseconds());
 		// timer.schedule(task, 0);
 	}
+
+	public void stop() {
+		timer.cancel();
+	}
 }

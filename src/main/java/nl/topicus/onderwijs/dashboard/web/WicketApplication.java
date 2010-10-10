@@ -31,8 +31,22 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
-		updater = new Updater(this);
 		getMarkupSettings().setStripWicketTags(true);
+	}
+
+	public void enableLiveUpdater() {
+		updater = new Updater(this);
+	}
+
+	public void disableLiveUpdater() {
+		if (updater != null) {
+			updater.stop();
+			updater = null;
+		}
+	}
+
+	public boolean isUpdaterEnabled() {
+		return updater == null;
 	}
 
 	@Override

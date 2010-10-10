@@ -19,6 +19,13 @@ public class DashboardWebSession extends WebSession {
 
 	public void switchMode() {
 		mode = mode.switchToOtherMode();
+		switch (mode) {
+		case LiveData:
+			WicketApplication.get().enableLiveUpdater();
+			break;
+		case RandomData:
+			WicketApplication.get().disableLiveUpdater();
+		}
 	}
 
 	public static DashboardWebSession get() {
