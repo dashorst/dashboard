@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class VocusOuderportaalRetriever implements
 		Repository<TopicusApplicationStatus> {
 	private static final Logger log = LoggerFactory
-			.getLogger(VocusStatusRetriever.class);
+			.getLogger(VocusOuderportaalRetriever.class);
 	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
 
 	public VocusOuderportaalRetriever() {
@@ -108,13 +108,6 @@ public class VocusOuderportaalRetriever implements
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
 		status.setNumberOfUsers(currentNumberOfUsers + numberOfUsersOnServer);
 		return numberOfUsersOnServer;
-	}
-
-	private void getApplicationVersion(TopicusApplicationStatus status,
-			Element tableHeader) {
-		Element versieCell = tableHeader.getParentElement().getParentElement()
-				.getContent().getFirstElement("class", "value_column", true);
-		status.setVersion(versieCell.getContent().getTextExtractor().toString());
 	}
 
 	/*
