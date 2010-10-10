@@ -52,6 +52,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		// projectList.putLiteral("eduarte", "EduArte");
 		projectList.putLiteral("atvo", "@VO");
 		projectList.putLiteral("atvo_ouders", "@VO Ouderportaal");
+		projectList.putLiteral("parnassys", "ParnasSys");
 		// projectList.putLiteral("duo", "DUO");
 		// projectList.putLiteral("passepartout", "PassePartout");
 		// projectList.putLiteral("test", "Test");

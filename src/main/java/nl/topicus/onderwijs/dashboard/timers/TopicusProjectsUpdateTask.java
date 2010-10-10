@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TimerTask;
 
 import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.topicus.ParnassysStatusRetriever;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusApplicationStatus;
 import nl.topicus.onderwijs.dashboard.modules.topicus.VocusOuderportaalRetriever;
 import nl.topicus.onderwijs.dashboard.modules.topicus.VocusStatusRetriever;
@@ -36,6 +37,8 @@ public class TopicusProjectsUpdateTask extends TimerTask {
 				status = getVocusStatus(project);
 			} else if ("atvo_ouders".equals(project.getCode())) {
 				status = getOuderportalStatus(project);
+			} else if ("parnassys".equals(project.getCode())) {
+				status = getParnassysStatus(project);
 			}
 			if (status != null) {
 				statusses.put(project, status);
@@ -47,14 +50,16 @@ public class TopicusProjectsUpdateTask extends TimerTask {
 
 	private TopicusApplicationStatus getVocusStatus(Project project) {
 		VocusStatusRetriever vocusRetriever = new VocusStatusRetriever();
-		TopicusApplicationStatus status = vocusRetriever
-				.getProjectData(project);
-		return status;
+		return vocusRetriever.getProjectData(project);
 	}
 
 	private TopicusApplicationStatus getOuderportalStatus(Project project) {
 		VocusOuderportaalRetriever retriever = new VocusOuderportaalRetriever();
-		TopicusApplicationStatus status = retriever.getProjectData(project);
-		return status;
+		return retriever.getProjectData(project);
+	}
+
+	private TopicusApplicationStatus getParnassysStatus(Project project) {
+		ParnassysStatusRetriever retriever = new ParnassysStatusRetriever();
+		return retriever.getProjectData(project);
 	}
 }
