@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+<!--
+body,div,h1,h2,h3,h4,h5,h6,p,ul,ol,li,dl,dt,dd,img,form,fieldset,blockquote
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	background: #3f3f3f;
+	font-family: Helvetica, Arial, Sans-Serif;
+}
+
+h1 {
+	font-size: 50px;
+	text-transform: uppercase;
+	color: #717171;
+	text-shadow: 0 3px 3px #333;
+	margin: 50px 0 0 0;
+	text-align: center;
+}
+
+#flippers-regel {
+	width: 750px;
+	position: relative;
+	margin: 50px auto;
+}
+
+.container {
+	float: left;
+	width: 324px;
+	height: 412px;
+	-webkit-perspective: 1000;
+}
+
+.card {
+	width: 324px;
+	height: 412px;
+	border: 8px solid #fff;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transition: 1.5s;
+}
+.container:hover .card {
+	-webkit-transform: rotateY(180deg);
+}
+
+.face {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+}
+
+.users { /*	position: absolute;
+	top: 30px;
+	left: 20px;*/ /*	-webkit-transform: rotate(5deg);*/
+	
+}
+
+.projecten {
+	width: 150px;
+	height: 372px;
+	padding: 20px;
+	background: #a3a3a3 url(texture.png);
+	border: 8px solid #fff;
+	margin-right: 10px;
+}
+
+.users .front {
+	width: 284px;
+	height: 372px;
+	padding: 20px;
+	background: #a3a3a3 url(texture.png);
+}
+
+.users .back {
+	width: 284px;
+	height : 372px; 
+	padding : 20px; 
+	-webkit-transform : rotateY( 180deg);
+	background: #a3a3a3 url(texture.png);
+	-webkit-transform: rotateY(180deg);
+	height: 372px;
+	padding: 20px;
+}
+
+.front {
+	z-index: 10;
+}
+
+.container:hover .front {
+	z-index: 0;
+}
+-->
+</style>
+</head>
+<body>
+<h1>Topicus Dashboard flippers</h1>
+
+<div id="flippers-regel">
+<div class="container projecten">
+<h3>Projecten</h3>
+<table>
+	<tr>
+		<td>@VO</td>
+	</tr>
+	<tr>
+		<td>Parnassys</td>
+	</tr>
+	<tr>
+		<td>Iris+</td>
+	</tr>
+	<tr>
+		<td>DUO</td>
+	</tr>
+</table>
+</div>
+<div class="container users">
+<div class="card">
+<div class="face front">
+<h3>Actieve sessies</h3>
+<table>
+	<tr>
+		<td>1,325</td>
+	</tr>
+	<tr>
+		<td>3,252</td>
+	</tr>
+	<tr>
+		<td>366</td>
+	</tr>
+	<tr>
+		<td>125</td>
+	</tr>
+</table>
+</div>
+<div class="face back">
+<h3>Max sessies</h3>
+<table>
+	<tr>
+		<td>2,012</td>
+	</tr>
+	<tr>
+		<td>4,125</td>
+	</tr>
+	<tr>
+		<td>400</td>
+	</tr>
+	<tr>
+		<td>196</td>
+	</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
