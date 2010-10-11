@@ -65,6 +65,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 						status.getNumberOfUsers());
 			}
 			ret.add(usersData);
+			ret.add(usersData);
 		}
 		if ("color-2".equals(getDefaultModelObjectAsString())) {
 			ColumnData versionData = new ColumnData();
@@ -74,6 +75,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 				versionData.getData().put(project.getCode(),
 						status.getVersion());
 			}
+			ret.add(versionData);
 			ret.add(versionData);
 		}
 		if ("color-3".equals(getDefaultModelObjectAsString())) {
@@ -86,6 +88,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 						Duration.milliseconds(status.getUptime()).toString(
 								new Locale("NL")));
 			}
+			ret.add(uptimeData);
 			ret.add(uptimeData);
 		}
 		if ("color-4".equals(getDefaultModelObjectAsString())) {
