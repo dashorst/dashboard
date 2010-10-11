@@ -73,9 +73,6 @@ $.widget( "ui.dashboardTable", {
 	_redraw: function( data ) {
 		var self = this;
 		this.element.empty();
-		var flips = $("<div class='flips' />");
-		this.element.append(flips);
-
 		if (data) {
 			this.jsonData = data;
 			this.nextFlip = 2;
@@ -87,7 +84,7 @@ $.widget( "ui.dashboardTable", {
 					flip.addClass("flip-back");
 				else if (flipIndex > 1)
 					flip.addClass("flip-hidden");
-				flips.append(flip);
+				self.element.append(flip);
 				self._fillFlip(self, flipIndex, flip);
 			});
 		}
@@ -119,11 +116,11 @@ $.widget( "ui.dashboardTable", {
 			var doNextFlip = this.nextFlip;
 			this.nextFlip++;
 			var self = this;
-			self.element.addClass("rotate-enabled");
+			self.element.addClass("rotate-enabled").removeClass("rotate-disabled");
 			if (this.element.hasClass("rotated")) {
 				this.element.removeClass("rotated");
 				$(this.element).oneTime("1100ms", function() {
-					self.element.removeClass("rotate-enabled rotate-invert");
+					self.element.removeClass("rotate-enabled rotate-invert").addClass("rotate-default rotate-disabled");
 					self.element.find(".flip-back").removeClass("flip-back").addClass("flip-hidden");
 					var flipDiv = self.element.find(".flip-"+doNextFlip);
 					flipDiv.empty().removeClass("flip-hidden").addClass("flip-back");
@@ -132,8 +129,8 @@ $.widget( "ui.dashboardTable", {
 			} else {
 				this.element.addClass("rotated");
 				$(this.element).oneTime("1100ms", function() {
-					self.element.removeClass("rotate-enabled");
-					self.element.addClass("rotate-invert");
+					self.element.removeClass("rotate-enabled").addClass("rotate-disabled");
+					self.element.removeClass("rotate-default").addClass("rotate-invert");
 					self.element.find(".flip-front").removeClass("flip-front").addClass("flip-hidden");
 					var flipDiv = self.element.find(".flip-"+doNextFlip);
 					flipDiv.empty().removeClass("flip-hidden").addClass("flip-front");

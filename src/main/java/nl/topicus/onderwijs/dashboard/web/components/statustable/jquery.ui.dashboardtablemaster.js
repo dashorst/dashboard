@@ -61,24 +61,27 @@ $.widget( "ui.dashboardTableMaster", {
 				.data("dashboard-table-project-index", this.options.projectKeys.length-1)
 				.everyTime("5s", "heartbeat-table-projects",
 						function() {
+							if (!$(document).data("dashboard-table-heartbeat-enabled"))
+								return;
+							
 							var count = $(document).data("dashboard-table-heartbeat-count") + 1;
 							$(document).data("dashboard-table-heartbeat-count", count);
 							if (count % 3 == 0)
 								$(document).oneTime("2s", heartBeatProjects);
 							self._heartBeatRotate();
 						});
+			$("#stoplink").click(function(){
+				var newValue = $(document).data("dashboard-table-heartbeat-enabled");
+				$(document).data("dashboard-table-heartbeat-enabled", !newValue);
+			});
 		}
 	},
 
 	_heartBeatRotate: function() {
-		if ($(document).data("dashboard-table-heartbeat-enabled"))
-			$(document).triggerHandler("dashboard-table-heartbeat-rotate");
+		$(document).triggerHandler("dashboard-table-heartbeat-rotate");
 	},
 
 	_heartBeatProjects: function() {
-		if (!$(document).data("dashboard-table-heartbeat-enabled"))
-			return;
-
 		var newProjectIndex = $(document).data("dashboard-table-project-index");
 		var newProjects = $(document).data("dashboard-table-projects");
 		for (var count=this.options.maxProjects-1; count>0; count--) {

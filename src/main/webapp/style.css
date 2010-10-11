@@ -44,8 +44,36 @@ font-size: 1.1em;
 	line-height : 2em;
 }
 .effects-enabled .statusses div.rotate-enabled.col { 
+	-webkit-transform-style: preserve-3d;
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1s;
+}
+.statusses .flip {
+	position: absolute;
+	width:6em;
+}
+.effects-enabled .statusses .flip {
+	-webkit-backface-visibility: hidden;
+}
+
+.effects-disabled .statusses .flip.flip-back {
+	display: none;
+}
+.effects-enabled .statusses .flip.flip-front {
+	-webkit-transform: translateZ(1px);
+}
+.effects-enabled .statusses .flip.flip-back {
+	-webkit-transform: translateZ(-1px) rotateY(180deg);
+}
+.statusses .flip.flip-hidden {
+	display: none;
+}
+
+.effects-enabled .rotated {
+	-webkit-transform: rotateY(180deg);
+}
+.effects-enabled .rotated.rotate-invert {
+	-webkit-transform: rotateY(-180deg);
 }
 .col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
 
@@ -56,15 +84,11 @@ font-size: 1.1em;
 	height: 2.1em;
 }
 .statusses .row .inner-row {
-	position: absolute;
 	height: 1.5em;
 	line-height : 1.5em;
 	width: 6.63em;
 	background-color : rgba(64,64,64,0.5);
 	padding : 0.20em 1.1em;
-}
-.effects-enabled .statusses div.inner-row {
-	-webkit-backface-visibility: hidden;
 }
 .statusses div.col:first-child .inner-row {
 	-webkit-border-top-left-radius: 10px;
@@ -102,6 +126,12 @@ font-size: 1.1em;
 	opacity: 0;
 	height: 0em!important;
 }
+.rotate-invert.rotate-disabled .flip-front {
+	display: none;
+}
+.rotate-default.rotate-disabled .flip-back {
+	display: none;
+}
 
 .statusses .number .row { text-align : right; padding-right : 1.1em;}
 .statusses .color-1 { background-color : #fe6f1f;}
@@ -110,42 +140,11 @@ font-size: 1.1em;
 .statusses .color-4 { background-color : #303000;}
 
 .statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
-.statusses .flips {
-	position: relative;
-}
-.statusses .flip {
-	position: absolute;
-	width:6em;
-}
-.effects-enabled .statusses .flip {
-	-webkit-backface-visibility: hidden;
-}
-
-.effects-disabled .statusses .flip.flip-back {
-	display: none;
-}
-.effects-enabled .statusses .flip.flip-back {
-	-webkit-transform: rotateY(180deg);
-}
-.statusses .flip.flip-hidden {
-	display: none;
-}
 
 .success { background-color : green; }
 .unstable { background-color : yellow; }
 .failure { background-color : red; }
 .building { background-color : gray;}
-
-.statusses .flips {
-	position: relative;
-}
-
-.effects-enabled .rotated {
-	-webkit-transform: rotateY(180deg);
-}
-.effects-enabled .rotated.rotate-invert {
-	-webkit-transform: rotateY(-180deg);
-}
 
 .bargraph {
 	height: 13em;
