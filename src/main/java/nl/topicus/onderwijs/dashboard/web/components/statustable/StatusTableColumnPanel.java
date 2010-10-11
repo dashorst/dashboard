@@ -56,33 +56,59 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		Map<Project, TopicusApplicationStatus> statusses = WicketApplication
 				.get().getStatusses();
 
-		ColumnData usersData = new ColumnData();
-		usersData.setLabel("Current users");
-		for (Project project : statusses.keySet()) {
-			TopicusApplicationStatus status = statusses.get(project);
-			usersData.getData().put(project.getCode(),
-					status.getNumberOfUsers());
+		if ("color-1".equals(getDefaultModelObjectAsString())) {
+			ColumnData usersData = new ColumnData();
+			usersData.setLabel("Current users");
+			for (Project project : statusses.keySet()) {
+				TopicusApplicationStatus status = statusses.get(project);
+				usersData.getData().put(project.getCode(),
+						status.getNumberOfUsers());
+			}
+			ret.add(usersData);
 		}
-		ret.add(usersData);
+		if ("color-2".equals(getDefaultModelObjectAsString())) {
+			ColumnData versionData = new ColumnData();
+			versionData.setLabel("Version");
+			for (Project project : statusses.keySet()) {
+				TopicusApplicationStatus status = statusses.get(project);
+				versionData.getData().put(project.getCode(),
+						status.getVersion());
+			}
+			ret.add(versionData);
+		}
+		if ("color-3".equals(getDefaultModelObjectAsString())) {
+			ColumnData uptimeData = new ColumnData();
+			uptimeData.setLabel("Uptime");
+			for (Project project : statusses.keySet()) {
+				TopicusApplicationStatus status = statusses.get(project);
+				uptimeData.getData().put(
+						project.getCode(),
+						Duration.milliseconds(status.getUptime()).toString(
+								new Locale("NL")));
+			}
+			ret.add(uptimeData);
+		}
+		if ("color-4".equals(getDefaultModelObjectAsString())) {
+			ColumnData serversData = new ColumnData();
+			serversData.setLabel("#Servers");
+			for (Project project : statusses.keySet()) {
+				TopicusApplicationStatus status = statusses.get(project);
+				serversData.getData().put(project.getCode(),
+						status.getNumberOfServers());
+			}
+			ret.add(serversData);
 
-		ColumnData versionData = new ColumnData();
-		versionData.setLabel("Version");
-		for (Project project : statusses.keySet()) {
-			TopicusApplicationStatus status = statusses.get(project);
-			versionData.getData().put(project.getCode(), status.getVersion());
+			ColumnData offlineServersData = new ColumnData();
+			offlineServersData.setLabel("#Offline servers");
+			for (Project project : statusses.keySet()) {
+				TopicusApplicationStatus status = statusses.get(project);
+				offlineServersData.getData().put(
+						project.getCode(),
+						status.getNumberOfServers()
+								- status.getNumberOfServersOnline());
+			}
+			ret.add(offlineServersData);
 		}
-		ret.add(versionData);
-
-		ColumnData uptimeData = new ColumnData();
-		uptimeData.setLabel("Uptime");
-		for (Project project : statusses.keySet()) {
-			TopicusApplicationStatus status = statusses.get(project);
-			uptimeData.getData().put(
-					project.getCode(),
-					Duration.milliseconds(status.getUptime()).toString(
-							new Locale("NL")));
-		}
-		ret.add(uptimeData);
 	}
 
 	@Override
