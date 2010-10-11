@@ -2,6 +2,9 @@ package nl.topicus.onderwijs.dashboard.web.components.statustable;
 
 import java.util.Arrays;
 
+import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.web.WicketApplication;
+
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -49,13 +52,9 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public JsStatement statement() {
 		Options projectList = new Options();
-		// projectList.putLiteral("eduarte", "EduArte");
-		projectList.putLiteral("atvo", "@VO");
-		projectList.putLiteral("atvo_ouders", "@VO Ouderportaal");
-		projectList.putLiteral("parnassys", "ParnasSys");
-		// projectList.putLiteral("duo", "DUO");
-		// projectList.putLiteral("passepartout", "PassePartout");
-		// projectList.putLiteral("test", "Test");
+		for (Project project : WicketApplication.get().getProjects()) {
+			projectList.putLiteral(project.getCode(), project.getName());
+		}
 
 		Options options = new Options();
 		options.put("projects", projectList.getJavaScriptOptions().toString());

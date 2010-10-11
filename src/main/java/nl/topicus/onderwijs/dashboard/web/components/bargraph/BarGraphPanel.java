@@ -57,7 +57,10 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BarDataSet> dataSets = new ArrayList<BarDataSet>();
 		dataSets.add(new BarDataSet("livesessions", "Live sessions", "color-1"));
-		// dataSets.add(new BarDataSet("set2", "Random data2", "color-2"));
+		dataSets.add(new BarDataSet("numberofservers", "Number of servers",
+				"color-2"));
+		// dataSets.add(new BarDataSet("numberofservers", "Number of servers",
+		// "color-2"));
 		Options options = new Options();
 		try {
 			options.put("dataSets", mapper.writeValueAsString(dataSets));

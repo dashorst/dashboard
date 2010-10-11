@@ -22,9 +22,10 @@ import org.apache.wicket.protocol.http.WebApplication;
  */
 public class WicketApplication extends WebApplication {
 	private Updater updater;
-	private List<Project> projects = Arrays.asList(new Project("atvo", "@VO"),
-			new Project("atvo_ouders", "@VO Ouderportaal"), new Project(
-					"parnassys", "ParnasSys"));
+	private List<Project> projects = Arrays.asList(new Project("parnassys",
+			"ParnasSys"), new Project("atvo", "@VO"), new Project(
+			"atvo_ouders", "@VO Ouderportaal"),
+			new Project("irisplus", "Iris+"));
 
 	private Map<Project, TopicusApplicationStatus> statusses;
 

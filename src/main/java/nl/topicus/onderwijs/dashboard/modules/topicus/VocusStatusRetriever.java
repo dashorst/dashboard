@@ -31,6 +31,8 @@ public class VocusStatusRetriever implements
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
 				"https://start3.atvo.nl/app/status"));
+		statusUrls.put(new Project("irisplus", "Iris+"), Arrays
+				.asList("https://www.irisplus.nl/irisplus-prod/app/status"));
 
 	}
 
