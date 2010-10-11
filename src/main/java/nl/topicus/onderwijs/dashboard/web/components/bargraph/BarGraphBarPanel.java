@@ -62,6 +62,24 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 
 		int max = 0;
 		for (TopicusApplicationStatus status : statusses.values()) {
+			Integer numberOfUsers = status.getNumberOfUsers();
+			max = Math.max(numberOfUsers == null ? 0 : numberOfUsers, max);
+		}
+		TopicusApplicationStatus status = statusses.get(project);
+		status.getNumberOfUsers();
+
+		double value = (10.0 * status.getNumberOfUsers()) / max;
+		ret.put(key,
+				new BarData(value, Integer.toString(status.getNumberOfUsers())));
+	}
+
+	private void getNumberOfServers(Map<String, BarData> ret, String key) {
+		Project project = getProject();
+		Map<Project, TopicusApplicationStatus> statusses = WicketApplication
+				.get().getStatusses();
+
+		int max = 0;
+		for (TopicusApplicationStatus status : statusses.values()) {
 			Integer numberOfServers = status.getNumberOfServers();
 			max = Math.max(numberOfServers == null ? 0 : numberOfServers, max);
 		}
@@ -72,24 +90,6 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 		ret.put(key,
 				new BarData(value,
 						Integer.toString(status.getNumberOfServers())));
-	}
-
-	private void getNumberOfServers(Map<String, BarData> ret, String key) {
-		Project project = getProject();
-		Map<Project, TopicusApplicationStatus> statusses = WicketApplication
-				.get().getStatusses();
-
-		int max = 0;
-		for (TopicusApplicationStatus status : statusses.values()) {
-			Integer numberOfUsers = status.getNumberOfUsers();
-			max = Math.max(numberOfUsers == null ? 0 : numberOfUsers, max);
-		}
-		TopicusApplicationStatus status = statusses.get(project);
-		status.getNumberOfUsers();
-
-		double value = (10.0 * status.getNumberOfUsers()) / max;
-		ret.put(key,
-				new BarData(value, Integer.toString(status.getNumberOfUsers())));
 	}
 
 	@Override
