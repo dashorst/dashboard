@@ -73,25 +73,17 @@ h1 {
 	height: 372px;
 	padding: 20px;
 	background: #a3a3a3 url(texture.png);
+	-webkit-transform: translateZ(1px);
 }
 
 .users .back {
 	width: 284px;
 	height : 372px; 
 	padding : 20px; 
-	-webkit-transform : rotateY( 180deg);
 	background: #a3a3a3 url(texture.png);
-	-webkit-transform: rotateY(180deg);
+	-webkit-transform: translateZ(-1px) rotateY(180deg);
 	height: 372px;
 	padding: 20px;
-}
-
-.front {
-	z-index: 10;
-}
-
-.container:hover .front {
-	z-index: 0;
 }
 -->
 </style>
