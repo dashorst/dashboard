@@ -1,0 +1,118 @@
+{
+    "actions": [{
+        "causes": [{
+            "shortDescription": "Started by an SCM change"
+        }]
+    },
+    {},
+    {},
+    {},
+    {
+        "failCount": 5,
+        "skipCount": 0,
+        "totalCount": 1045,
+        "urlName": "testReport"
+    },
+    {},
+    {},
+    {},
+    {},
+    {
+        "participants": [{
+            "absoluteUrl": "http://192.168.55.113/user/dashorst",
+            "fullName": "dashorst"
+        },
+        {
+            "absoluteUrl": "http://192.168.55.113/user/dashorst",
+            "fullName": "dashorst"
+        },
+        {
+            "absoluteUrl": "http://192.168.55.113/user/dashorst",
+            "fullName": "dashorst"
+        },
+        {
+            "absoluteUrl": "http://192.168.55.113/user/dashorst",
+            "fullName": "dashorst"
+        }],
+        "scorecard": {
+            "scores": [{
+                "description": "5 new failing tests were added",
+                "ruleName": "Increased number of failed tests",
+                "rulesetName": "Unit testing",
+                "value": -5.0
+            }],
+            "totalPoints": -5.0
+        }
+    }],
+    "artifacts": [],
+    "building": false,
+    "description": null,
+    "duration": 109128,
+    "fullDisplayName": "DUO #73",
+    "id": "2010-10-05_13-00-42",
+    "keepLog": false,
+    "number": 73,
+    "result": "UNSTABLE",
+    "timestamp": 1286276442000,
+    "url": "http://192.168.55.113/job/DUO/73/",
+    "builtOn": "",
+    "changeSet": {
+        "items": [{
+            "date": "2010-10-05T10:54:49.665365Z",
+            "msg": "gegevensdrager start toch echt op positie 55",
+            "paths": [{
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/verify/src/main/java/nl/topicus/onderwijs/duo/verify/records/ho/CrihoSm00.java"
+            }],
+            "revision": 185815,
+            "user": "dashorst"
+        },
+        {
+            "date": "2010-10-05T10:54:28.881198Z",
+            "msg": "trim de waarde die opgezocht wordt",
+            "paths": [{
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/verify/src/main/java/nl/topicus/onderwijs/duo/verify/records/ho/CrihoBaseRecord.java"
+            }],
+            "revision": 185814,
+            "user": "dashorst"
+        },
+        {
+            "date": "2010-10-05T10:54:04.823918Z",
+            "msg": "trim de waarde die opgezocht wordt",
+            "paths": [{
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/verify/src/main/java/nl/topicus/onderwijs/duo/verify/domain/EnumVeld.java"
+            }],
+            "revision": 185813,
+            "user": "dashorst"
+        },
+        {
+            "date": "2010-10-05T10:53:47.965001Z",
+            "msg": "Record type moet 99 zijn",
+            "paths": [{
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/criho/src/main/java/nl/topicus/onderwijs/duo/criho/pve/aanlevering/SM99Inschrijvingen.java"
+            },
+            {
+                "editType": "edit",
+                "file": "/onderwijs/duo/trunk/criho/src/main/java/nl/topicus/onderwijs/duo/criho/pve/aanlevering/SM99Personalia.java"
+            }],
+            "revision": 185812,
+            "user": "dashorst"
+        }],
+        "kind": "svn",
+        "revisions": [{
+            "module": "http://cvs.topicus.nl/svn/onderwijs/duo/trunk",
+            "revision": 185815
+        },
+        {
+            "module": "http://cvs.topicus.nl/svn/onderwijs/settings",
+            "revision": 181794
+        }]
+    },
+    "culprits": [{
+        "absoluteUrl": "http://192.168.55.113/user/dashorst",
+        "fullName": "dashorst"
+    }]
+}

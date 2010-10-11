@@ -10,134 +10,138 @@
     "url": "http://192.168.55.113/job/DUO/",
     "buildable": true,
     "builds": [{
-        "number": 58,
-        "url": "http://192.168.55.113/job/DUO/58/"
+        "number": 85,
+        "url": "http://192.168.55.113/job/DUO/85/"
     },
     {
-        "number": 57,
-        "url": "http://192.168.55.113/job/DUO/57/"
+        "number": 84,
+        "url": "http://192.168.55.113/job/DUO/84/"
     },
     {
-        "number": 56,
-        "url": "http://192.168.55.113/job/DUO/56/"
+        "number": 83,
+        "url": "http://192.168.55.113/job/DUO/83/"
     },
     {
-        "number": 55,
-        "url": "http://192.168.55.113/job/DUO/55/"
+        "number": 82,
+        "url": "http://192.168.55.113/job/DUO/82/"
     },
     {
-        "number": 54,
-        "url": "http://192.168.55.113/job/DUO/54/"
+        "number": 81,
+        "url": "http://192.168.55.113/job/DUO/81/"
     },
     {
-        "number": 53,
-        "url": "http://192.168.55.113/job/DUO/53/"
+        "number": 80,
+        "url": "http://192.168.55.113/job/DUO/80/"
     },
     {
-        "number": 52,
-        "url": "http://192.168.55.113/job/DUO/52/"
+        "number": 79,
+        "url": "http://192.168.55.113/job/DUO/79/"
     },
     {
-        "number": 51,
-        "url": "http://192.168.55.113/job/DUO/51/"
+        "number": 78,
+        "url": "http://192.168.55.113/job/DUO/78/"
     },
     {
-        "number": 50,
-        "url": "http://192.168.55.113/job/DUO/50/"
+        "number": 77,
+        "url": "http://192.168.55.113/job/DUO/77/"
     },
     {
-        "number": 49,
-        "url": "http://192.168.55.113/job/DUO/49/"
+        "number": 76,
+        "url": "http://192.168.55.113/job/DUO/76/"
     },
     {
-        "number": 48,
-        "url": "http://192.168.55.113/job/DUO/48/"
+        "number": 75,
+        "url": "http://192.168.55.113/job/DUO/75/"
     },
     {
-        "number": 47,
-        "url": "http://192.168.55.113/job/DUO/47/"
+        "number": 74,
+        "url": "http://192.168.55.113/job/DUO/74/"
     },
     {
-        "number": 46,
-        "url": "http://192.168.55.113/job/DUO/46/"
+        "number": 73,
+        "url": "http://192.168.55.113/job/DUO/73/"
     },
     {
-        "number": 45,
-        "url": "http://192.168.55.113/job/DUO/45/"
+        "number": 72,
+        "url": "http://192.168.55.113/job/DUO/72/"
     },
     {
-        "number": 44,
-        "url": "http://192.168.55.113/job/DUO/44/"
+        "number": 71,
+        "url": "http://192.168.55.113/job/DUO/71/"
     },
     {
-        "number": 43,
-        "url": "http://192.168.55.113/job/DUO/43/"
+        "number": 70,
+        "url": "http://192.168.55.113/job/DUO/70/"
     },
     {
-        "number": 42,
-        "url": "http://192.168.55.113/job/DUO/42/"
+        "number": 69,
+        "url": "http://192.168.55.113/job/DUO/69/"
     },
     {
-        "number": 41,
-        "url": "http://192.168.55.113/job/DUO/41/"
+        "number": 68,
+        "url": "http://192.168.55.113/job/DUO/68/"
     },
     {
-        "number": 40,
-        "url": "http://192.168.55.113/job/DUO/40/"
+        "number": 67,
+        "url": "http://192.168.55.113/job/DUO/67/"
     },
     {
-        "number": 39,
-        "url": "http://192.168.55.113/job/DUO/39/"
+        "number": 66,
+        "url": "http://192.168.55.113/job/DUO/66/"
     }],
     "color": "blue",
     "firstBuild": {
-        "number": 39,
-        "url": "http://192.168.55.113/job/DUO/39/"
+        "number": 66,
+        "url": "http://192.168.55.113/job/DUO/66/"
     },
     "healthReport": [{
-        "description": "Build stability: 1 out of the last 5 builds failed.",
-        "iconUrl": "health-60to79.gif",
-        "score": 80
+        "description": "Test Result: 0 tests failing out of a total of 1,045 tests.",
+        "iconUrl": "health-80plus.gif",
+        "score": 100
     },
     {
-        "description": "Test Result: 0 tests failing out of a total of 1,045 tests.",
+        "description": "Build stability: No recent builds failed.",
         "iconUrl": "health-80plus.gif",
         "score": 100
     }],
     "inQueue": false,
     "keepDependencies": false,
     "lastBuild": {
-        "number": 58,
-        "url": "http://192.168.55.113/job/DUO/58/"
+        "number": 85,
+        "url": "http://192.168.55.113/job/DUO/85/"
     },
     "lastCompletedBuild": {
-        "number": 58,
-        "url": "http://192.168.55.113/job/DUO/58/"
+        "number": 85,
+        "url": "http://192.168.55.113/job/DUO/85/"
     },
-    "lastFailedBuild": {
-        "number": 54,
-        "url": "http://192.168.55.113/job/DUO/54/"
-    },
+    "lastFailedBuild": null,
     "lastStableBuild": {
-        "number": 58,
-        "url": "http://192.168.55.113/job/DUO/58/"
+        "number": 85,
+        "url": "http://192.168.55.113/job/DUO/85/"
     },
     "lastSuccessfulBuild": {
-        "number": 58,
-        "url": "http://192.168.55.113/job/DUO/58/"
+        "number": 85,
+        "url": "http://192.168.55.113/job/DUO/85/"
     },
-    "lastUnstableBuild": null,
+    "lastUnstableBuild": {
+        "number": 73,
+        "url": "http://192.168.55.113/job/DUO/73/"
+    },
     "lastUnsuccessfulBuild": {
-        "number": 54,
-        "url": "http://192.168.55.113/job/DUO/54/"
+        "number": 73,
+        "url": "http://192.168.55.113/job/DUO/73/"
     },
-    "nextBuildNumber": 59,
+    "nextBuildNumber": 86,
     "property": [{}],
     "queueItem": null,
     "concurrentBuild": false,
     "downstreamProjects": [],
     "scm": {},
-    "upstreamProjects": [],
+    "upstreamProjects": [{
+        "name": "WiQuery",
+        "url": "http://192.168.55.113/job/WiQuery/",
+        "color": "blue"
+    }],
     "modules": [{
         "name": "nl.topicus.onderwijs.duo:duo-bron",
         "url": "http://192.168.55.113/job/DUO/nl.topicus.onderwijs.duo$duo-bron/",
