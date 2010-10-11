@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusApplicationStatus;
+import nl.topicus.onderwijs.dashboard.web.DashboardMode;
+import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
+import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 
@@ -24,9 +29,9 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 	private JsonResourceBehavior<Map<String, BarData>> dataResource;
 	private IModel<List<String>> dataSetsModel;
 
-	public BarGraphBarPanel(String id, IModel<String> projectNameModel,
+	public BarGraphBarPanel(String id, IModel<Project> projectModel,
 			IModel<List<String>> dataSetsModel) {
-		super(id, projectNameModel);
+		super(id, projectModel);
 		this.dataSetsModel = dataSetsModel;
 		this.dataResource = new JsonResourceBehavior<Map<String, BarData>>(
 				new AbstractReadOnlyModel<Map<String, BarData>>() {
@@ -34,19 +39,36 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public Map<String, BarData> getObject() {
-						Map<String, BarData> ret = new HashMap<String, BarData>();
-						int index = 0;
-						for (String curDataSet : BarGraphBarPanel.this.dataSetsModel
-								.getObject()) {
-							index++;
-							double value = Math.random() * 10.0;
-							ret.put(curDataSet, new BarData(value, Long
-									.toString(Math.round(value * 10) * index)));
+						if (DashboardWebSession.get().getMode() == DashboardMode.RandomData) {
+							return generateRandomValues();
 						}
-						return ret;
+						return retrieveDataFromApplication();
 					}
 				});
 		add(dataResource);
+	}
+
+	protected Map<String, BarData> retrieveDataFromApplication() {
+		Map<String, BarData> ret = new HashMap<String, BarData>();
+		String key = "livesessions";
+
+		Map<Project, TopicusApplicationStatus> statusses = WicketApplication
+				.get().getStatusses();
+
+		int max = 0;
+		for (TopicusApplicationStatus status : statusses.values()) {
+			Integer numberOfUsers = status.getNumberOfUsers();
+
+			max = Math.max(numberOfUsers == null ? 0 : numberOfUsers, max);
+		}
+		Project project = getProject();
+		TopicusApplicationStatus status = statusses.get(project);
+		status.getNumberOfUsers();
+
+		double value = (10.0 * status.getNumberOfUsers()) / max;
+		ret.put(key,
+				new BarData(value, Integer.toString(status.getNumberOfUsers())));
+		return ret;
 	}
 
 	@Override
@@ -58,10 +80,14 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 				"jquery.ui.dashboardbargraph.js");
 	}
 
+	public Project getProject() {
+		return (Project) getDefaultModelObject();
+	}
+
 	@Override
 	public JsStatement statement() {
 		Options options = new Options();
-		options.putLiteral("projectName", getDefaultModelObjectAsString());
+		options.putLiteral("projectName", getProject().getName());
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardBarGraph",
@@ -72,5 +98,19 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 	protected void onDetach() {
 		super.onDetach();
 		dataSetsModel.detach();
+	}
+
+	private Map<String, BarData> generateRandomValues() {
+		Map<String, BarData> ret = new HashMap<String, BarData>();
+		int index = 0;
+		for (String curDataSet : BarGraphBarPanel.this.dataSetsModel
+				.getObject()) {
+			index++;
+			double value = Math.random() * 10.0;
+			ret.put(curDataSet,
+					new BarData(value, Long.toString(Math.round(value * 10)
+							* index)));
+		}
+		return ret;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 
 import org.apache.wicket.markup.html.list.ListItem;
@@ -28,14 +30,14 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 
 	public BarGraphPanel(String id) {
 		super(id);
-		ListView<String> bars = new ListView<String>("bars", Arrays.asList(
-				"EduArte", "@VO", "PassePartout", "DUO", "Test")) {
+		ListView<Project> bars = new ListView<Project>("bars",
+				WicketApplication.get().getProjects()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<String> item) {
+			protected void populateItem(ListItem<Project> item) {
 				item.add(new BarGraphBarPanel("bar", item.getModel(),
-						new ListModel<String>(Arrays.asList("set1", "set2"))));
+						new ListModel<String>(Arrays.asList("livesessions"))));
 			}
 		};
 		add(bars);
@@ -54,8 +56,8 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 	public JsStatement statement() {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-		dataSets.add(new BarDataSet("set1", "Random data1", "color-1"));
-		dataSets.add(new BarDataSet("set2", "Random data2", "color-2"));
+		dataSets.add(new BarDataSet("livesessions", "Live sessions", "color-1"));
+		// dataSets.add(new BarDataSet("set2", "Random data2", "color-2"));
 		Options options = new Options();
 		try {
 			options.put("dataSets", mapper.writeValueAsString(dataSets));

@@ -1,6 +1,9 @@
 package nl.topicus.onderwijs.dashboard.modules;
 
-public class Project {
+import java.io.Serializable;
+
+public class Project implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String code;
 	private String name;
 

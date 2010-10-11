@@ -1,5 +1,7 @@
 package nl.topicus.onderwijs.dashboard.web;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import nl.topicus.onderwijs.dashboard.modules.Project;
@@ -20,6 +22,10 @@ import org.apache.wicket.protocol.http.WebApplication;
  */
 public class WicketApplication extends WebApplication {
 	private Updater updater;
+	private List<Project> projects = Arrays.asList(new Project("atvo", "@VO"),
+			new Project("atvo_ouders", "@VO Ouderportaal"), new Project(
+					"parnassys", "ParnasSys"));
+
 	private Map<Project, TopicusApplicationStatus> statusses;
 
 	@Override
@@ -32,6 +38,10 @@ public class WicketApplication extends WebApplication {
 		super.init();
 
 		getMarkupSettings().setStripWicketTags(true);
+	}
+
+	public List<Project> getProjects() {
+		return projects;
 	}
 
 	public void enableLiveUpdater() {
