@@ -8,11 +8,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
@@ -21,23 +19,21 @@ import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VocusOuderportaalRetriever implements
+public class ParnassysStatusRetriever implements
 		Repository<TopicusApplicationStatus> {
 	private static final Logger log = LoggerFactory
-			.getLogger(VocusOuderportaalRetriever.class);
+			.getLogger(ParnassysStatusRetriever.class);
 	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
 
-	public VocusOuderportaalRetriever() {
-		statusUrls.put(new Project("atvo_ouders", "@VO Ouderportaal"), Arrays
-				.asList("https://start.vocuslis.nl/ouders/status",
-						"https://start2.vocuslis.nl/ouders/status"));
+	public ParnassysStatusRetriever() {
+		statusUrls.put(new Project("parnassys", "ParnasSys"),
+				Arrays.asList("https://start.parnassys.net/bao/status.m"));
 
 	}
 
 	public static void main(String[] args) {
-		VocusOuderportaalRetriever retriever = new VocusOuderportaalRetriever();
-		retriever
-				.getProjectData(new Project("atvo_ouders", "@VO Ouderportaal"));
+		ParnassysStatusRetriever retriever = new ParnassysStatusRetriever();
+		retriever.getProjectData(new Project("parnassys", "ParnasSys"));
 	}
 
 	@Override
@@ -64,15 +60,13 @@ public class VocusOuderportaalRetriever implements
 
 				source.fullSequentialParse();
 
-				List<Element> tableHeaders = source
-						.getAllElements(HTMLElementName.TH);
+				List<Element> tableHeaders = source.getAllElements("class",
+						"main_label", true);
 				for (Element tableHeader : tableHeaders) {
 					String contents = tableHeader.getContent().toString();
-					if ("Applicatie".equals(contents)) {
-						// getApplicationVersion(status, tableHeader);
-					} else if ("Actieve sessies".equals(contents)) {
+					if ("Actieve sessies:".equals(contents)) {
 						getNumberOfUsers(status, tableHeader);
-					} else if ("Start tijd".equals(contents)) {
+					} else if ("Gestart op:".equals(contents)) {
 						getStartTijd(status, tableHeader);
 					}
 				}
@@ -86,47 +80,27 @@ public class VocusOuderportaalRetriever implements
 		return status;
 	}
 
-	/*
-	 * <div class="yui-u first"> <h2><span>Sessies/Requests</span></h2> <table
-	 * style="width:100%;margin-left:20px;"> <colgroup><col style="width:50%"
-	 * /><col style="width:50%" /></colgroup> <tr><th>Actieve
-	 * sessies</th><td>422</td></tr> <tr><th>Gecreëerde
-	 * sessies</th><td>90505</td></tr> <tr><th>Piek
-	 * sessies</th><td>706</td></tr> <tr><th>Actieve
-	 * requests</th><td>3</td></tr> </table> </div>
-	 */
 	private Integer getNumberOfUsers(TopicusApplicationStatus status,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
-				.getFirstElement("td");
+				.getChildElements().get(1);
 
 		int currentNumberOfUsers = status.getNumberOfUsers() == null ? 0
 				: status.getNumberOfUsers();
 
-		String tdContents = sessiesCell.getContent().getTextExtractor()
-				.toString();
+		String tdContents = sessiesCell.getTextExtractor().toString();
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
 		status.setNumberOfUsers(currentNumberOfUsers + numberOfUsersOnServer);
 		return numberOfUsersOnServer;
 	}
 
-	/*
-	 * <div class="yui-u"> <h2><span>Applicatie status</span></h2> <table
-	 * style="width:100%;margin-left:20px;"> <colgroup><col style="width:50%"
-	 * /><col style="width:50%" /></colgroup> <tr><th>Start tijd</th><td>4
-	 * oktober 2010, 17:45</td></tr> <tr><th>Beschikbaarheid</th><td>6.1
-	 * days</td></tr> <tr><th>Volgende update instellingen</th><td>N/A</td></tr>
-	 * <tr><th>Status</th><td>OK</td></tr> </table> </div>
-	 */
-
 	private Date getStartTijd(TopicusApplicationStatus status,
 			Element tableHeader) {
 		Element starttijdCell = tableHeader.getParentElement().getContent()
-				.getFirstElement("td");
-		String starttijdText = starttijdCell.getContent().getTextExtractor()
-				.toString();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, hh:mm",
-				new Locale("NL"));
+				.getChildElements().get(1);
+		String starttijdText = starttijdCell.getTextExtractor().toString();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 		try {
 			Date starttime = sdf.parse(starttijdText);
 			Date now = new Date();
