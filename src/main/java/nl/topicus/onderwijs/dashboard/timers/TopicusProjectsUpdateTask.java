@@ -39,6 +39,8 @@ public class TopicusProjectsUpdateTask extends TimerTask {
 				status = getOuderportalStatus(project);
 			} else if ("parnassys".equals(project.getCode())) {
 				status = getParnassysStatus(project);
+			} else if ("parnassys_ouders".equals(project.getCode())) {
+				status = getOuderportalStatus(project);
 			} else if ("irisplus".equals(project.getCode())) {
 				status = getVocusStatus(project);
 			}

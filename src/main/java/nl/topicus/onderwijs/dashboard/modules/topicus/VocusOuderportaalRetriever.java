@@ -31,7 +31,9 @@ public class VocusOuderportaalRetriever implements
 		statusUrls.put(new Project("atvo_ouders", "@VO Ouderportaal"), Arrays
 				.asList("https://start.vocuslis.nl/ouders/status",
 						"https://start2.vocuslis.nl/ouders/status"));
-
+		statusUrls
+				.put(new Project("parnassys_ouders", "ParnasSys Ouderportaal"),
+						Arrays.asList("https://start.parnassys.net/ouderportaal/status/"));
 	}
 
 	public static void main(String[] args) {
@@ -70,9 +72,10 @@ public class VocusOuderportaalRetriever implements
 					String contents = tableHeader.getContent().toString();
 					if ("Applicatie".equals(contents)) {
 						// getApplicationVersion(status, tableHeader);
-					} else if ("Actieve sessies".equals(contents)) {
+					} else if ("Actieve sessies|Live sessions"
+							.contains(contents)) {
 						getNumberOfUsers(status, tableHeader);
-					} else if ("Start tijd".equals(contents)) {
+					} else if ("Start tijd|Start time".contains(contents)) {
 						getStartTijd(status, tableHeader);
 					}
 				}
@@ -100,8 +103,7 @@ public class VocusOuderportaalRetriever implements
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getFirstElement("td");
 
-		int currentNumberOfUsers = status.getNumberOfUsers() == null ? 0
-				: status.getNumberOfUsers();
+		int currentNumberOfUsers = status.getNumberOfUsers();
 
 		String tdContents = sessiesCell.getContent().getTextExtractor()
 				.toString();

@@ -99,8 +99,7 @@ public class VocusStatusRetriever implements
 		Element sessiesCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
 
-		int currentNumberOfUsers = status.getNumberOfUsers() == null ? 0
-				: status.getNumberOfUsers();
+		int currentNumberOfUsers = status.getNumberOfUsers();
 
 		Integer numberOfUsersOnServer = Integer.valueOf(sessiesCell
 				.getContent().getTextExtractor().toString());

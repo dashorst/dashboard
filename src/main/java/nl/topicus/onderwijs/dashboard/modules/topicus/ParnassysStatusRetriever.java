@@ -85,8 +85,7 @@ public class ParnassysStatusRetriever implements
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
 
-		int currentNumberOfUsers = status.getNumberOfUsers() == null ? 0
-				: status.getNumberOfUsers();
+		int currentNumberOfUsers = status.getNumberOfUsers();
 
 		String tdContents = sessiesCell.getTextExtractor().toString();
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);

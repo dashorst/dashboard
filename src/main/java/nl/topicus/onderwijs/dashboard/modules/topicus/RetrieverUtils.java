@@ -13,11 +13,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class RetrieverUtils {
+public class RetrieverUtils {
 	private static final Logger log = LoggerFactory
 			.getLogger(RetrieverUtils.class);
 
-	static StatusPageResponse getStatuspage(String url) throws Exception {
+	public static StatusPageResponse getStatuspage(String url) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		HttpClient httpclient = new DefaultHttpClient();
 
@@ -46,6 +46,7 @@ class RetrieverUtils {
 				String line = reader.readLine();
 				while (line != null) {
 					sb.append(line);
+					sb.append("\n");
 					line = reader.readLine();
 				}
 			} catch (IOException ex) {

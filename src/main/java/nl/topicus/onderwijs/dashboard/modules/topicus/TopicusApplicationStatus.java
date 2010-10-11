@@ -10,13 +10,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 public class TopicusApplicationStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String version;
-	private Integer numberOfUsers;
-	private Integer numberOfRequests;
-	private Integer numberOfErrors;
-	private Integer numberOfServers;
-	private Integer numberOfServersOnline;
-	private Integer averageRequestDuration;
-	private Long uptime;
+	private int numberOfUsers;
+	private int numberOfRequests;
+	private int numberOfErrors;
+	private int numberOfServers;
+	private int numberOfServersOnline;
+	private int averageRequestDuration;
+	private long uptime;
 
 	public String getVersion() {
 		return version == null ? "n/a" : version;
@@ -26,51 +26,51 @@ public class TopicusApplicationStatus implements Serializable {
 		this.version = version;
 	}
 
-	public Integer getNumberOfUsers() {
+	public int getNumberOfUsers() {
 		return numberOfUsers;
 	}
 
-	public void setNumberOfUsers(Integer numberOfUsers) {
+	public void setNumberOfUsers(int numberOfUsers) {
 		this.numberOfUsers = numberOfUsers;
 	}
 
-	public Integer getNumberOfRequests() {
+	public int getNumberOfRequests() {
 		return numberOfRequests;
 	}
 
-	public void setNumberOfRequests(Integer numberOfRequests) {
+	public void setNumberOfRequests(int numberOfRequests) {
 		this.numberOfRequests = numberOfRequests;
 	}
 
-	public Integer getNumberOfErrors() {
+	public int getNumberOfErrors() {
 		return numberOfErrors;
 	}
 
-	public void setNumberOfErrors(Integer numberOfErrors) {
+	public void setNumberOfErrors(int numberOfErrors) {
 		this.numberOfErrors = numberOfErrors;
 	}
 
-	public Integer getNumberOfServers() {
+	public int getNumberOfServers() {
 		return numberOfServers;
 	}
 
-	public void setNumberOfServers(Integer numberOfServers) {
+	public void setNumberOfServers(int numberOfServers) {
 		this.numberOfServers = numberOfServers;
 	}
 
-	public Integer getNumberOfServersOnline() {
+	public int getNumberOfServersOnline() {
 		return numberOfServersOnline;
 	}
 
-	public void setNumberOfServersOnline(Integer numberOfServersOnline) {
+	public void setNumberOfServersOnline(int numberOfServersOnline) {
 		this.numberOfServersOnline = numberOfServersOnline;
 	}
 
-	public Integer getAverageRequestDuration() {
+	public int getAverageRequestDuration() {
 		return averageRequestDuration;
 	}
 
-	public void setAverageRequestDuration(Integer averageRequestDuration) {
+	public void setAverageRequestDuration(int averageRequestDuration) {
 		this.averageRequestDuration = averageRequestDuration;
 	}
 
