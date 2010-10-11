@@ -98,6 +98,7 @@ $.widget( "ui.dashboardTable", {
 		var dataDiv = $("<div class='data' />").appendTo(flipDiv);
 		var projects = $(document).data("dashboard-table-projects").slice();
 		projects.reverse();
+		console.log("drawing "+projects.length+" rows");
 		$.each(projects, function(index, project) {
 			self._insertRow.apply(self, [dataDiv, flipIndex, project]);
 		});
@@ -146,6 +147,7 @@ $.widget( "ui.dashboardTable", {
 	_onInsertProject: function(target, project) {
 		var self = this;
 		if (this.jsonData) {
+			console.log("inserting a row to "+this.jsonData.length+" flips");
 			$.each(this.jsonData, function(flipIndex, value) {
 				var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
 				self._insertRow.apply(self, [dataDiv, flipIndex, project]);

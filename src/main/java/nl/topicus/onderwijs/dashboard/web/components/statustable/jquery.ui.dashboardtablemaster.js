@@ -55,13 +55,17 @@ $.widget( "ui.dashboardTableMaster", {
 				return self._heartBeatProjects.apply( self, arguments );
 			};
 			$(document)
+				.data("dashboard-table-heartbeat-count", 0)
 				.data("dashboard-table-heartbeat", true)
 				.data("dashboard-table-heartbeat-enabled", true)
 				.data("dashboard-table-project-index", this.options.projectKeys.length-1)
-				.everyTime("5s", "heartbeat-table-rotate", this._heartBeatRotate)
-				.everyTime("15s", "heartbeat-table-projects",
+				.everyTime("5s", "heartbeat-table-projects",
 						function() {
-							$(document).oneTime("2s", heartBeatProjects);
+							var count = $(document).data("dashboard-table-heartbeat-count") + 1;
+							$(document).data("dashboard-table-heartbeat-count", count);
+							if (count % 3 == 0)
+								$(document).oneTime("2s", heartBeatProjects);
+							self._heartBeatRotate();
 						});
 		}
 	},
