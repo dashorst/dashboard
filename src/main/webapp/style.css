@@ -84,12 +84,14 @@ font-size: 1.1em;
 	border : none;
 	clear: both;
 	height: 2.1em;
+	overflow: hidden;
 }
 .statusses .row .inner-row {
 	height: 1.5em;
 	line-height : 1.5em;
 	width: 6.63em;
 	background-color : rgba(64,64,64,0.5);
+	margin-top: 0.2em;
 	padding : 0.20em 1.1em;
 }
 .statusses div.col:first-child .inner-row {
@@ -105,27 +107,29 @@ font-size: 1.1em;
 	padding-right: 1em;
 }
 .project-transition .statusses .row {
-	-webkit-transition-property: -webkit-transform, opacity, height;
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 1s;
+}
+.project-transition .statusses .inner-row {
+	-webkit-transition-property: margin-top;
 	-webkit-transition-duration: 1s;
 }
 .project-transition .statusses .row:first-child {
-	-webkit-transform: scaleY(0);
-	opacity: 0;
 	height: 0em!important;
 }
 .project-transition.animate .statusses .row:first-child {
-	-webkit-transform: scaleY(1);
-	opacity: 1;
 	height: 2.1em!important;
 }
+.project-transition .statusses .row:first-child .inner-row {
+	margin-top: -1.9em!important;
+}
+.project-transition.animate .statusses .row:first-child .inner-row {
+	margin-top: 0.2em!important;
+}
 .project-transition .statusses .row:last-child {
-	-webkit-transform: scaleY(1);
-	opacity: 1;
 	height: 2.1em!important;
 }
 .project-transition.animate .statusses .row:last-child {
-	-webkit-transform: scaleY(0);
-	opacity: 0;
 	height: 0em!important;
 }
 .rotate-invert.rotate-disabled .flip-front {
