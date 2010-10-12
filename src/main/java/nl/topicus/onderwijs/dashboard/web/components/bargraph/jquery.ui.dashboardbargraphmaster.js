@@ -32,11 +32,10 @@ $.widget( "ui.dashboardBarGraphMaster", {
 			return self._heartBeatDataSet.apply( self, arguments );
 		};
 		$(document)
-			.data("dashboard-bar-graph-heartbeat-enabled", true)
 			.data("dashboard-bar-graph-data-set-index", 0)
 			.data("dashboard-bar-graph-heartbeat-count", 0)
 			.data("dashboard-bar-graph-data-set", this.options.dataSets[0].key)
-			.everyTime("5s", "heartbeat-bar-graph",
+			.bind("dashboard-heartbeat",
 					function() {
 						var count = $(document).data("dashboard-bar-graph-heartbeat-count") + 1;
 						$(document).data("dashboard-bar-graph-heartbeat-count", count);
@@ -49,9 +48,6 @@ $.widget( "ui.dashboardBarGraphMaster", {
 	},
 
 	_heartBeatDataSet: function() {
-		if (!$(document).data("dashboard-bar-graph-heartbeat-enabled"))
-			return;
-
 		var self = this;
 		$.each(this.options.dataSets, function(key, value) {
 			self.element.removeClass(value.scheme);

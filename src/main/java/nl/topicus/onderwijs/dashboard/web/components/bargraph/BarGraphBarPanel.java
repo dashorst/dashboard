@@ -12,7 +12,6 @@ import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
-import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -68,9 +67,8 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 				.getObject()) {
 			index++;
 			double value = Math.random() * 10.0;
-			ret.put(datasourceType.getSimpleName(),
-					new BarData(value, Long.toString(Math.round(value * 10)
-							* index)));
+			ret.put(datasourceType.getSimpleName(), new BarData(value, Long
+					.toString(Math.round(value * 10) * index)));
 		}
 		return ret;
 	}
@@ -105,8 +103,6 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.timers-1.1.3.js");
 		manager.addJavaScriptResource(BarGraphBarPanel.class,
 				"jquery.ui.dashboardbargraph.js");
 	}

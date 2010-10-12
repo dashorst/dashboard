@@ -50,31 +50,20 @@ $.widget( "ui.dashboardTableMaster", {
 
 	_initHeartBeat: function() {
 		var self = this;
-		if (!$(document).data("dashboard-table-heartbeat")) {
-			var heartBeatProjects = function() {
-				return self._heartBeatProjects.apply( self, arguments );
-			};
-			$(document)
-				.data("dashboard-table-heartbeat-count", 0)
-				.data("dashboard-table-heartbeat", true)
-				.data("dashboard-table-heartbeat-enabled", true)
-				.data("dashboard-table-project-index", this.options.projectKeys.length-1)
-				.everyTime("5s", "heartbeat-table-projects",
-						function() {
-							if (!$(document).data("dashboard-table-heartbeat-enabled"))
-								return;
-							
-							var count = $(document).data("dashboard-table-heartbeat-count") + 1;
-							$(document).data("dashboard-table-heartbeat-count", count);
-							if (count % 3 == 0)
-								$(document).oneTime("2s", heartBeatProjects);
-							self._heartBeatRotate();
-						});
-			$("#stoplink").click(function(){
-				var newValue = $(document).data("dashboard-table-heartbeat-enabled");
-				$(document).data("dashboard-table-heartbeat-enabled", !newValue);
-			});
-		}
+		var heartBeatProjects = function() {
+			return self._heartBeatProjects.apply( self, arguments );
+		};
+		$(document)
+			.data("dashboard-table-heartbeat-count", 0)
+			.data("dashboard-table-project-index", this.options.projectKeys.length-1)
+			.bind("dashboard-heartbeat",
+					function() {
+						var count = $(document).data("dashboard-table-heartbeat-count") + 1;
+						$(document).data("dashboard-table-heartbeat-count", count);
+						if (count % 3 == 0)
+							$(document).oneTime("2s", heartBeatProjects);
+						self._heartBeatRotate();
+					});
 	},
 
 	_heartBeatRotate: function() {

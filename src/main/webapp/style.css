@@ -140,10 +140,10 @@ font-size: 1.1em;
 }
 
 .statusses .number .row { text-align : right; padding-right : 1.1em;}
-.statusses .color-1 { background-color : #fe6f1f;}
-.statusses .color-2 { background-color : #800020;}
-.statusses .color-3 { background-color : #400040;}
-.statusses .color-4 { background-color : #303000;}
+.statusses .color-1, .statusses .color-1 .flip { background-color : #fe6f1f;}
+.statusses .color-2, .statusses .color-2 .flip { background-color : #800020;}
+.statusses .color-3, .statusses .color-3 .flip { background-color : #400040;}
+.statusses .color-4, .statusses .color-4 .flip { background-color : #303000;}
 
 .statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
 

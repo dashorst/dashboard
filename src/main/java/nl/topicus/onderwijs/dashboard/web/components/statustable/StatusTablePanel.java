@@ -28,8 +28,8 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		projects = new WebMarkupContainer("projects");
 		add(projects);
 
-		ListView<String> columns = new ListView<String>("columns",
-				Arrays.asList("color-1", "color-2", "color-3", "color-4")) {
+		ListView<String> columns = new ListView<String>("columns", Arrays
+				.asList("color-1", "color-2", "color-3", "color-4")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -43,8 +43,6 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.timers-1.1.3.js");
 		manager.addJavaScriptResource(StatusTablePanel.class,
 				"jquery.ui.dashboardtablemaster.js");
 	}

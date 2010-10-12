@@ -98,8 +98,6 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.timers-1.1.3.js");
 		manager.addJavaScriptResource(StatusTableColumnPanel.class,
 				"jquery.ui.dashboardtable.js");
 	}

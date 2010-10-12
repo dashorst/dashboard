@@ -9,7 +9,6 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
-import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -42,11 +41,12 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 				ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
 				datasources.add(NumberOfUsers.class);
 				datasources.add(NumberOfServers.class);
-				item.add(new BarGraphBarPanel(
-						"bar",
-						item.getModel(),
-						new ListModel<Class<? extends DataSource<? extends Number>>>(
-								datasources)));
+				item
+						.add(new BarGraphBarPanel(
+								"bar",
+								item.getModel(),
+								new ListModel<Class<? extends DataSource<? extends Number>>>(
+										datasources)));
 			}
 		};
 		add(bars);
@@ -55,8 +55,6 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.timers-1.1.3.js");
 		manager.addJavaScriptResource(BarGraphBarPanel.class,
 				"jquery.ui.dashboardbargraphmaster.js");
 	}
@@ -71,8 +69,6 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 		dataSets.add(new BarDataSet(NumberOfServers.class, "Number of servers",
 				"color-2"));
 
-		// dataSets.add(new BarDataSet("numberofservers", "Number of servers",
-		// "color-2"));
 		Options options = new Options();
 		try {
 			options.put("dataSets", mapper.writeValueAsString(dataSets));
