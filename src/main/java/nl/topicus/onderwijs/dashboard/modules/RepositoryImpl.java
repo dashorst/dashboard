@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.modules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,9 @@ public class RepositoryImpl implements Repository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataSource<?>> Map<Key, T> getData(Class<T> datasource) {
-		return (Map<Key, T>) index2.get(datasource);
+		Map<Key, T> ret = (Map<Key, T>) index2.get(datasource);
+		if (ret == null)
+			ret = Collections.emptyMap();
+		return ret;
 	}
 }

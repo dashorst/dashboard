@@ -72,7 +72,9 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		}
 		if ("color-4".equals(getDefaultModelObjectAsString())) {
 			ret.add(getColumn("#Servers", NumberOfServers.class));
-			ret.add(getColumn("#Offline servers", NumberOfServersOffline.class));
+			ret
+					.add(getColumn("#Offline servers",
+							NumberOfServersOffline.class));
 		}
 	}
 
@@ -84,7 +86,11 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		Map<Key, T> data = repository.getData(datasourceType);
 
 		for (Entry<Key, T> entry : data.entrySet()) {
-			column.getData().put(entry.getKey().getCode(), entry.getValue());
+			Object value = entry.getValue().getValue();
+			if (!(value instanceof String || value instanceof Number))
+				value = value.toString();
+
+			column.getData().put(entry.getKey().getCode(), value);
 		}
 		return column;
 	}
