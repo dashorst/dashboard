@@ -43,8 +43,10 @@ font-size: 1.1em;
 	border-radius: 0.5em;
 	line-height : 2em;
 }
-.effects-enabled .statusses div.rotate-enabled.col { 
+.effects-enabled .statusses .col { 
 	-webkit-transform-style: preserve-3d;
+}
+.effects-enabled .statusses div.rotate-enabled.col { 
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1s;
 }
