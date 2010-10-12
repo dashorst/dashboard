@@ -2,6 +2,7 @@ package nl.topicus.onderwijs.dashboard.timers;
 
 import java.util.Timer;
 
+import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.apache.wicket.util.time.Duration;
@@ -13,7 +14,7 @@ public class Updater {
 		this.timer = new Timer("Dashboard Updater", true);
 
 		TopicusProjectsUpdateTask task = new TopicusProjectsUpdateTask(
-				application, application.getProjects());
+				application.getRepository());
 		timer.scheduleAtFixedRate(task, 0, Duration.seconds(30)
 				.getMilliseconds());
 		// timer.schedule(task, 0);

@@ -12,6 +12,10 @@ import java.util.Map;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
@@ -19,26 +23,50 @@ import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ParnassysStatusRetriever implements
-		Repository<TopicusApplicationStatus> {
+class ParnassysStatusRetriever implements Retriever,
+		TopicusApplicationStatusProvider {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParnassysStatusRetriever.class);
-	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
+	private Map<Project, List<String>> configuration = new HashMap<Project, List<String>>();
+
+	private HashMap<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
 
 	public ParnassysStatusRetriever() {
-		statusUrls.put(new Project("parnassys", "ParnasSys"),
+		configuration.put(new Project("parnassys", "ParnasSys"),
 				Arrays.asList("https://start.parnassys.net/bao/status.m"));
 
-	}
-
-	public static void main(String[] args) {
-		ParnassysStatusRetriever retriever = new ParnassysStatusRetriever();
-		retriever.getProjectData(new Project("parnassys", "ParnasSys"));
+		for (Project project : configuration.keySet()) {
+			statusses.put(project, new TopicusApplicationStatus());
+		}
 	}
 
 	@Override
-	public TopicusApplicationStatus getProjectData(Project project) {
-		List<String> urls = statusUrls.get(project);
+	public void onConfigure(Repository repository) {
+		for (Project project : configuration.keySet()) {
+			repository.addDataSourceForProject(project, NumberOfUsers.class,
+					new NumberOfUsersImpl(project, this));
+			repository.addDataSourceForProject(project, NumberOfServers.class,
+					new NumberOfServersImpl(project, this));
+			repository.addDataSourceForProject(project,
+					NumberOfServersOffline.class,
+					new NumberOfServersOfflineImpl(project, this));
+			repository.addDataSourceForProject(project, Uptime.class,
+					new UptimeImpl(project, this));
+		}
+	}
+
+	@Override
+	public void refreshData() {
+		HashMap<Project, TopicusApplicationStatus> newStatusses = new HashMap<Project, TopicusApplicationStatus>();
+		for (Project project : configuration.keySet()) {
+			TopicusApplicationStatus status = getProjectData(project);
+			newStatusses.put(project, status);
+		}
+		statusses = newStatusses;
+	}
+
+	private TopicusApplicationStatus getProjectData(Project project) {
+		List<String> urls = configuration.get(project);
 		if (urls == null || urls.isEmpty()) {
 			TopicusApplicationStatus status = new TopicusApplicationStatus();
 			status.setVersion("n/a");
@@ -111,5 +139,15 @@ public class ParnassysStatusRetriever implements
 					+ " according to format dd MMMM yyyy, hh:mm", e);
 			return null;
 		}
+	}
+
+	@Override
+	public TopicusApplicationStatus getStatus(Project project) {
+		return statusses.get(project);
+	}
+
+	public static void main(String[] args) {
+		ParnassysStatusRetriever retriever = new ParnassysStatusRetriever();
+		retriever.getProjectData(new Project("parnassys", "ParnasSys"));
 	}
 }

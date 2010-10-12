@@ -1,11 +1,10 @@
 package nl.topicus.onderwijs.dashboard.web;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusApplicationStatus;
+import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
 
@@ -22,13 +21,8 @@ import org.apache.wicket.protocol.http.WebApplication;
  */
 public class WicketApplication extends WebApplication {
 	private Updater updater;
-	private List<Project> projects = Arrays.asList(new Project("parnassys",
-			"ParnasSys"), new Project("parnassys_ouders",
-			"ParnasSys Ouderportaal"), new Project("atvo", "@VO"), new Project(
-			"atvo_ouders", "@VO Ouderportaal"),
-			new Project("irisplus", "Iris+"));
 
-	private Map<Project, TopicusApplicationStatus> statusses;
+	private RepositoryImpl repository = new RepositoryImpl();
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
@@ -43,7 +37,7 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public List<Project> getProjects() {
-		return projects;
+		return repository.getProjects();
 	}
 
 	public void enableLiveUpdater() {
@@ -70,12 +64,7 @@ public class WicketApplication extends WebApplication {
 		return (WicketApplication) WebApplication.get();
 	}
 
-	public synchronized void updateStatusses(
-			Map<Project, TopicusApplicationStatus> statusses) {
-		this.statusses = statusses;
-	}
-
-	public synchronized Map<Project, TopicusApplicationStatus> getStatusses() {
-		return statusses;
+	public Repository getRepository() {
+		return repository;
 	}
 }

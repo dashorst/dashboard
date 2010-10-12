@@ -13,37 +13,72 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.Projects;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VocusStatusRetriever implements
-		Repository<TopicusApplicationStatus> {
+class VocusStatusRetriever implements Retriever,
+		TopicusApplicationStatusProvider {
 	private static final Logger log = LoggerFactory
 			.getLogger(VocusStatusRetriever.class);
-	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
+
+	private Map<Project, List<String>> configuration = new HashMap<Project, List<String>>();
+
+	private Map<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
 
 	public VocusStatusRetriever() {
-		statusUrls.put(new Project("atvo", "@VO"), Arrays.asList(
+		configuration.put(Projects.ATVO, Arrays.asList(
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
 				"https://start3.atvo.nl/app/status"));
-		statusUrls.put(new Project("irisplus", "Iris+"), Arrays
+		configuration.put(Projects.IRIS, Arrays
 				.asList("https://www.irisplus.nl/irisplus-prod/app/status"));
 
-	}
-
-	public static void main(String[] args) {
-		VocusStatusRetriever retriever = new VocusStatusRetriever();
-		retriever.getProjectData(new Project("atvo", "@VO"));
+		for (Project project : configuration.keySet()) {
+			statusses.put(project, new TopicusApplicationStatus());
+		}
 	}
 
 	@Override
-	public TopicusApplicationStatus getProjectData(Project project) {
-		List<String> urls = statusUrls.get(project);
+	public TopicusApplicationStatus getStatus(Project project) {
+		return statusses.get(project);
+	}
+
+	@Override
+	public void onConfigure(Repository repository) {
+		for (Project project : configuration.keySet()) {
+			repository.addDataSourceForProject(project, NumberOfUsers.class,
+					new NumberOfUsersImpl(project, this));
+			repository.addDataSourceForProject(project, NumberOfServers.class,
+					new NumberOfServersImpl(project, this));
+			repository.addDataSourceForProject(project,
+					NumberOfServersOffline.class,
+					new NumberOfServersOfflineImpl(project, this));
+			repository.addDataSourceForProject(project, Uptime.class,
+					new UptimeImpl(project, this));
+		}
+	}
+
+	@Override
+	public void refreshData() {
+		HashMap<Project, TopicusApplicationStatus> newStatusses = new HashMap<Project, TopicusApplicationStatus>();
+		for (Project project : configuration.keySet()) {
+			TopicusApplicationStatus status = getProjectData(project);
+			newStatusses.put(project, status);
+		}
+		statusses = newStatusses;
+	}
+
+	private TopicusApplicationStatus getProjectData(Project project) {
+		List<String> urls = configuration.get(project);
 		if (urls == null || urls.isEmpty()) {
 			TopicusApplicationStatus status = new TopicusApplicationStatus();
 			status.setVersion("n/a");
@@ -133,5 +168,10 @@ public class VocusStatusRetriever implements
 			log.error("Unable to parse starttime " + starttijdText
 					+ " according to format dd-MM-yyyy hh:mm:ss", e);
 		}
+	}
+
+	public static void main(String[] args) {
+		VocusStatusRetriever retriever = new VocusStatusRetriever();
+		retriever.getProjectData(Projects.ATVO);
 	}
 }

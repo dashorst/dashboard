@@ -7,7 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
-public class TopicusApplicationStatus implements Serializable {
+class TopicusApplicationStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String version;
 	private int numberOfUsers;

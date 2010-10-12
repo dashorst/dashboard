@@ -18,8 +18,8 @@ public class HudsonService {
 	public static void main(String[] args) {
 		try {
 			StatusPageResponse response = RetrieverUtils
-			// .getStatuspage("http://builds.topicus.local/job/DUO/73/api/json");
-					.getStatuspage("http://localhost:8080/duo.json");
+					.getStatuspage("http://builds.topicus.local/job/DUO/api/json");
+			// .getStatuspage("http://localhost:8080/duo.json");
 			System.out.println(response.getHttpStatusCode());
 			System.out.println(response.getPageContent());
 			ObjectMapper mapper = new ObjectMapper();

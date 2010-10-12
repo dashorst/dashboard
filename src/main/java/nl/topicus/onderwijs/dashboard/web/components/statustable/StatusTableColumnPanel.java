@@ -3,11 +3,17 @@ package nl.topicus.onderwijs.dashboard.web.components.statustable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusApplicationStatus;
+import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.modules.DataSource;
+import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -17,7 +23,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -53,65 +58,35 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	}
 
 	protected void retrieveDataFromApplication(List<ColumnData> ret) {
-		Map<Project, TopicusApplicationStatus> statusses = WicketApplication
-				.get().getStatusses();
-
 		if ("color-1".equals(getDefaultModelObjectAsString())) {
-			ColumnData usersData = new ColumnData();
-			usersData.setLabel("Current users");
-			for (Project project : statusses.keySet()) {
-				TopicusApplicationStatus status = statusses.get(project);
-				usersData.getData().put(project.getCode(),
-						status.getNumberOfUsers());
-			}
-			ret.add(usersData);
-			ret.add(usersData);
+			ret.add(getColumn("Current users", NumberOfUsers.class));
+			ret.add(getColumn("Current users", NumberOfUsers.class));
 		}
 		if ("color-2".equals(getDefaultModelObjectAsString())) {
-			ColumnData versionData = new ColumnData();
-			versionData.setLabel("Version");
-			for (Project project : statusses.keySet()) {
-				TopicusApplicationStatus status = statusses.get(project);
-				versionData.getData().put(project.getCode(),
-						status.getVersion());
-			}
-			ret.add(versionData);
-			ret.add(versionData);
+			ret.add(getColumn("Version", ApplicationVersion.class));
+			ret.add(getColumn("Version", ApplicationVersion.class));
 		}
 		if ("color-3".equals(getDefaultModelObjectAsString())) {
-			ColumnData uptimeData = new ColumnData();
-			uptimeData.setLabel("Uptime");
-			for (Project project : statusses.keySet()) {
-				TopicusApplicationStatus status = statusses.get(project);
-				uptimeData.getData().put(
-						project.getCode(),
-						Duration.milliseconds(status.getUptime()).toString(
-								new Locale("NL")));
-			}
-			ret.add(uptimeData);
-			ret.add(uptimeData);
+			ret.add(getColumn("Uptime", Uptime.class));
+			ret.add(getColumn("Uptime", Uptime.class));
 		}
 		if ("color-4".equals(getDefaultModelObjectAsString())) {
-			ColumnData serversData = new ColumnData();
-			serversData.setLabel("#Servers");
-			for (Project project : statusses.keySet()) {
-				TopicusApplicationStatus status = statusses.get(project);
-				serversData.getData().put(project.getCode(),
-						status.getNumberOfServers());
-			}
-			ret.add(serversData);
-
-			ColumnData offlineServersData = new ColumnData();
-			offlineServersData.setLabel("#Offline servers");
-			for (Project project : statusses.keySet()) {
-				TopicusApplicationStatus status = statusses.get(project);
-				offlineServersData.getData().put(
-						project.getCode(),
-						status.getNumberOfServers()
-								- status.getNumberOfServersOnline());
-			}
-			ret.add(offlineServersData);
+			ret.add(getColumn("#Servers", NumberOfServers.class));
+			ret.add(getColumn("#Offline servers", NumberOfServersOffline.class));
 		}
+	}
+
+	private <T extends DataSource<?>> ColumnData getColumn(String label,
+			Class<T> datasourceType) {
+		Repository repository = WicketApplication.get().getRepository();
+		ColumnData column = new ColumnData();
+		column.setLabel(label);
+		Map<Key, T> data = repository.getData(datasourceType);
+
+		for (Entry<Key, T> entry : data.entrySet()) {
+			column.getData().put(entry.getKey().getCode(), entry.getValue());
+		}
+		return column;
 	}
 
 	@Override

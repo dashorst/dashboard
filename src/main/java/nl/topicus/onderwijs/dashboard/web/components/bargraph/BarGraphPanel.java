@@ -2,9 +2,11 @@ package nl.topicus.onderwijs.dashboard.web.components.bargraph;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
@@ -36,8 +38,15 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 
 			@Override
 			protected void populateItem(ListItem<Project> item) {
-				item.add(new BarGraphBarPanel("bar", item.getModel(),
-						new ListModel<String>(Arrays.asList("livesessions"))));
+
+				ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
+				datasources.add(NumberOfUsers.class);
+				datasources.add(NumberOfServers.class);
+				item.add(new BarGraphBarPanel(
+						"bar",
+						item.getModel(),
+						new ListModel<Class<? extends DataSource<? extends Number>>>(
+								datasources)));
 			}
 		};
 		add(bars);
@@ -56,9 +65,12 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 	public JsStatement statement() {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-		dataSets.add(new BarDataSet("livesessions", "Live sessions", "color-1"));
-		dataSets.add(new BarDataSet("numberofservers", "Number of servers",
+
+		dataSets.add(new BarDataSet(NumberOfUsers.class, "Live sessions",
+				"color-1"));
+		dataSets.add(new BarDataSet(NumberOfServers.class, "Number of servers",
 				"color-2"));
+
 		// dataSets.add(new BarDataSet("numberofservers", "Number of servers",
 		// "color-2"));
 		Options options = new Options();

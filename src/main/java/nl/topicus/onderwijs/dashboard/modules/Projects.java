@@ -1,0 +1,12 @@
+package nl.topicus.onderwijs.dashboard.modules;
+
+public class Projects {
+	public static final Project PARNASSYS = new Project("parnassys",
+			"ParnasSys");
+	public static final Project ATVO = new Project("atvo", "@VO");
+	public static final Project ATVO_OUDERS = new Project("atvo_ouders",
+			"@VO Ouders");
+	public static final Project PARNASSYS_OUDERS = new Project(
+			"parnassys_ouders", "Parnassys Ouders");
+	public static final Project IRIS = new Project("iris", "Iris+");
+}

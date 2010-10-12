@@ -14,37 +14,75 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.Projects;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VocusOuderportaalRetriever implements
-		Repository<TopicusApplicationStatus> {
+public class VocusOuderportaalRetriever implements Retriever,
+		TopicusApplicationStatusProvider {
 	private static final Logger log = LoggerFactory
 			.getLogger(VocusOuderportaalRetriever.class);
-	private Map<Project, List<String>> statusUrls = new HashMap<Project, List<String>>();
 
-	public VocusOuderportaalRetriever() {
-		statusUrls.put(new Project("atvo_ouders", "@VO Ouderportaal"), Arrays
-				.asList("https://start.vocuslis.nl/ouders/status",
-						"https://start2.vocuslis.nl/ouders/status"));
-		statusUrls
-				.put(new Project("parnassys_ouders", "ParnasSys Ouderportaal"),
-						Arrays.asList("https://start.parnassys.net/ouderportaal/status/"));
+	private Map<Project, List<String>> configuration = new HashMap<Project, List<String>>();
+
+	private Map<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
+
+	public Map<Project, TopicusApplicationStatus> getStatusses() {
+		return statusses;
 	}
 
-	public static void main(String[] args) {
-		VocusOuderportaalRetriever retriever = new VocusOuderportaalRetriever();
-		retriever
-				.getProjectData(new Project("atvo_ouders", "@VO Ouderportaal"));
+	public VocusOuderportaalRetriever() {
+		configuration.put(Projects.ATVO_OUDERS, Arrays.asList(
+				"https://start.vocuslis.nl/ouders/status",
+				"https://start2.vocuslis.nl/ouders/status"));
+		configuration.put(Projects.PARNASSYS_OUDERS, Arrays
+				.asList("https://start.parnassys.net/ouderportaal/status/"));
+
+		for (Project project : configuration.keySet()) {
+			statusses.put(project, new TopicusApplicationStatus());
+		}
 	}
 
 	@Override
-	public TopicusApplicationStatus getProjectData(Project project) {
-		List<String> urls = statusUrls.get(project);
+	public void onConfigure(Repository repository) {
+		for (Project project : configuration.keySet()) {
+			repository.addDataSourceForProject(project, NumberOfUsers.class,
+					new NumberOfUsersImpl(project, this));
+			repository.addDataSourceForProject(project, NumberOfServers.class,
+					new NumberOfServersImpl(project, this));
+			repository.addDataSourceForProject(project,
+					NumberOfServersOffline.class,
+					new NumberOfServersOfflineImpl(project, this));
+			repository.addDataSourceForProject(project, Uptime.class,
+					new UptimeImpl(project, this));
+		}
+	}
+
+	@Override
+	public TopicusApplicationStatus getStatus(Project project) {
+		return statusses.get(project);
+	}
+
+	@Override
+	public void refreshData() {
+		HashMap<Project, TopicusApplicationStatus> newStatusses = new HashMap<Project, TopicusApplicationStatus>();
+		for (Project project : configuration.keySet()) {
+			TopicusApplicationStatus status = getProjectData(project);
+			newStatusses.put(project, status);
+		}
+		statusses = newStatusses;
+	}
+
+	private TopicusApplicationStatus getProjectData(Project project) {
+		List<String> urls = configuration.get(project);
 		if (urls == null || urls.isEmpty()) {
 			TopicusApplicationStatus status = new TopicusApplicationStatus();
 			status.setVersion("n/a");
