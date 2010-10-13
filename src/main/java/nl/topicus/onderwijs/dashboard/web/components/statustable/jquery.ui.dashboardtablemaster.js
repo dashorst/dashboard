@@ -91,10 +91,10 @@ $.widget( "ui.dashboardTableMaster", {
 		$(document).triggerHandler("dashboard-table-heartbeat-projects");
 		// a small delay is need, because elements need to be rendered before
 		// animations can start
-		$(document).oneTime("20ms", function() {
+		$(document).oneTime("500ms", function() {
 			$("body").addClass("animate");
 		});
-		$(document).oneTime("1100ms", function() {
+		$(document).oneTime("2000ms", function() {
 			$("body").removeClass("project-transition animate");
 			$(".ui-dashboard-table .data .row:last-child").remove();
 		});
