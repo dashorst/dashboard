@@ -5,6 +5,7 @@ import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -28,6 +29,12 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 			public void onClick(AjaxRequestTarget target) {
 				((DashboardWebSession) getSession()).switchMode();
 				target.addComponent(this);
+			}
+
+			@Override
+			public boolean isVisible() {
+				return Application.DEVELOPMENT.equals(getApplication()
+						.getConfigurationType());
 			}
 		};
 		add(liveToRandomModeSwitch);

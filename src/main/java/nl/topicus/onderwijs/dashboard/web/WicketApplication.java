@@ -33,6 +33,9 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
+		// if (Application.DEPLOYMENT.equals(getConfigurationType())) {
+		// WicketApplication.get().enableLiveUpdater();
+		// }
 		getMarkupSettings().setStripWicketTags(true);
 	}
 
