@@ -18,6 +18,7 @@ public class TopicusProjectsUpdateTask extends TimerTask {
 	public TopicusProjectsUpdateTask(Repository repository) {
 		retrievers.add(new VocusStatusRetriever());
 		retrievers.add(new VocusOuderportaalRetriever());
+		retrievers.add(new ParnassysStatusRetriever());
 
 		for (Retriever retriever : retrievers) {
 			retriever.onConfigure(repository);
