@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RepositoryImpl implements Repository {
-	private List<Key> keys = Arrays.asList((Key) new Project("parnassys",
-			"ParnasSys"), new Project("parnassys_ouders",
-			"ParnasSys Ouderportaal"), new Project("atvo", "@VO"), new Project(
-			"atvo_ouders", "@VO Ouderportaal"),
-			new Project("irisplus", "Iris+"));
+	private List<Key> keys = Arrays.asList((Key) Projects.PARNASSYS,
+			Projects.PARNASSYS_OUDERS, Projects.ATVO, Projects.ATVO_OUDERS,
+			Projects.IRIS);
 
 	private Map<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>> index1 = new HashMap<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>>();
 	private Map<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>> index2 = new HashMap<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>>();
@@ -23,13 +21,20 @@ public class RepositoryImpl implements Repository {
 
 	public <T extends DataSource<?>> void addDataSourceForProject(Project key,
 			Class<T> datasourceType, T dataSource) {
-		HashMap<Class<? extends DataSource<?>>, DataSource<?>> map = new HashMap<Class<? extends DataSource<?>>, DataSource<?>>();
+		Map<Class<? extends DataSource<?>>, DataSource<?>> map = index1
+				.get(key);
+		if (map == null) {
+			map = new HashMap<Class<? extends DataSource<?>>, DataSource<?>>();
+			index1.put(key, map);
+		}
 		map.put(datasourceType, dataSource);
-		index1.put(key, map);
 
-		HashMap<Key, DataSource<?>> map2 = new HashMap<Key, DataSource<?>>();
+		Map<Key, DataSource<?>> map2 = index2.get(datasourceType);
+		if (map2 == null) {
+			map2 = new HashMap<Key, DataSource<?>>();
+			index2.put(datasourceType, map2);
+		}
 		map2.put(key, dataSource);
-		index2.put(datasourceType, map2);
 	}
 
 	public List<Project> getProjects() {
