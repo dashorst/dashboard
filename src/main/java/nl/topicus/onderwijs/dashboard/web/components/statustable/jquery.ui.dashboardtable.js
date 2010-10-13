@@ -18,7 +18,20 @@ $.widget( "ui.dashboardTable", {
 
 	options: {
 		dataUrl: "",
-		identifier: ""
+		conversion: "identity"
+	},
+	
+	standardConversions : {
+		"identity" : function(value) {
+			return value;
+		},
+		"dots" : function(value) {
+			var ret = "";
+			$.each(value, function(index, curDot) {
+				ret += '<span class="dot '+curDot.toLowerCase()+'"></span>';
+			});
+			return ret;
+		}
 	},
 
 	_create: function() {
@@ -36,8 +49,8 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_setOption: function( key, value ) {
-		if ( key === "identifier" ) {
-			this.options.identifier = value;
+		if ( key === "conversion" ) {
+			this.options.conversion = value;
 		}
 		else if ( key === "dataUrl" ) {
 			this.options.dataUrl = value;
@@ -74,6 +87,7 @@ $.widget( "ui.dashboardTable", {
 		var self = this;
 		this.element.empty();
 		if (data) {
+			console.log(data);
 			this.jsonData = data;
 			this.nextFlip = 2;
 			$.each(data, function(flipIndex, value) {
@@ -102,10 +116,21 @@ $.widget( "ui.dashboardTable", {
 
 	_insertRow: function(dataDiv, flipIndex, project, extraClass) {
 		var rowValue = this.jsonData[flipIndex].data[project];
+		if (rowValue == undefined)
+			rowValue = "n/a";
+		else
+			rowValue = this._convertRowValue(rowValue);
 		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
 		if (extraClass)
 			rowDiv.addClass(extraClass);
 		dataDiv.prepend(rowDiv);
+	},
+	
+	_convertRowValue: function(rowValue) {
+		if (typeof this.options.conversion == 'string') {
+			return this.standardConversions[this.options.conversion](rowValue);
+		} else
+			return this.options.conversion(rowValue);
 	},
 
 	_onHeartBeat: function() {

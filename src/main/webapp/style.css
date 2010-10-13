@@ -145,12 +145,19 @@ font-size: 1.1em;
 .statusses .color-3, .statusses .color-3 .flip { background-color : #400040;}
 .statusses .color-4, .statusses .color-4 .flip { background-color : #303000;}
 
-.statusses #builds div span { border-radius: 0.5em; width : 1em; height : 1em; margin : 0.25em 0.2em 0.25em 0; display: block; float :left;}
+span.dot {
+	border-radius: 0.5em;
+	width : 1em;
+	height : 1em;
+	margin : 0.25em 0.2em 0.25em 0.2em;
+	display: block;
+	float :left;
+}
 
-.success { background-color : green; }
-.unstable { background-color : yellow; }
-.failure { background-color : red; }
-.building { background-color : gray;}
+.dot.green { background-color : green; }
+.dot.yellow { background-color : yellow; }
+.dot.red { background-color : red; }
+.dot.gray { background-color : gray;}
 
 .bargraph {
 	height: 13em;

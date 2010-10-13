@@ -1,7 +1,6 @@
 package nl.topicus.onderwijs.dashboard.web.components.statustable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,8 +10,10 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
@@ -106,6 +107,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	public JsStatement statement() {
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
+		if ("color-4".equals(getDefaultModelObjectAsString()))
+			options.putLiteral("conversion", "dots");
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
 	}
@@ -114,10 +117,17 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		for (int count = 0; count < 4; count++) {
 			ColumnData curData = new ColumnData();
 			curData.setLabel("Label-" + count);
-			for (String curProject : Arrays.asList("eduarte", "atvo", "duo",
-					"passepartout", "test")) {
-				curData.getData().put(curProject,
-						Math.round(Math.random() * 1000));
+			for (Project curProject : WicketApplication.get().getProjects()) {
+				if ("color-4".equals(getDefaultModelObjectAsString())) {
+					List<DotColor> colors = new ArrayList<DotColor>();
+					for (int dotCount = 0; dotCount < 5; dotCount++)
+						colors.add(DotColor.values()[(int) Math.floor(Math
+								.random() * 4)]);
+					curData.getData().put(curProject.getCode(), colors);
+				} else {
+					curData.getData().put(curProject.getCode(),
+							Math.round(Math.random() * 1000));
+				}
 			}
 			ret.add(curData);
 		}
