@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -13,7 +11,7 @@ import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.model.IModel;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -28,9 +26,13 @@ import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
 @WiQueryUIPlugin
 public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
+	private IModel<List<Class<? extends DataSource<? extends Number>>>> dataSources;
 
-	public BarGraphPanel(String id) {
+	public BarGraphPanel(
+			String id,
+			final IModel<List<Class<? extends DataSource<? extends Number>>>> dataSources) {
 		super(id);
+		this.dataSources = dataSources;
 		ListView<Project> bars = new ListView<Project>("bars",
 				WicketApplication.get().getProjects()) {
 			private static final long serialVersionUID = 1L;
@@ -38,15 +40,8 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 			@Override
 			protected void populateItem(ListItem<Project> item) {
 
-				ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
-				datasources.add(NumberOfUsers.class);
-				datasources.add(NumberOfServers.class);
-				item
-						.add(new BarGraphBarPanel(
-								"bar",
-								item.getModel(),
-								new ListModel<Class<? extends DataSource<? extends Number>>>(
-										datasources)));
+				item.add(new BarGraphBarPanel("bar", item.getModel(),
+						dataSources));
 			}
 		};
 		add(bars);
@@ -64,10 +59,12 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 		ObjectMapper mapper = new ObjectMapper();
 		List<BarDataSet> dataSets = new ArrayList<BarDataSet>();
 
-		dataSets.add(new BarDataSet(NumberOfUsers.class, "Live sessions",
-				"color-1"));
-		dataSets.add(new BarDataSet(NumberOfServers.class, "Number of servers",
-				"color-2"));
+		int count = 1;
+		for (Class<? extends DataSource<?>> curDataSource : dataSources
+				.getObject()) {
+			dataSets.add(new BarDataSet(curDataSource, "color-" + count));
+			count++;
+		}
 
 		Options options = new Options();
 		try {
@@ -82,5 +79,11 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardBarGraphMaster",
 				options.getJavaScriptOptions());
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		dataSources.detach();
 	}
 }

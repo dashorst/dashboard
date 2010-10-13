@@ -18,7 +18,7 @@ $.widget( "ui.dashboardTable", {
 
 	options: {
 		dataUrl: "",
-		conversion: "identity"
+		conversion: []
 	},
 	
 	standardConversions : {
@@ -119,18 +119,17 @@ $.widget( "ui.dashboardTable", {
 		if (rowValue == undefined)
 			rowValue = "n/a";
 		else
-			rowValue = this._convertRowValue(rowValue);
+			rowValue = this._convertRowValue(flipIndex, rowValue);
 		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
 		if (extraClass)
 			rowDiv.addClass(extraClass);
 		dataDiv.prepend(rowDiv);
 	},
 	
-	_convertRowValue: function(rowValue) {
-		if (typeof this.options.conversion == 'string') {
-			return this.standardConversions[this.options.conversion](rowValue);
-		} else
-			return this.options.conversion(rowValue);
+	_convertRowValue: function(flipIndex, rowValue) {
+		if (flipIndex >= this.options.conversion.length)
+			return this.standardConversions["identity"](rowValue);
+		return this.standardConversions[this.options.conversion[flipIndex]](rowValue);
 	},
 
 	_onHeartBeat: function() {

@@ -1,5 +1,10 @@
 package nl.topicus.onderwijs.dashboard.web.pages;
 
+import java.util.ArrayList;
+
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
@@ -12,6 +17,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -40,7 +46,12 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(liveToRandomModeSwitch);
 		liveToRandomModeSwitch.add(new Label("label",
 				new PropertyModel<String>(getSession(), "mode")));
-		add(new BarGraphPanel("bargraph"));
+		ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
+		datasources.add(NumberOfUsers.class);
+		datasources.add(NumberOfServers.class);
+		add(new BarGraphPanel("bargraph",
+				new ListModel<Class<? extends DataSource<? extends Number>>>(
+						datasources)));
 		add(new StatusTablePanel("table"));
 	}
 

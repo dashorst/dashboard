@@ -1,17 +1,14 @@
 package nl.topicus.onderwijs.dashboard.web.components.statustable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
-import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
+import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
@@ -24,6 +21,9 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -36,9 +36,15 @@ import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
 public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
 	private JsonResourceBehavior<List<ColumnData>> dataResource;
+	private IModel<String> scheme;
+	private IModel<List<Class<? extends DataSource<?>>>> dataSources;
 
-	public StatusTableColumnPanel(String id, IModel<String> scheme) {
-		super(id, scheme);
+	public StatusTableColumnPanel(String id, IModel<String> scheme,
+			IModel<List<Class<? extends DataSource<?>>>> dataSources) {
+		super(id);
+		this.scheme = scheme;
+		this.dataSources = dataSources;
+
 		add(new AttributeAppender("class", scheme, " "));
 		this.dataResource = new JsonResourceBehavior<List<ColumnData>>(
 				new AbstractReadOnlyModel<List<ColumnData>>() {
@@ -59,23 +65,11 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	}
 
 	protected void retrieveDataFromApplication(List<ColumnData> ret) {
-		if ("color-1".equals(getDefaultModelObjectAsString())) {
-			ret.add(getColumn("Current users", NumberOfUsers.class));
-			ret.add(getColumn("Current users", NumberOfUsers.class));
-		}
-		if ("color-2".equals(getDefaultModelObjectAsString())) {
-			ret.add(getColumn("Version", ApplicationVersion.class));
-			ret.add(getColumn("Version", ApplicationVersion.class));
-		}
-		if ("color-3".equals(getDefaultModelObjectAsString())) {
-			ret.add(getColumn("Uptime", Uptime.class));
-			ret.add(getColumn("Uptime", Uptime.class));
-		}
-		if ("color-4".equals(getDefaultModelObjectAsString())) {
-			ret.add(getColumn("#Servers", NumberOfServers.class));
-			ret
-					.add(getColumn("#Offline servers",
-							NumberOfServersOffline.class));
+		for (Class<? extends DataSource<?>> curDataSource : dataSources
+				.getObject()) {
+			DataSourceSettings settings = curDataSource
+					.getAnnotation(DataSourceSettings.class);
+			ret.add(getColumn(settings.label(), curDataSource));
 		}
 	}
 
@@ -107,8 +101,23 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	public JsStatement statement() {
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
-		if ("color-4".equals(getDefaultModelObjectAsString()))
-			options.putLiteral("conversion", "dots");
+		List<String> conversions = new ArrayList<String>();
+		for (Class<? extends DataSource<?>> curDataSource : dataSources
+				.getObject()) {
+			DataSourceSettings settings = curDataSource
+					.getAnnotation(DataSourceSettings.class);
+			conversions.add(settings.conversion());
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			options.put("conversion", mapper.writeValueAsString(conversions));
+		} catch (JsonGenerationException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
 	}
@@ -131,5 +140,12 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 			}
 			ret.add(curData);
 		}
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		scheme.detach();
+		dataSources.detach();
 	}
 }
