@@ -13,6 +13,7 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
@@ -64,6 +65,9 @@ class VocusStatusRetriever implements Retriever,
 					new NumberOfServersOfflineImpl(project, this));
 			repository.addDataSourceForProject(project, Uptime.class,
 					new UptimeImpl(project, this));
+			repository.addDataSourceForProject(project,
+					ApplicationVersion.class, new ApplicationVersionImpl(
+							project, this));
 		}
 	}
 
