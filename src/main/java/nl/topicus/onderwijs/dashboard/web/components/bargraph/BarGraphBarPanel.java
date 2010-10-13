@@ -8,8 +8,6 @@ import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.web.DashboardMode;
-import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -42,9 +40,6 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public Map<String, BarData> getObject() {
-						if (DashboardWebSession.get().getMode() == DashboardMode.RandomData) {
-							return generateRandomValues();
-						}
 						return retrieveDataFromApplication();
 					}
 				});
@@ -56,20 +51,6 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 		for (Class<? extends DataSource<? extends Number>> datasource : dataSetsModel
 				.getObject()) {
 			getDataFromDataSource(ret, datasource);
-		}
-		return ret;
-	}
-
-	private Map<String, BarData> generateRandomValues() {
-		Map<String, BarData> ret = new HashMap<String, BarData>();
-		int index = 0;
-		for (Class<? extends DataSource<?>> datasourceType : BarGraphBarPanel.this.dataSetsModel
-				.getObject()) {
-			index++;
-			double value = Math.random() * 10.0;
-			ret.put(datasourceType.getSimpleName(),
-					new BarData(value, Long.toString(Math.round(value * 10)
-							* index)));
 		}
 		return ret;
 	}
@@ -91,11 +72,11 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 				max = Math.max(number == null ? 0 : number.longValue(), max);
 			}
 
-			long number = (datasource.getValue() == null) ? 0 : datasource
-					.getValue().longValue();
+			Number sourceValue = datasource.getValue();
+			long number = sourceValue == null ? 0 : sourceValue.longValue();
 			double value = (10.0 * number) / max;
 			ret.put(datasourceType.getSimpleName(), new BarData(value,
-					datasource.getValue().toString()));
+					sourceValue.toString()));
 		} else {
 			ret.put(datasourceType.getSimpleName(), new BarData(0, "n/a"));
 		}

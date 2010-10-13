@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 import nl.topicus.onderwijs.dashboard.modules.Key;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.web.DashboardMode;
-import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -53,11 +49,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 					@Override
 					public List<ColumnData> getObject() {
 						List<ColumnData> ret = new ArrayList<ColumnData>();
-						if (DashboardWebSession.get().getMode() == DashboardMode.RandomData) {
-							generateRandomData(ret);
-						} else {
-							retrieveDataFromApplication(ret);
-						}
+						retrieveDataFromApplication(ret);
 						return ret;
 					}
 				});
@@ -120,26 +112,6 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		}
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
-	}
-
-	private void generateRandomData(List<ColumnData> ret) {
-		for (int count = 0; count < 4; count++) {
-			ColumnData curData = new ColumnData();
-			curData.setLabel("Label-" + count);
-			for (Project curProject : WicketApplication.get().getProjects()) {
-				if ("color-4".equals(getDefaultModelObjectAsString())) {
-					List<DotColor> colors = new ArrayList<DotColor>();
-					for (int dotCount = 0; dotCount < 5; dotCount++)
-						colors.add(DotColor.values()[(int) Math.floor(Math
-								.random() * 4)]);
-					curData.getData().put(curProject.getCode(), colors);
-				} else {
-					curData.getData().put(curProject.getCode(),
-							Math.round(Math.random() * 1000));
-				}
-			}
-			ret.add(curData);
-		}
 	}
 
 	@Override

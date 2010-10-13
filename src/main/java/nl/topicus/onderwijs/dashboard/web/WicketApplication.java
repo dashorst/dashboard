@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.web;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
@@ -22,7 +23,10 @@ import org.apache.wicket.protocol.http.WebApplication;
 public class WicketApplication extends WebApplication {
 	private Updater updater;
 
-	private RepositoryImpl repository = new RepositoryImpl();
+	private Repository repository = new RepositoryImpl();
+
+	private Repository randomRepository = new RandomDataRepositoryImpl(
+			repository);
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
@@ -40,11 +44,11 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public List<Project> getProjects() {
-		return repository.getProjects();
+		return getRepository().getProjects();
 	}
 
 	public void enableLiveUpdater() {
-		updater = new Updater(this);
+		updater = new Updater(randomRepository);
 	}
 
 	public void disableLiveUpdater() {
@@ -68,6 +72,8 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public Repository getRepository() {
+		if (DashboardWebSession.get().getMode() == DashboardMode.RandomData)
+			return randomRepository;
 		return repository;
 	}
 }
