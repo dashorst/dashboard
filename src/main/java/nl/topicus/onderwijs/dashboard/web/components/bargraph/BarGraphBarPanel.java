@@ -67,8 +67,9 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 				.getObject()) {
 			index++;
 			double value = Math.random() * 10.0;
-			ret.put(datasourceType.getSimpleName(), new BarData(value, Long
-					.toString(Math.round(value * 10) * index)));
+			ret.put(datasourceType.getSimpleName(),
+					new BarData(value, Long.toString(Math.round(value * 10)
+							* index)));
 		}
 		return ret;
 	}
@@ -93,7 +94,7 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 			long number = (datasource.getValue() == null) ? 0 : datasource
 					.getValue().longValue();
 			double value = (10.0 * number) / max;
-			ret.put(datasource.getClass().getSimpleName(), new BarData(value,
+			ret.put(datasourceType.getSimpleName(), new BarData(value,
 					datasource.getValue().toString()));
 		} else {
 			ret.put(datasourceType.getSimpleName(), new BarData(0, "n/a"));

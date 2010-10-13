@@ -3,18 +3,18 @@ package nl.topicus.onderwijs.dashboard.web.components.bargraph;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 
 public class BarDataSet {
-	private Class<? extends DataSource<?>> key;
+	private String key;
 	private String label;
 	private String scheme;
 
 	public BarDataSet(Class<? extends DataSource<?>> key, String label,
 			String scheme) {
-		this.key = key;
+		this.key = key.getSimpleName();
 		this.label = label;
 		this.scheme = scheme;
 	}
 
-	public Class<? extends DataSource<?>> getKey() {
+	public String getKey() {
 		return key;
 	}
 
