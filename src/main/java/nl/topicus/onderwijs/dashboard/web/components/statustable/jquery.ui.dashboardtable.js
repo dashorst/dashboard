@@ -18,7 +18,8 @@ $.widget( "ui.dashboardTable", {
 
 	options: {
 		dataUrl: "",
-		conversion: []
+		conversion: [],
+		secondsBetweenRotate: 5
 	},
 	
 	standardConversions : {
@@ -55,6 +56,9 @@ $.widget( "ui.dashboardTable", {
 		else if ( key === "dataUrl" ) {
 			this.options.dataUrl = value;
 		}
+		else if ( key === "secondsBetweenRotate" ) {
+			this.options.secondsBetweenRotate = value;
+		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
@@ -72,9 +76,12 @@ $.widget( "ui.dashboardTable", {
 		var onHeartBeat = function() {
 			return self._onHeartBeat.apply( self, arguments );
 		};
-		$(document).bind("dashboard-table-heartbeat-rotate", function() {
-			var index = self.element.prevAll().length;
-			$(document).oneTime(index * 200, onHeartBeat);
+		$(document).bind("dashboard-heartbeat", function() {
+			var count = $(document).data("dashboard-heartbeat-count");
+			if (count % self.options.secondsBetweenRotate == 0) {
+				var index = self.element.prevAll().length;
+				$(document).oneTime(index * 200, onHeartBeat);
+			}
 		});
 
 		var onInsertProject = function() {

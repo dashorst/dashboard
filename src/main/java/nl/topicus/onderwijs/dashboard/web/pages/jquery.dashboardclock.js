@@ -4,7 +4,7 @@
 			.data("dashboard-heartbeat-enabled", true)
 			.data("dashboard-heartbeat-count", 0)
 			.everyTime(
-				"5s",
+				"1s",
 				"heartbeat-bar-graph",
 				function() {
 					var count = $(document).data("dashboard-heartbeat-count") + 1;

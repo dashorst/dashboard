@@ -3,7 +3,8 @@
 $.widget( "ui.dashboardBarGraphMaster", {
 
 	options: {
-		dataSets: []
+		dataSets: [],
+		secondsBetweenSwitch: 30
 	},
 
 	_create: function() {
@@ -22,6 +23,9 @@ $.widget( "ui.dashboardBarGraphMaster", {
 		if ( key === "dataSets" ) {
 			this.options.dataSets = value;
 		}
+		else if ( key === "secondsBetweenSwitch" ) {
+			this.options.secondsBetweenSwitch = value;
+		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
@@ -33,15 +37,14 @@ $.widget( "ui.dashboardBarGraphMaster", {
 		};
 		$(document)
 			.data("dashboard-bar-graph-data-set-index", 0)
-			.data("dashboard-bar-graph-heartbeat-count", 0)
 			.data("dashboard-bar-graph-data-set", this.options.dataSets[0].key)
 			.bind("dashboard-heartbeat",
 					function() {
-						var count = $(document).data("dashboard-bar-graph-heartbeat-count") + 1;
-						$(document).data("dashboard-bar-graph-heartbeat-count", count);
-						if (count % 6 == 0)
+						var count = $(document).data("dashboard-heartbeat-count");
+						if (count % self.options.secondsBetweenSwitch == 0)
 							heartBeatDataSet();
-						$(document).triggerHandler("dashboard-bar-graph-heartbeat-update");
+						if (count % 5 == 0)
+							$(document).triggerHandler("dashboard-bar-graph-heartbeat-update");
 					});
 		this.element.find("h1").text(this.options.dataSets[0].label);
 		this.element.addClass(this.options.dataSets[0].scheme);

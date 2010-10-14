@@ -90,6 +90,8 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 
 		Options options = new Options();
 		options.put("projects", projectList.getJavaScriptOptions().toString());
+		options.put("secondsBetweenScroll", WicketApplication.get()
+				.isDevelopment() ? 15 : 30);
 		JsQuery jsq = new JsQuery(projects);
 		return jsq.$().chain("dashboardTableMaster",
 				options.getJavaScriptOptions());

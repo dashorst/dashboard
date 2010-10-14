@@ -5,7 +5,8 @@ $.widget( "ui.dashboardTableMaster", {
 	options: {
 		projects: {},
 		projectKeys: [],
-		maxProjects: 4
+		maxProjects: 4,
+		secondsBetweenScroll: 15
 	},
 
 	_create: function() {
@@ -24,6 +25,9 @@ $.widget( "ui.dashboardTableMaster", {
 	_setOption: function( key, value ) {
 		if ( key === "projects" ) {
 			this.options.projects = value;
+		}
+		else if ( key === "secondsBetweenScroll" ) {
+			this.options.secondsBetweenScroll = value;
 		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
@@ -54,20 +58,14 @@ $.widget( "ui.dashboardTableMaster", {
 			return self._heartBeatProjects.apply( self, arguments );
 		};
 		$(document)
-			.data("dashboard-table-heartbeat-count", 0)
 			.data("dashboard-table-project-index", this.options.projectKeys.length-1)
 			.bind("dashboard-heartbeat",
 					function() {
-						var count = $(document).data("dashboard-table-heartbeat-count") + 1;
-						$(document).data("dashboard-table-heartbeat-count", count);
-						if (count % 3 == 0)
+						var count = $(document).data("dashboard-heartbeat-count");
+						if (count % self.options.secondsBetweenScroll == 0) {
 							$(document).oneTime("2s", heartBeatProjects);
-						self._heartBeatRotate();
+						}
 					});
-	},
-
-	_heartBeatRotate: function() {
-		$(document).triggerHandler("dashboard-table-heartbeat-rotate");
 	},
 
 	_heartBeatProjects: function() {

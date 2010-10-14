@@ -9,6 +9,7 @@ import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -69,6 +70,10 @@ public class WicketApplication extends WebApplication {
 
 	public static WicketApplication get() {
 		return (WicketApplication) WebApplication.get();
+	}
+
+	public boolean isDevelopment() {
+		return Application.DEVELOPMENT.equals(getConfigurationType());
 	}
 
 	public Repository getRepository() {

@@ -67,6 +67,8 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 		}
 
 		Options options = new Options();
+		options.put("secondsBetweenSwitch", WicketApplication.get()
+				.isDevelopment() ? 30 : 60);
 		try {
 			options.put("dataSets", mapper.writeValueAsString(dataSets));
 		} catch (JsonGenerationException e) {
