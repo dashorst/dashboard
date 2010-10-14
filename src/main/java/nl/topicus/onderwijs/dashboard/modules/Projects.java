@@ -9,4 +9,5 @@ public class Projects {
 	public static final Project PARNASSYS_OUDERS = new Project(
 			"parnassys_ouders", "Parnassys Ouders");
 	public static final Project IRIS = new Project("iris", "Iris+");
+	public static final Project EDUARTE = new Project("eduarte", "EduArte");
 }
