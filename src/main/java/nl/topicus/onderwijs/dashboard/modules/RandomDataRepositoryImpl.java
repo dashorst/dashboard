@@ -4,15 +4,19 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 
 import org.apache.wicket.util.time.Duration;
 
@@ -58,6 +62,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 		return ret;
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends DataSource<?>> T createDataSource(final Key key,
 			final Class<T> dataSource) {
 		final DataSourceSettings settings = dataSource
@@ -72,11 +77,20 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					if (settings.type().equals(Integer.class))
 						value = Math.round(Math.random() * 1000);
 					else if (settings.type().equals(Duration.class))
-						value = Duration.milliseconds(Math
-								.round(Math.random() * 100000000));
+						value = Duration
+								.milliseconds(Math.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
 						value = "random";
-					else
+					else if (settings.type().equals(DotColor.class)
+							&& settings.list()) {
+						Random random = new Random();
+						value = Arrays.asList(
+								DotColor.values()[random.nextInt(5)],
+								DotColor.values()[random.nextInt(5)],
+								DotColor.values()[random.nextInt(5)],
+								DotColor.values()[random.nextInt(5)],
+								DotColor.values()[random.nextInt(5)]);
+					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
 					Object ret = dataCache.putIfAbsent(dataKey, value);
