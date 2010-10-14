@@ -96,15 +96,18 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		options.put("secondsBetweenRotate", WicketApplication.get()
 				.isDevelopment() ? 5 : 10);
 		List<String> conversions = new ArrayList<String>();
+		List<String> htmlClasses = new ArrayList<String>();
 		for (Class<? extends DataSource<?>> curDataSource : dataSources
 				.getObject()) {
 			DataSourceSettings settings = curDataSource
 					.getAnnotation(DataSourceSettings.class);
 			conversions.add(settings.conversion());
+			htmlClasses.add(settings.htmlClass());
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			options.put("conversion", mapper.writeValueAsString(conversions));
+			options.put("htmlClasses", mapper.writeValueAsString(htmlClasses));
 		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {

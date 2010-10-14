@@ -149,9 +149,55 @@ span.dot {
 	border-radius: 0.5em;
 	width : 1em;
 	height : 1em;
-	margin : 0.25em 0.2em 0.25em 0.2em;
 	display: block;
 	float :left;
+}
+.builds span.dot:first-child {
+	border-radius: 0.7em;
+	width : 1.4em;
+	height : 1.4em;
+	margin-top: 0.05em;
+	margin-bottom: 0.05em;
+}
+
+.dots-1 span.dot,
+.dots-2 span.dot,
+.dots-3 span.dot,
+.dots-4 span.dot,
+.dots-5 span.dot {
+/*	margin : 0.25em 2.50em 0.25em 2.50em;
+	margin : 0.25em 1.00em 0.25em 1.00em;
+	margin : 0.25em 0.50em 0.25em 0.50em;
+	margin : 0.25em 0.27em 0.25em 0.27em; */
+	margin : 0.25em 0.15em 0.25em 0.15em;
+}
+.dots-6 span.dot {
+	margin : 0.25em 0.05em 0.25em 0.05em;
+}
+.dots-7 span.dot {
+	margin : 0.32em 0.05em 0.32em 0.05em;
+	border-radius: 0.43em;
+	width : 0.86em;
+	height : 0.86em;
+}
+.dots-8 span.dot {
+	margin : 0.37em 0.05em 0.37em 0.05em;
+	border-radius: 0.38em;
+	width : 0.76em;
+	height : 0.76em;
+}
+.dots-9 span.dot {
+	margin : 0.41em 0.05em 0.41em 0.05em;
+	border-radius: 0.34em;
+	width : 0.68em;
+	height : 0.68em;
+}
+.dots-10 span.dot,
+.dots-11 span.dot {
+	margin : 0.44em 0.04em 0.44em 0.04em;
+	border-radius: 0.31em;
+	width : 0.61em;
+	height : 0.61em;
 }
 
 .dot.green { background-color : green; }

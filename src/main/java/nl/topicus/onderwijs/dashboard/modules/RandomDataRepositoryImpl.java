@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,19 +90,18 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					if (settings.type().equals(Integer.class))
 						value = Math.round(Math.random() * 1000);
 					else if (settings.type().equals(Duration.class))
-						value = Duration
-								.milliseconds(Math.round(Math.random() * 100000000));
+						value = Duration.milliseconds(Math
+								.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
 						value = "random";
 					else if (settings.type().equals(DotColor.class)
 							&& settings.list()) {
 						Random random = new Random();
-						value = Arrays.asList(
-								DotColor.values()[random.nextInt(4)],
-								DotColor.values()[random.nextInt(4)],
-								DotColor.values()[random.nextInt(4)],
-								DotColor.values()[random.nextInt(4)],
-								DotColor.values()[random.nextInt(4)]);
+						List<DotColor> ret = new ArrayList<DotColor>();
+						for (int count = 4; count >= 0; count--) {
+							ret.add(DotColor.values()[random.nextInt(4)]);
+						}
+						value = ret;
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());

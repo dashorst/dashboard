@@ -19,6 +19,7 @@ $.widget( "ui.dashboardTable", {
 	options: {
 		dataUrl: "",
 		conversion: [],
+		htmlClasses: [],
 		secondsBetweenRotate: 5
 	},
 	
@@ -27,10 +28,11 @@ $.widget( "ui.dashboardTable", {
 			return value;
 		},
 		"dots" : function(value) {
-			var ret = "";
+			var ret = "<div class='dots-"+value.length+"'>";
 			$.each(value, function(index, curDot) {
 				ret += '<span class="dot '+curDot.toLowerCase()+'"></span>';
 			});
+			ret += "</div>";
 			return ret;
 		}
 	},
@@ -52,6 +54,9 @@ $.widget( "ui.dashboardTable", {
 	_setOption: function( key, value ) {
 		if ( key === "conversion" ) {
 			this.options.conversion = value;
+		}
+		else if ( key === "htmlClasses" ) {
+			this.options.htmlClasses = value;
 		}
 		else if ( key === "dataUrl" ) {
 			this.options.dataUrl = value;
@@ -114,6 +119,7 @@ $.widget( "ui.dashboardTable", {
 	_fillFlip: function(self, flipIndex, flipDiv) {
 		flipDiv.append("<h3>"+this.jsonData[flipIndex].label+"</h3>");
 		var dataDiv = $("<div class='data' />").appendTo(flipDiv);
+		dataDiv.addClass(this.options.htmlClasses[flipIndex]);
 		var projects = $(document).data("dashboard-table-projects").slice();
 		projects.reverse();
 		$.each(projects, function(index, project) {
