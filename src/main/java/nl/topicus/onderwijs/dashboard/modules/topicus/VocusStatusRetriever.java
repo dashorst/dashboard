@@ -40,8 +40,9 @@ class VocusStatusRetriever implements Retriever,
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
 				"https://start3.atvo.nl/app/status"));
-		configuration.put(Projects.IRIS, Arrays
-				.asList("https://www.irisplus.nl/irisplus-prod/app/status"));
+		// configuration.put(Projects.IRIS, Arrays
+		// .asList("https://www.irisplus.nl/irisplus-prod/app/status"),
+		// );
 
 		for (Project project : configuration.keySet()) {
 			statusses.put(project, new TopicusApplicationStatus());
