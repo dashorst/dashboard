@@ -14,6 +14,8 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Application object for your web application. If you want to run this
@@ -22,6 +24,8 @@ import org.apache.wicket.protocol.http.WebApplication;
  * @see nl.topicus.onderwijs.dashboard.Start#main(String[])
  */
 public class WicketApplication extends WebApplication {
+	private static final Logger log = LoggerFactory
+			.getLogger(WicketApplication.class);
 	private Updater updater;
 
 	private RepositoryImpl repository = new RepositoryImpl();
@@ -36,17 +40,16 @@ public class WicketApplication extends WebApplication {
 
 	@Override
 	protected void onDestroy() {
+		log.info("Shutting down the dashboard application");
 		disableLiveUpdater();
 		randomRepository.stop();
+		log.info("Shutting down the dashboard application, finished");
 	}
 
 	@Override
 	protected void init() {
 		super.init();
 
-		// if (Application.DEPLOYMENT.equals(getConfigurationType())) {
-		// WicketApplication.get().enableLiveUpdater();
-		// }
 		getMarkupSettings().setStripWicketTags(true);
 	}
 
@@ -55,7 +58,7 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public void enableLiveUpdater() {
-		updater = new Updater(randomRepository);
+		updater = new Updater(this, randomRepository);
 	}
 
 	public void disableLiveUpdater() {
@@ -86,5 +89,10 @@ public class WicketApplication extends WebApplication {
 		if (DashboardWebSession.get().getMode() == DashboardMode.RandomData)
 			return randomRepository;
 		return repository;
+	}
+
+	public boolean isShuttingDown() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
