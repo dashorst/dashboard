@@ -74,6 +74,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 
 		for (Entry<Key, T> entry : data.entrySet()) {
 			Object value = entry.getValue().getValue();
+			if (value == null)
+				value = "n/a";
 			if (!(value instanceof String || value instanceof Number || value instanceof List<?>))
 				value = value.toString();
 

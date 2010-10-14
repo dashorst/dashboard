@@ -2,14 +2,13 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TopicusProjectsUpdateTask extends TimerTask {
+public class TopicusProjectsUpdateTask implements Runnable {
 	private static final Logger log = LoggerFactory
 			.getLogger(TopicusProjectsUpdateTask.class);
 

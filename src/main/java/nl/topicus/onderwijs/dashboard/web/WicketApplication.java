@@ -69,7 +69,7 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public boolean isUpdaterEnabled() {
-		return updater == null;
+		return updater != null;
 	}
 
 	@Override

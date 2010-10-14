@@ -1,11 +1,14 @@
 package nl.topicus.onderwijs.dashboard.timers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
@@ -41,13 +44,25 @@ public class Updater {
 	}
 
 	class TimerTask implements Runnable {
-		TopicusProjectsUpdateTask task = new TopicusProjectsUpdateTask(
-				application);
+		List<Runnable> tasks = Arrays.asList(
+				//
+				new TopicusProjectsUpdateTask(application),
+				new HudsonUpdateTask(application));
 
 		@Override
 		public void run() {
-			if (application.isUpdaterEnabled() && !application.isShuttingDown()) {
-				task.run();
+			for (Runnable task : tasks) {
+				try {
+					if (application.isUpdaterEnabled()
+							&& !application.isShuttingDown()) {
+						task.run();
+					}
+				} catch (Exception e) {
+					log.error("Uncaught exception during update task "
+							+ task.getClass().getSimpleName() + ": "
+							+ e.getClass().getSimpleName() + ": "
+							+ e.getMessage());
+				}
 			}
 		}
 	}
