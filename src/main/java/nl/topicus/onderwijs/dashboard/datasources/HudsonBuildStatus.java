@@ -6,7 +6,7 @@ import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 
-@DataSourceSettings(label = "Builds", htmlClass = "build", type = DotColor.class, list = true, conversion = "dot")
+@DataSourceSettings(label = "Builds", htmlClass = "build", type = DotColor.class, list = true, conversion = "dots")
 public interface HudsonBuildStatus extends DataSource<List<DotColor>> {
 
 }

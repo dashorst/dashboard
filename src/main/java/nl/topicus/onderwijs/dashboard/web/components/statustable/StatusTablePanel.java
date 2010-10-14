@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
@@ -45,11 +47,11 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 
 		List<Class<? extends DataSource<?>>> sources2 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources2.add(ApplicationVersion.class);
-		sources2.add(ApplicationVersion.class);
+		sources2.add(Uptime.class);
 
 		List<Class<? extends DataSource<?>>> sources3 = new ArrayList<Class<? extends DataSource<?>>>();
-		sources3.add(Uptime.class);
-		sources3.add(Uptime.class);
+		sources3.add(HudsonBuildStatus.class);
+		sources3.add(NumberOfUnitTests.class);
 
 		List<Class<? extends DataSource<?>>> sources4 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources4.add(NumberOfServers.class);

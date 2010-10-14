@@ -15,8 +15,7 @@ public class Updater {
 
 		TopicusProjectsUpdateTask task = new TopicusProjectsUpdateTask(
 				repository);
-		timer.scheduleAtFixedRate(task, 0, Duration.seconds(30)
-				.getMilliseconds());
+		timer.schedule(task, 0, Duration.seconds(30).getMilliseconds());
 		// timer.schedule(task, 0);
 	}
 

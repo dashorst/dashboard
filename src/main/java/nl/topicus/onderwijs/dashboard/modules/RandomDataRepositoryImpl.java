@@ -24,12 +24,26 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
+	private Timer timer;
 
 	public RandomDataRepositoryImpl(Repository base) {
 		this.base = base;
-		Timer timer = new Timer("Random Data Updater", true);
-		timer.scheduleAtFixedRate(this, 0, Duration.seconds(5)
-				.getMilliseconds());
+		start();
+	}
+
+	public void stop() {
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+	}
+
+	public void start() {
+		if (timer == null) {
+			timer = new Timer("Random Data Updater", true);
+			timer.scheduleAtFixedRate(this, 0, Duration.seconds(5)
+					.getMilliseconds());
+		}
 	}
 
 	public <T extends DataSource<?>> void addDataSourceForProject(Project key,
@@ -85,11 +99,11 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 							&& settings.list()) {
 						Random random = new Random();
 						value = Arrays.asList(
-								DotColor.values()[random.nextInt(5)],
-								DotColor.values()[random.nextInt(5)],
-								DotColor.values()[random.nextInt(5)],
-								DotColor.values()[random.nextInt(5)],
-								DotColor.values()[random.nextInt(5)]);
+								DotColor.values()[random.nextInt(4)],
+								DotColor.values()[random.nextInt(4)],
+								DotColor.values()[random.nextInt(4)],
+								DotColor.values()[random.nextInt(4)],
+								DotColor.values()[random.nextInt(4)]);
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());

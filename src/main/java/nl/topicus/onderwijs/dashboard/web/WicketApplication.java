@@ -24,14 +24,20 @@ import org.apache.wicket.protocol.http.WebApplication;
 public class WicketApplication extends WebApplication {
 	private Updater updater;
 
-	private Repository repository = new RepositoryImpl();
+	private RepositoryImpl repository = new RepositoryImpl();
 
-	private Repository randomRepository = new RandomDataRepositoryImpl(
+	private RandomDataRepositoryImpl randomRepository = new RandomDataRepositoryImpl(
 			repository);
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
 		return DashboardPage.class;
+	}
+
+	@Override
+	protected void onDestroy() {
+		disableLiveUpdater();
+		randomRepository.stop();
 	}
 
 	@Override
