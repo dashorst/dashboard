@@ -43,6 +43,8 @@ class VocusStatusRetriever implements Retriever,
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
 				"https://start3.atvo.nl/app/status"));
+		configuration.put(Projects.EDUARTE,
+				Arrays.asList("https://krd.educus.nl/krd/app/status"));
 		// configuration.put(Projects.IRIS, Arrays
 		// .asList("https://www.irisplus.nl/irisplus-prod/app/status"),
 		// );
@@ -163,9 +165,7 @@ class VocusStatusRetriever implements Retriever,
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
-		status
-				.setVersion(versieCell.getContent().getTextExtractor()
-						.toString());
+		status.setVersion(versieCell.getContent().getTextExtractor().toString());
 	}
 
 	/*
