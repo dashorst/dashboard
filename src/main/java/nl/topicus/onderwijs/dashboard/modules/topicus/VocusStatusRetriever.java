@@ -4,6 +4,7 @@ import static nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils.getS
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +18,9 @@ import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Projects;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
@@ -69,6 +72,8 @@ class VocusStatusRetriever implements Retriever,
 			repository.addDataSourceForProject(project,
 					ApplicationVersion.class, new ApplicationVersionImpl(
 							project, this));
+			repository.addDataSourceForProject(project, ServerStatus.class,
+					new ServerStatusImpl(project, this));
 		}
 	}
 
@@ -92,11 +97,13 @@ class VocusStatusRetriever implements Retriever,
 		int numberOfOfflineServers = 0;
 		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		status.setNumberOfServers(urls.size());
+		List<DotColor> serverStatusses = new ArrayList<DotColor>();
 		for (String statusUrl : urls) {
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
 					numberOfOfflineServers++;
+					serverStatusses.add(DotColor.RED);
 					continue;
 				}
 
@@ -124,10 +131,13 @@ class VocusStatusRetriever implements Retriever,
 						getStartTime(status, td);
 					}
 				}
+				serverStatusses.add(DotColor.GREEN);
 			} catch (Exception e) {
+				serverStatusses.add(DotColor.YELLOW);
 				e.printStackTrace();
 			}
 		}
+		status.setServerStatusses(serverStatusses);
 		status.setNumberOfServersOnline(status.getNumberOfServers()
 				- numberOfOfflineServers);
 		log.info("Application status: {}->{}", project, status);
@@ -151,7 +161,9 @@ class VocusStatusRetriever implements Retriever,
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
-		status.setVersion(versieCell.getContent().getTextExtractor().toString());
+		status
+				.setVersion(versieCell.getContent().getTextExtractor()
+						.toString());
 	}
 
 	/*

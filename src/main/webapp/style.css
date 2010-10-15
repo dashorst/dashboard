@@ -251,10 +251,16 @@ span.dot {
 	-webkit-border-top-right-radius: 1px;
 }
 .color-1 .bargraph .bar {
-	background-color: red;
+	background-color: blue;
 }
 .color-2 .bargraph .bar {
+	background-color: red;
+}
+.color-3 .bargraph .bar {
 	background-color: yellow;
+}
+.color-4 .bargraph .bar {
+	background-color: green;
 }
 /* #twitter {
 	display:none;

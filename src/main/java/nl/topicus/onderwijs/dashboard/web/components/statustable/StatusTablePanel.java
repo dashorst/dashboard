@@ -12,6 +12,7 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Project;
@@ -57,6 +58,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 
 		List<Class<? extends DataSource<?>>> sources4 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources4.add(NumberOfServers.class);
+		sources4.add(ServerStatus.class);
 		sources4.add(NumberOfServersOffline.class);
 
 		columns.put("color-1", sources1);

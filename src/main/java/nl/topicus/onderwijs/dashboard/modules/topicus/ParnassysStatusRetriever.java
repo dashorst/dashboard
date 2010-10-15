@@ -4,6 +4,7 @@ import static nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils.getS
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +17,9 @@ import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
@@ -33,8 +36,8 @@ class ParnassysStatusRetriever implements Retriever,
 	private HashMap<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
 
 	public ParnassysStatusRetriever() {
-		configuration.put(new Project("parnassys", "ParnasSys"),
-				Arrays.asList("https://start.parnassys.net/bao/status.m"));
+		configuration.put(new Project("parnassys", "ParnasSys"), Arrays
+				.asList("https://start.parnassys.net/bao/status.m"));
 
 		for (Project project : configuration.keySet()) {
 			statusses.put(project, new TopicusApplicationStatus());
@@ -56,6 +59,8 @@ class ParnassysStatusRetriever implements Retriever,
 			repository.addDataSourceForProject(project,
 					ApplicationVersion.class, new ApplicationVersionImpl(
 							project, this));
+			repository.addDataSourceForProject(project, ServerStatus.class,
+					new ServerStatusImpl(project, this));
 		}
 	}
 
@@ -77,6 +82,7 @@ class ParnassysStatusRetriever implements Retriever,
 			return status;
 		}
 		int numberOfOfflineServers = 0;
+		List<DotColor> serverStatusses = new ArrayList<DotColor>();
 		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		status.setNumberOfServers(urls.size());
 		for (String statusUrl : urls) {
@@ -84,6 +90,7 @@ class ParnassysStatusRetriever implements Retriever,
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
 					numberOfOfflineServers++;
+					serverStatusses.add(DotColor.RED);
 					continue;
 				}
 				String page = statuspage.getPageContent();
@@ -102,10 +109,13 @@ class ParnassysStatusRetriever implements Retriever,
 						getStartTijd(status, tableHeader);
 					}
 				}
+				serverStatusses.add(DotColor.GREEN);
 			} catch (Exception e) {
+				serverStatusses.add(DotColor.YELLOW);
 				e.printStackTrace();
 			}
 		}
+		status.setServerStatusses(serverStatusses);
 		status.setNumberOfServersOnline(status.getNumberOfServers()
 				- numberOfOfflineServers);
 		log.info("Application status: {}->{}", project, status);

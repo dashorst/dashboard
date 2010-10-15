@@ -8,5 +8,4 @@ import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 
 @DataSourceSettings(label = "Servers", htmlClass = "dots", type = DotColor.class, list = true, conversion = "dots")
 public interface ServerStatus extends DataSource<List<DotColor>> {
-
 }

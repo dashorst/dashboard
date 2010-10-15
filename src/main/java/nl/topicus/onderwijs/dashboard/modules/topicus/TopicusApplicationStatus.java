@@ -2,6 +2,9 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.List;
+
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
@@ -17,6 +20,7 @@ class TopicusApplicationStatus implements Serializable {
 	private int numberOfServersOnline;
 	private int averageRequestDuration;
 	private long uptime;
+	private List<DotColor> serverStatusses;
 
 	public String getVersion() {
 		return version == null ? "n/a" : version;
@@ -80,6 +84,14 @@ class TopicusApplicationStatus implements Serializable {
 
 	public void setUptime(Long uptime) {
 		this.uptime = uptime;
+	}
+
+	public void setServerStatusses(List<DotColor> serverStatusses) {
+		this.serverStatusses = serverStatusses;
+	}
+
+	public List<DotColor> getServerStatusses() {
+		return serverStatusses;
 	}
 
 	@Override
