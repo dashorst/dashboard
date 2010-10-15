@@ -112,7 +112,9 @@ class ParnassysStatusRetriever implements Retriever,
 				serverStatusses.add(DotColor.GREEN);
 			} catch (Exception e) {
 				serverStatusses.add(DotColor.YELLOW);
-				e.printStackTrace();
+				log.warn("Could not retrieve status for '" + statusUrl + "': "
+						+ e.getClass().getSimpleName() + " - "
+						+ e.getLocalizedMessage());
 			}
 		}
 		status.setServerStatusses(serverStatusses);
