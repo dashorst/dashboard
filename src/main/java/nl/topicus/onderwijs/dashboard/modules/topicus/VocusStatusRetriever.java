@@ -42,7 +42,8 @@ class VocusStatusRetriever implements Retriever,
 		configuration.put(Projects.ATVO, Arrays.asList(
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
-				"https://start3.atvo.nl/app/status"));
+				"https://start3.atvo.nl/app/status",
+				"https://start4.atvo.nl/app/status"));
 		// configuration.put(Projects.IRIS, Arrays
 		// .asList("https://www.irisplus.nl/irisplus-prod/app/status"),
 		// );
