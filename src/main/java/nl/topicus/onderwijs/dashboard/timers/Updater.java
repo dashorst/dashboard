@@ -28,11 +28,13 @@ public class Updater {
 
 		timer = Executors.newScheduledThreadPool(1);
 
+		log.info("Scheduling timer task at one minute intervals");
 		scheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(), 0, 1,
 				TimeUnit.MINUTES);
 	}
 
 	public void stop() {
+		log.info("Stopping timer task");
 		scheduledFuture.cancel(true);
 		timer.shutdownNow();
 		try {
