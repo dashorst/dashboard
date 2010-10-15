@@ -5,7 +5,7 @@ $.widget( "ui.dashboardTableMaster", {
 	options: {
 		projects: {},
 		projectKeys: [],
-		maxProjects: 4,
+		maxProjects: 5,
 		secondsBetweenScroll: 15
 	},
 

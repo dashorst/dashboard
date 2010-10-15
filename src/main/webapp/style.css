@@ -26,20 +26,16 @@ font-size: 1.1em;
 }
 #twitter a, #twitter a:visited { color : #88f;}
 
-.statusses {
-	height : 12em;
-	width : 100%;
-}
 .effects-enabled {
 	-webkit-perspective: 1000;
 	-webkit-perspective-origin: center 45%;
 }
 .statusses div.col { 
 	float:left;
-	height:10em;
+	height:10.7em;
 	width:6em;
 	margin: 0 0.43em;
-	padding: 1em 1em;
+	padding: 0.5em 1em;
 	border-radius: 0.5em;
 	line-height : 2em;
 }
@@ -77,18 +73,18 @@ font-size: 1.1em;
 .effects-enabled .rotated.rotate-invert {
 	-webkit-transform: rotateY(-180deg);
 }
-.col h3 { padding : 0; margin : 0  auto 0.5em auto; text-align : center; line-height : 1em;}
+.col h3 { padding : 0; margin : 0  auto 0.3em auto; text-align : center; line-height : 1em;}
 
 .statusses div.row {
 	margin : 0 -1.4em;
 	border : none;
 	clear: both;
-	height: 2.1em;
+	height: 1.8em;
 	overflow: hidden;
 }
 .statusses .row .inner-row {
-	height: 1.5em;
-	line-height : 1.5em;
+	height: 1.3em;
+	line-height : 1.3em;
 	width: 6.63em;
 	background-color : rgba(64,64,64,0.5);
 	margin-top: 0.2em;
@@ -118,16 +114,16 @@ font-size: 1.1em;
 	height: 0em!important;
 }
 .project-transition.animate .statusses .row:first-child {
-	height: 2.1em!important;
+	height: 1.8em!important;
 }
 .project-transition .statusses .row:first-child .inner-row {
-	margin-top: -1.9em!important;
+	margin-top: -1.6em!important;
 }
 .project-transition.animate .statusses .row:first-child .inner-row {
 	margin-top: 0.2em!important;
 }
 .project-transition .statusses .row:last-child {
-	height: 2.1em!important;
+	height: 1.8em!important;
 }
 .project-transition.animate .statusses .row:last-child {
 	height: 0em!important;
@@ -152,12 +148,40 @@ span.dot {
 	display: block;
 	float :left;
 }
-.builds span.dot:first-child {
+.builds span.dot:nth-child(1) {
 	border-radius: 0.7em;
 	width : 1.4em;
 	height : 1.4em;
+	margin-top: -0.05em;
+	margin-bottom: -0.05em;
+}
+.builds span.dot:nth-child(2) {
+	border-radius: 0.6em;
+	width : 1.2em;
+	height : 1.2em;
 	margin-top: 0.05em;
 	margin-bottom: 0.05em;
+}
+.builds span.dot:nth-child(3) {
+	border-radius: 0.5em;
+	width : 1em;
+	height : 1em;
+	margin-top: 0.15em;
+	margin-bottom: 0.15em;
+}
+.builds span.dot:nth-child(4) {
+	border-radius: 0.4em;
+	width : 0.8em;
+	height : 0.8em;
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+.builds span.dot:nth-child(5) {
+	border-radius: 0.3em;
+	width : 0.6em;
+	height : 0.6em;
+	margin-top: 0.35em;
+	margin-bottom: 0.35em;
 }
 
 .dots-1 span.dot,
@@ -165,36 +189,32 @@ span.dot {
 .dots-3 span.dot,
 .dots-4 span.dot,
 .dots-5 span.dot {
-/*	margin : 0.25em 2.50em 0.25em 2.50em;
-	margin : 0.25em 1.00em 0.25em 1.00em;
-	margin : 0.25em 0.50em 0.25em 0.50em;
-	margin : 0.25em 0.27em 0.25em 0.27em; */
-	margin : 0.25em 0.15em 0.25em 0.15em;
+	margin : 0.15em 0.15em 0.15em 0.15em;
 }
 .dots-6 span.dot {
-	margin : 0.25em 0.05em 0.25em 0.05em;
+	margin : 0.15em 0.05em 0.15em 0.05em;
 }
 .dots-7 span.dot {
-	margin : 0.32em 0.05em 0.32em 0.05em;
+	margin : 0.22em 0.05em 0.22em 0.05em;
 	border-radius: 0.43em;
 	width : 0.86em;
 	height : 0.86em;
 }
 .dots-8 span.dot {
-	margin : 0.37em 0.05em 0.37em 0.05em;
+	margin : 0.27em 0.05em 0.27em 0.05em;
 	border-radius: 0.38em;
 	width : 0.76em;
 	height : 0.76em;
 }
 .dots-9 span.dot {
-	margin : 0.41em 0.05em 0.41em 0.05em;
+	margin : 0.31em 0.05em 0.31em 0.05em;
 	border-radius: 0.34em;
 	width : 0.68em;
 	height : 0.68em;
 }
 .dots-10 span.dot,
 .dots-11 span.dot {
-	margin : 0.44em 0.04em 0.44em 0.04em;
+	margin : 0.34em 0.04em 0.34em 0.04em;
 	border-radius: 0.31em;
 	width : 0.61em;
 	height : 0.61em;
