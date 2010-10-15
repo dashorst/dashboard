@@ -51,6 +51,8 @@ public class HudsonService implements Retriever {
 				Arrays.asList(Pattern.compile("Vocus Ouders")));
 		configuration.put(Projects.EDUARTE,
 				Arrays.asList(Pattern.compile("EduArte v(.*)")));
+		configuration.put(Projects.IRIS,
+				Arrays.asList(Pattern.compile("Cluedo")));
 	}
 
 	@Override
