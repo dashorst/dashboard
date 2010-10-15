@@ -57,11 +57,12 @@ public class WicketApplication extends WebApplication {
 		return getRepository().getProjects();
 	}
 
-	public void enableLiveUpdater() {
-		updater = new Updater(this, randomRepository);
+	public synchronized void enableLiveUpdater() {
+		if (updater == null)
+			updater = new Updater(this, randomRepository);
 	}
 
-	public void disableLiveUpdater() {
+	public synchronized void disableLiveUpdater() {
 		if (updater != null) {
 			updater.stop();
 			updater = null;
