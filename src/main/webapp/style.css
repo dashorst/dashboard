@@ -3,7 +3,7 @@
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
 html, body { background-color: black; color : white; font-size : 16pt; overflow: hidden;}
 
-.widget { width : 75%; margin : 0 auto; clear : both; position: relative; }
+.widget { width : 85%; margin : 1em auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
 .ui-widget {
 font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
@@ -211,17 +211,19 @@ span.dot {
 .bargraph h1 {
 	position: absolute;
 	display: block;
-	width: 25em;
 	text-align: center;
-	color: #777;
-	top: -1em;
+	color: #999;
+	left: 0;
+	bottom: 0.5em;
+	-webkit-transform: rotate(270deg);
+	-webkit-transform-origin: bottom left;
 }
 .bargraph .bar-box {
 	height: 11em;
 	float: left;
 	width: 7em;
 	position: relative;
-	margin: 0 1em;
+	margin: 0 0.5em;
 	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.9, transparent), to(rgba(255,255,255,0.5)));
 }
 .bargraph .bar-box h3 {
