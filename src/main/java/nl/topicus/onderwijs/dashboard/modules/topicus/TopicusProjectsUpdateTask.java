@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.slf4j.Logger;
@@ -16,7 +17,8 @@ public class TopicusProjectsUpdateTask implements Runnable {
 
 	private List<Retriever> retrievers = new ArrayList<Retriever>();
 
-	public TopicusProjectsUpdateTask(WicketApplication application) {
+	public TopicusProjectsUpdateTask(WicketApplication application,
+			Repository repo) {
 		this.application = application;
 
 		retrievers.add(new VocusStatusRetriever());
@@ -24,7 +26,7 @@ public class TopicusProjectsUpdateTask implements Runnable {
 		retrievers.add(new ParnassysStatusRetriever());
 
 		for (Retriever retriever : retrievers) {
-			retriever.onConfigure(application.getRepository());
+			retriever.onConfigure(repo);
 		}
 	}
 

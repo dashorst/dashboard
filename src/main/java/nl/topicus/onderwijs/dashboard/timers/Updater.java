@@ -20,9 +20,11 @@ public class Updater {
 	private ScheduledExecutorService timer;
 	private WicketApplication application;
 	private ScheduledFuture<?> scheduledFuture;
+	private Repository repository;
 
 	public Updater(WicketApplication application, Repository repository) {
 		this.application = application;
+		this.repository = repository;
 
 		timer = Executors.newScheduledThreadPool(1);
 
@@ -46,8 +48,8 @@ public class Updater {
 	class TimerTask implements Runnable {
 		List<Runnable> tasks = Arrays.asList(
 				//
-				new TopicusProjectsUpdateTask(application),
-				new HudsonUpdateTask(application));
+				new TopicusProjectsUpdateTask(application, repository),
+				new HudsonUpdateTask(application, repository));
 
 		@Override
 		public void run() {

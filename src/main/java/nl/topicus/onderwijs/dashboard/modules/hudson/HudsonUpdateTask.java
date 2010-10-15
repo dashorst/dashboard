@@ -1,5 +1,6 @@
 package nl.topicus.onderwijs.dashboard.modules.hudson;
 
+import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.slf4j.Logger;
@@ -12,10 +13,10 @@ public class HudsonUpdateTask implements Runnable {
 	private final WicketApplication application;
 	private final HudsonService retriever;
 
-	public HudsonUpdateTask(WicketApplication application) {
+	public HudsonUpdateTask(WicketApplication application, Repository repository) {
 		this.application = application;
 		retriever = new HudsonService();
-		retriever.onConfigure(application.getRepository());
+		retriever.onConfigure(repository);
 	}
 
 	@Override
