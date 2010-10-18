@@ -38,6 +38,8 @@ $.widget( "ui.dashboardTableMaster", {
 		this.element.empty();
 		$("<h3/>").append("&nbsp;").appendTo(this.element);
 		var data = $("<div class='data' />").appendTo(this.element);
+		data.append("<div class='prev button row'><div class='inner-row'>&#9650;</div></div>");
+		data.append("<div class='next button row'><div class='inner-row'>&#9660;</div></div>");
 		var startProjects = new Array();
 		this.options.projectKeys = new Array();
 		var index = 0;
@@ -84,6 +86,7 @@ $.widget( "ui.dashboardTableMaster", {
 
 		$("body").addClass("project-transition");
 		var dataDiv = this.element.find(".data");
+		dataDiv.find(".button").prependTo(dataDiv);
 		dataDiv.prepend("<div class='row'><div class='inner-row'>"+
 				this.options.projects[newProjects[0]]+"</div></div>");
 		$(document).triggerHandler("dashboard-table-heartbeat-projects");

@@ -9,6 +9,9 @@ html, body { background-color: black; color : white; font-size : 16pt; overflow:
 font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
 font-size: 1.1em;
 }
+#twitter {
+	display: none;
+}
 .effects-enabled #twitter ul .disabled {
 	height : 2em; 
 	-webkit-marquee-direction:left;
@@ -29,6 +32,9 @@ font-size: 1.1em;
 .effects-enabled {
 	-webkit-perspective: 1000;
 	-webkit-perspective-origin: center 45%;
+}
+.statusses {
+	height: 14em;
 }
 .statusses div.col { 
 	float:left;
@@ -75,6 +81,27 @@ font-size: 1.1em;
 }
 .col h3 { padding : 0; margin : 0  auto 0.3em auto; text-align : center; line-height : 1em;}
 
+.statusses div.data {
+	position: relative;
+}
+.statusses .prev.button.row {
+	position: absolute;
+	top: -1.8em;
+}
+.statusses .next.button.row {
+	position: absolute;
+	bottom: -1.8em;
+}
+.statusses .button.row .inner-row {
+	-webkit-border-radius: 10px;
+	-webkit-transition-property: opacity;
+	-webkit-transition-duration: 0.3s;
+	opacity: 0;
+	text-align: center;
+}
+.statusses .projects:hover .button.row .inner-row {
+	opacity: 1;
+}
 .statusses div.row {
 	margin : 0 -1.4em;
 	border : none;
