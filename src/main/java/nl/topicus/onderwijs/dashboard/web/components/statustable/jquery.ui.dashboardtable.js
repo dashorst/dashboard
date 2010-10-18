@@ -84,7 +84,20 @@ $.widget( "ui.dashboardTable", {
 		$(document).bind("dashboard-heartbeat", function() {
 			var count = $(document).data("dashboard-heartbeat-count");
 			if (count % self.options.secondsBetweenRotate == 0) {
+				var response = function() {
+					return self._updateJson.apply( self, arguments );
+				};
+				$.getJSON(self.options.dataUrl, response);
 				var index = self.element.prevAll().length;
+				var flipDiv;
+				if (self.element.hasClass("rotated")) {
+					flipDiv = self.element.find(".flip-front");
+				} else {
+					flipDiv = self.element.find(".flip-back");
+				}
+				var flipIndex = flipDiv.prevAll().length;
+				flipDiv.empty();
+				self._fillFlip(self, flipIndex, flipDiv);
 				$(document).oneTime(index * 200, onHeartBeat);
 			}
 		});
@@ -157,11 +170,11 @@ $.widget( "ui.dashboardTable", {
 			if (this.element.hasClass("rotated")) {
 				this.element.removeClass("rotated");
 				$(this.element).oneTime("1100ms", function() {
-					self.element.removeClass("rotate-enabled rotate-invert").addClass("rotate-default rotate-disabled");
+					self.element.removeClass("rotate-enabled").addClass("rotate-disabled");
+					self.element.removeClass("rotate-invert").addClass("rotate-default");
 					self.element.find(".flip-back").removeClass("flip-back").addClass("flip-hidden");
 					var flipDiv = self.element.find(".flip-"+doNextFlip);
-					flipDiv.empty().removeClass("flip-hidden").addClass("flip-back");
-					self._fillFlip(self, doNextFlip, flipDiv);
+					flipDiv.removeClass("flip-hidden").addClass("flip-back");
 				});
 			} else {
 				this.element.addClass("rotated");
@@ -170,8 +183,7 @@ $.widget( "ui.dashboardTable", {
 					self.element.removeClass("rotate-default").addClass("rotate-invert");
 					self.element.find(".flip-front").removeClass("flip-front").addClass("flip-hidden");
 					var flipDiv = self.element.find(".flip-"+doNextFlip);
-					flipDiv.empty().removeClass("flip-hidden").addClass("flip-front");
-					self._fillFlip(self, doNextFlip, flipDiv);
+					flipDiv.removeClass("flip-hidden").addClass("flip-front");
 				});
 			}
 		}
@@ -185,13 +197,10 @@ $.widget( "ui.dashboardTable", {
 				self._insertRow.apply(self, [dataDiv, flipIndex, project]);
 			});
 		}
-		var response = function() {
-			return self._updateJson.apply( self, arguments );
-		};
-		$.getJSON(this.options.dataUrl, response);
 	},
 	
 	_updateJson: function(data) {
+		console.log("update");
 		this.jsonData = data;
 	}
 });
