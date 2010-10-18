@@ -1,0 +1,62 @@
+@import url('fonts/Yanone/stylesheet.css');
+
+.bargraph {
+	height: 13em;
+}
+.bargraph h1 {
+	position: absolute;
+	display: block;
+	text-align: center;
+	color: #999;
+	left: 0;
+	bottom: 0.5em;
+	-webkit-transform: rotate(270deg);
+	-webkit-transform-origin: bottom left;
+	padding-right: 0.1em;
+}
+.bargraph .bar-box {
+	height: 11em;
+	float: left;
+	width: 7em;
+	position: relative;
+	margin: 0 0.5em;
+	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.9, transparent), to(rgba(255,255,255,0.5)));
+}
+.bargraph .bar-box h3 {
+	display: block;
+	position: absolute;
+	bottom: -0.5em;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0.5em;
+	text-shadow: 0px 0px 3px #000;
+}
+.bargraph .bar-box span.value {
+	-webkit-transition-property: bottom;
+	-webkit-transition-duration: 2s;
+	display: block;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+.bargraph .bar {
+	-webkit-transition-property: height, background-color;
+	-webkit-transition-duration: 2s;
+	position: absolute;
+	bottom: 0em;
+	width: 100%;
+	-webkit-border-top-left-radius: 1px;
+	-webkit-border-top-right-radius: 1px;
+}
+.color-1 .bargraph .bar {
+	background-color: blue;
+}
+.color-2 .bargraph .bar {
+	background-color: red;
+}
+.color-3 .bargraph .bar {
+	background-color: yellow;
+}
+.color-4 .bargraph .bar {
+	background-color: green;
+}

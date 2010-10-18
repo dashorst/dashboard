@@ -1,0 +1,103 @@
+@import url('fonts/Yanone/stylesheet.css');
+
+span.dot {
+	border-radius: 0.5em;
+	width : 1em;
+	height : 1em;
+	display: block;
+	float :left;
+}
+.builds span.dot:nth-child(1) {
+	border-radius: 0.7em;
+	width : 1.4em;
+	height : 1.4em;
+	margin-top: -0.05em;
+	margin-bottom: -0.05em;
+}
+.builds span.dot:nth-child(2) {
+	border-radius: 0.6em;
+	width : 1.2em;
+	height : 1.2em;
+	margin-top: 0.05em;
+	margin-bottom: 0.05em;
+}
+.builds span.dot:nth-child(3) {
+	border-radius: 0.5em;
+	width : 1em;
+	height : 1em;
+	margin-top: 0.15em;
+	margin-bottom: 0.15em;
+}
+.builds span.dot:nth-child(4) {
+	border-radius: 0.4em;
+	width : 0.8em;
+	height : 0.8em;
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+.builds span.dot:nth-child(5) {
+	border-radius: 0.3em;
+	width : 0.6em;
+	height : 0.6em;
+	margin-top: 0.35em;
+	margin-bottom: 0.35em;
+}
+
+.dots-1 span.dot,
+.dots-2 span.dot,
+.dots-3 span.dot,
+.dots-4 span.dot,
+.dots-5 span.dot {
+	margin : 0.15em 0.15em 0.15em 0.15em;
+}
+.dots-6 span.dot {
+	margin : 0.15em 0.05em 0.15em 0.05em;
+}
+.dots-7 span.dot {
+	margin : 0.22em 0.05em 0.22em 0.05em;
+	border-radius: 0.43em;
+	width : 0.86em;
+	height : 0.86em;
+}
+.dots-8 span.dot {
+	margin : 0.27em 0.05em 0.27em 0.05em;
+	border-radius: 0.38em;
+	width : 0.76em;
+	height : 0.76em;
+}
+.dots-9 span.dot {
+	margin : 0.31em 0.05em 0.31em 0.05em;
+	border-radius: 0.34em;
+	width : 0.68em;
+	height : 0.68em;
+}
+.dots-10 span.dot,
+.dots-11 span.dot {
+	margin : 0.34em 0.04em 0.34em 0.04em;
+	border-radius: 0.31em;
+	width : 0.61em;
+	height : 0.61em;
+}
+
+.dot.green { background-color : green; }
+.dot.yellow { background-color : yellow; }
+.dot.red { background-color : red; }
+.dot.gray { background-color : gray;}
+
+.builds .dot.gray {
+	-webkit-animation-name: blink;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes blink {
+	0% {
+		background-color: gray
+	}
+	50% {
+		background-color: #444;
+	}
+	100% {
+		background-color: gray
+	}
+}

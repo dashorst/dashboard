@@ -1,0 +1,155 @@
+@import url('fonts/Yanone/stylesheet.css');
+
+.statusses {
+	height: 14em;
+}
+.statusses div.col { 
+	float:left;
+	height:10.7em;
+	width:6em;
+	margin: 0 0.43em;
+	padding: 0.5em 1em;
+	border-radius: 0.5em;
+	line-height : 2em;
+}
+.effects-enabled .statusses .col { 
+	-webkit-transform-style: preserve-3d;
+}
+.effects-enabled .statusses div.rotate-enabled.col { 
+	-webkit-transition-property: -webkit-transform;
+	-webkit-transition-duration: 1s;
+}
+.statusses .flip {
+	position: absolute;
+	width:6em;
+}
+.effects-enabled .statusses .flip {
+	-webkit-backface-visibility: hidden;
+}
+
+.effects-disabled .statusses .flip.flip-back {
+	display: none;
+}
+.effects-enabled .statusses .flip.flip-front {
+	-webkit-transform: translateZ(1px);
+}
+.effects-enabled .statusses .flip.flip-back {
+	-webkit-transform: translateZ(-1px) rotateY(180deg);
+}
+.statusses .flip.flip-hidden {
+	display: none;
+}
+
+.effects-enabled .rotated {
+	-webkit-transform: rotateY(180deg);
+}
+.effects-enabled .rotated.rotate-invert {
+	-webkit-transform: rotateY(-180deg);
+}
+.col h3 { padding : 0; margin : 0  auto 0.3em auto; text-align : center; line-height : 1em;}
+
+.statusses div.data {
+	position: relative;
+}
+.statusses .button.row {
+	height: 1.5em;
+	position: absolute;
+}
+.statusses .prev.button.row {
+	top: -1.5em;
+}
+.statusses .next.button.row {
+	bottom: -1.5em;
+}
+.statusses .button.row .inner-row {
+	-webkit-border-radius: 10px;
+	-webkit-transition-property: opacity, background-color;
+	-webkit-transition-duration: 0.3s;
+	opacity: 0;
+	text-align: center;
+	width: 2.63em;
+	margin-left: 2em;
+	margin-right: 2em;
+	height: 1em;
+	line-height : 1em;
+	cursor: pointer;
+}
+.statusses .button.row .inner-row:hover {
+	background-color: #666;
+}
+.statusses .projects:hover .button.row .inner-row {
+	opacity: 1;
+}
+.statusses div.row {
+	margin : 0 -1.4em;
+	border : none;
+	clear: both;
+	height: 1.8em;
+	overflow: hidden;
+}
+.statusses .row .inner-row {
+	height: 1.3em;
+	line-height : 1.3em;
+	width: 6.63em;
+	background-color : rgba(64,64,64,0.5);
+	margin-top: 0.2em;
+	padding : 0.20em 1.1em;
+}
+.statusses div.col:first-child .inner-row {
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+}
+.statusses div.col:last-child .inner-row {
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+}
+.statusses #projects { text-align : right; }
+.statusses #projects .row {
+	padding-right: 1em;
+}
+.project-transition .statusses .row {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 1s;
+}
+.project-transition .statusses .inner-row {
+	-webkit-transition-property: margin-top;
+	-webkit-transition-duration: 1s;
+}
+.project-transition.fast .statusses .row {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 0.5s;
+}
+.project-transition.fast .statusses .inner-row {
+	-webkit-transition-property: margin-top;
+	-webkit-transition-duration: 0.5s;
+}
+.project-transition .statusses .row:first-child {
+	height: 0em!important;
+}
+.project-transition.animate .statusses .row:first-child {
+	height: 1.8em!important;
+}
+.project-transition .statusses .row:first-child .inner-row {
+	margin-top: -1.6em!important;
+}
+.project-transition.animate .statusses .row:first-child .inner-row {
+	margin-top: 0.2em!important;
+}
+.project-transition .statusses .row:last-child {
+	height: 1.8em!important;
+}
+.project-transition.animate .statusses .row:last-child {
+	height: 0em!important;
+}
+.rotate-invert.rotate-disabled .flip-front {
+	display: none;
+}
+.rotate-default.rotate-disabled .flip-back {
+	display: none;
+}
+
+.statusses .number .row { text-align : right; padding-right : 1.1em;}
+.statusses .color-1, .statusses .color-1 .flip { background-color : #fe6f1f;}
+.statusses .color-2, .statusses .color-2 .flip { background-color : #800020;}
+.statusses .color-3, .statusses .color-3 .flip { background-color : #400040;}
+.statusses .color-4, .statusses .color-4 .flip { background-color : #303000;}
