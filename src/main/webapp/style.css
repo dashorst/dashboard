@@ -225,6 +225,26 @@ span.dot {
 .dot.red { background-color : red; }
 .dot.gray { background-color : gray;}
 
+.builds .dot.gray {
+	-webkit-animation-name: blink;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+@-webkit-keyframes blink {
+	0% {
+		background-color: gray
+	}
+	50% {
+		background-color: #444;
+	}
+	100% {
+		background-color: gray
+	}
+}
+
+
 .bargraph {
 	height: 13em;
 }
