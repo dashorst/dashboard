@@ -95,8 +95,6 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	public JsStatement statement() {
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
-		options.put("secondsBetweenRotate", WicketApplication.get()
-				.isDevelopment() ? 5 : 10);
 		List<String> conversions = new ArrayList<String>();
 		List<String> htmlClasses = new ArrayList<String>();
 		for (Class<? extends DataSource<?>> curDataSource : dataSources

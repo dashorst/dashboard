@@ -1,7 +1,13 @@
 @import url('fonts/Yanone/stylesheet.css');
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
-html, body { background-color: black; color : white; font-size : 16pt; overflow: hidden;}
+html, body {
+	background-color: black;
+	color : white;
+	font-size : 16pt;
+	overflow: hidden;
+	-webkit-user-select:none;
+}
 
 .widget { width : 85%; margin : 1em auto; clear : both; position: relative; }
 .widget h1 { text-align : center;}
@@ -84,20 +90,31 @@ font-size: 1.1em;
 .statusses div.data {
 	position: relative;
 }
-.statusses .prev.button.row {
+.statusses .button.row {
+	height: 1.5em;
 	position: absolute;
-	top: -1.8em;
+}
+.statusses .prev.button.row {
+	top: -1.5em;
 }
 .statusses .next.button.row {
-	position: absolute;
-	bottom: -1.8em;
+	bottom: -1.5em;
 }
 .statusses .button.row .inner-row {
 	-webkit-border-radius: 10px;
-	-webkit-transition-property: opacity;
+	-webkit-transition-property: opacity, background-color;
 	-webkit-transition-duration: 0.3s;
 	opacity: 0;
 	text-align: center;
+	width: 2.63em;
+	margin-left: 2em;
+	margin-right: 2em;
+	height: 1em;
+	line-height : 1em;
+	cursor: pointer;
+}
+.statusses .button.row .inner-row:hover {
+	background-color: #666;
 }
 .statusses .projects:hover .button.row .inner-row {
 	opacity: 1;
@@ -136,6 +153,14 @@ font-size: 1.1em;
 .project-transition .statusses .inner-row {
 	-webkit-transition-property: margin-top;
 	-webkit-transition-duration: 1s;
+}
+.project-transition.fast .statusses .row {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 0.5s;
+}
+.project-transition.fast .statusses .inner-row {
+	-webkit-transition-property: margin-top;
+	-webkit-transition-duration: 0.5s;
 }
 .project-transition .statusses .row:first-child {
 	height: 0em!important;
@@ -284,6 +309,7 @@ span.dot {
 	bottom: 0.5em;
 	-webkit-transform: rotate(270deg);
 	-webkit-transform-origin: bottom left;
+	padding-right: 0.1em;
 }
 .bargraph .bar-box {
 	height: 11em;

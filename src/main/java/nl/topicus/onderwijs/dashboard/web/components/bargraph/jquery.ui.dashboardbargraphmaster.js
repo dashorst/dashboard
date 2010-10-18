@@ -39,8 +39,7 @@ $.widget( "ui.dashboardBarGraphMaster", {
 			.data("dashboard-bar-graph-data-set-index", 0)
 			.data("dashboard-bar-graph-data-set", this.options.dataSets[0].key)
 			.bind("dashboard-heartbeat",
-					function() {
-						var count = $(document).data("dashboard-heartbeat-count");
+					function(event, count) {
 						if (count % self.options.secondsBetweenSwitch == 0)
 							heartBeatDataSet();
 						if (count % 5 == 0)

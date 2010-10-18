@@ -6,7 +6,8 @@ $.widget( "ui.dashboardTableMaster", {
 		projects: {},
 		projectKeys: [],
 		maxProjects: 5,
-		secondsBetweenScroll: 15
+		secondsBetweenScroll: 15,
+		secondsBetweenRotate: 5
 	},
 
 	_create: function() {
@@ -29,17 +30,33 @@ $.widget( "ui.dashboardTableMaster", {
 		else if ( key === "secondsBetweenScroll" ) {
 			this.options.secondsBetweenScroll = value;
 		}
+		else if ( key === "secondsBetweenRotate" ) {
+			this.options.secondsBetweenRotate = value;
+		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
 
 	_initDraw: function() {
 		var self = this;
+		this.element.hover(function() {
+			self.hover = true;
+		}, function() {
+			self.hover = false;
+		});
 		this.element.empty();
 		$("<h3/>").append("&nbsp;").appendTo(this.element);
 		var data = $("<div class='data' />").appendTo(this.element);
 		data.append("<div class='prev button row'><div class='inner-row'>&#9650;</div></div>");
 		data.append("<div class='next button row'><div class='inner-row'>&#9660;</div></div>");
+		data.find(".prev.button").click(function() {
+			if (!$("body").hasClass("project-transition"))
+				return self._scrollUp.apply( self, [true] );
+		});
+		data.find(".next.button").click(function() {
+			if (!$("body").hasClass("project-transition"))
+				return self._scrollDown.apply( self, [true] );
+		});
 		var startProjects = new Array();
 		this.options.projectKeys = new Array();
 		var index = 0;
@@ -56,47 +73,84 @@ $.widget( "ui.dashboardTableMaster", {
 
 	_initHeartBeat: function() {
 		var self = this;
-		var heartBeatProjects = function() {
-			return self._heartBeatProjects.apply( self, arguments );
+		var scrollDown = function() {
+			return self._scrollDown.apply( self, [false] );
 		};
 		$(document)
 			.data("dashboard-table-project-index", this.options.projectKeys.length-1)
 			.bind("dashboard-heartbeat",
-					function() {
-						var count = $(document).data("dashboard-heartbeat-count");
-						if (count % self.options.secondsBetweenScroll == 0) {
-							$(document).oneTime("2s", heartBeatProjects);
+					function(event, count) {
+						if (self.hover)
+							return;
+						if (count % self.options.secondsBetweenRotate == 0) {
+							$(document).triggerHandler("dashboard-table-rotate");
+						}
+						if (count % self.options.secondsBetweenScroll == 2 && count > 2) {
+							scrollDown();
 						}
 					});
 	},
+	
+	_scrollUp: function(fast) {
+		var newProjectIndex = $(document).data("dashboard-table-project-index");
+		var newProjects = $(document).data("dashboard-table-projects");
+		for (var count=0; count<this.options.maxProjects-1; count++) {
+			newProjects[count] = newProjects[count+1];
+		}	
+		newProjectIndex++;
+		newProjectIndex = newProjectIndex % this.options.projectKeys.length;
+		newProjects[this.options.maxProjects-1] =
+			this.options.projectKeys[ (newProjectIndex+this.options.maxProjects) % this.options.projectKeys.length];
+		$(document).data("dashboard-table-projects", newProjects);
+		$(document).data("dashboard-table-project-index", newProjectIndex);
+		$(document).triggerHandler("dashboard-table-insert-project", [newProjects[this.options.maxProjects-1], false]);
 
-	_heartBeatProjects: function() {
+		$("body").addClass("project-transition animate");
+		if (fast)
+			$("body").addClass("fast");
+		var dataDiv = this.element.find(".data");
+		dataDiv.find(".button").appendTo(dataDiv);
+		dataDiv.append("<div class='row'><div class='inner-row'>"+
+				this.options.projects[newProjects[this.options.maxProjects-1]]+"</div></div>");
+		// a small delay is need, because elements need to be rendered before
+		// animations can start
+		$(document).oneTime("10ms", function() {
+			$("body").removeClass("animate");
+		});
+		$(document).oneTime(fast ? "550ms" : "1100ms", function() {
+			$("body").removeClass("project-transition fast");
+			$(".ui-dashboard-table .data .row:first-child").remove();
+		});
+	},
+
+	_scrollDown: function(fast) {
 		var newProjectIndex = $(document).data("dashboard-table-project-index");
 		var newProjects = $(document).data("dashboard-table-projects");
 		for (var count=this.options.maxProjects-1; count>0; count--) {
 			newProjects[count] = newProjects[count-1];
-		}	
+		}
 		newProjects[0] = this.options.projectKeys[newProjectIndex];
 		newProjectIndex--;
 		if (newProjectIndex < 0)
 			newProjectIndex = this.options.projectKeys.length-1;	
 		$(document).data("dashboard-table-projects", newProjects);
 		$(document).data("dashboard-table-project-index", newProjectIndex);
-		$(document).triggerHandler("dashboard-table-insert-project", newProjects[0]);
-
+		$(document).triggerHandler("dashboard-table-insert-project", [newProjects[0], true]);
+ 
 		$("body").addClass("project-transition");
+		if (fast)
+			$("body").addClass("fast");
 		var dataDiv = this.element.find(".data");
 		dataDiv.find(".button").prependTo(dataDiv);
 		dataDiv.prepend("<div class='row'><div class='inner-row'>"+
 				this.options.projects[newProjects[0]]+"</div></div>");
-		$(document).triggerHandler("dashboard-table-heartbeat-projects");
 		// a small delay is need, because elements need to be rendered before
 		// animations can start
-		$(document).oneTime("500ms", function() {
+		$(document).oneTime("10ms", function() {
 			$("body").addClass("animate");
 		});
-		$(document).oneTime("2000ms", function() {
-			$("body").removeClass("project-transition animate");
+		$(document).oneTime(fast ? "550ms" : "1100ms", function() {
+			$("body").removeClass("project-transition animate fast");
 			$(".ui-dashboard-table .data .row:last-child").remove();
 		});
 	}

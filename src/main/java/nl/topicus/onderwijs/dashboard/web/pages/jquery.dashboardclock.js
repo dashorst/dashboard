@@ -10,7 +10,7 @@
 					var count = $(document).data("dashboard-heartbeat-count") + 1;
 					$(document).data("dashboard-heartbeat-count", count);
 					if ($(document).data("dashboard-heartbeat-enabled"))
-						$(document).triggerHandler("dashboard-heartbeat");
+						$(document).triggerHandler("dashboard-heartbeat", count);
 				});
 		$("#stoplink").click(function(){
 			var newValue = $(document).data("dashboard-heartbeat-enabled");

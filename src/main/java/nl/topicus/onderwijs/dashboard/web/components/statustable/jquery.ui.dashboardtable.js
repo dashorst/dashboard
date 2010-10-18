@@ -19,8 +19,7 @@ $.widget( "ui.dashboardTable", {
 	options: {
 		dataUrl: "",
 		conversion: [],
-		htmlClasses: [],
-		secondsBetweenRotate: 5
+		htmlClasses: []
 	},
 	
 	standardConversions : {
@@ -61,9 +60,6 @@ $.widget( "ui.dashboardTable", {
 		else if ( key === "dataUrl" ) {
 			this.options.dataUrl = value;
 		}
-		else if ( key === "secondsBetweenRotate" ) {
-			this.options.secondsBetweenRotate = value;
-		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
@@ -81,25 +77,22 @@ $.widget( "ui.dashboardTable", {
 		var onHeartBeat = function() {
 			return self._onHeartBeat.apply( self, arguments );
 		};
-		$(document).bind("dashboard-heartbeat", function() {
-			var count = $(document).data("dashboard-heartbeat-count");
-			if (count % self.options.secondsBetweenRotate == 0) {
-				var response = function() {
-					return self._updateJson.apply( self, arguments );
-				};
-				$.getJSON(self.options.dataUrl, response);
-				var index = self.element.prevAll().length;
-				var flipDiv;
-				if (self.element.hasClass("rotated")) {
-					flipDiv = self.element.find(".flip-front");
-				} else {
-					flipDiv = self.element.find(".flip-back");
-				}
-				var flipIndex = flipDiv.prevAll().length;
-				flipDiv.empty();
-				self._fillFlip(self, flipIndex, flipDiv);
-				$(document).oneTime(index * 200, onHeartBeat);
+		$(document).bind("dashboard-table-rotate", function() {
+			var response = function() {
+				return self._updateJson.apply( self, arguments );
+			};
+			$.getJSON(self.options.dataUrl, response);
+			var index = self.element.prevAll().length;
+			var flipDiv;
+			if (self.element.hasClass("rotated")) {
+				flipDiv = self.element.find(".flip-front");
+			} else {
+				flipDiv = self.element.find(".flip-back");
 			}
+			var flipIndex = flipDiv.prevAll().length;
+			flipDiv.empty();
+			self._fillFlip(self, flipIndex, flipDiv);
+			$(document).oneTime(index * 200, onHeartBeat);
 		});
 
 		var onInsertProject = function() {
@@ -112,7 +105,6 @@ $.widget( "ui.dashboardTable", {
 		var self = this;
 		this.element.empty();
 		if (data) {
-			console.log(data);
 			this.jsonData = data;
 			this.nextFlip = 2;
 			$.each(data, function(flipIndex, value) {
@@ -133,23 +125,22 @@ $.widget( "ui.dashboardTable", {
 		flipDiv.append("<h3>"+this.jsonData[flipIndex].label+"</h3>");
 		var dataDiv = $("<div class='data' />").appendTo(flipDiv);
 		dataDiv.addClass(this.options.htmlClasses[flipIndex]);
-		var projects = $(document).data("dashboard-table-projects").slice();
-		projects.reverse();
-		$.each(projects, function(index, project) {
-			self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+		$.each($(document).data("dashboard-table-projects"), function(index, project) {
+			self._insertRow.apply(self, [dataDiv, flipIndex, project, false]);
 		});
 	},
 
-	_insertRow: function(dataDiv, flipIndex, project, extraClass) {
+	_insertRow: function(dataDiv, flipIndex, project, atTop) {
 		var rowValue = this.jsonData[flipIndex].data[project];
 		if (rowValue == undefined)
 			rowValue = "n/a";
 		else
 			rowValue = this._convertRowValue(flipIndex, rowValue);
 		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
-		if (extraClass)
-			rowDiv.addClass(extraClass);
-		dataDiv.prepend(rowDiv);
+		if (atTop)
+			dataDiv.prepend(rowDiv);
+		else
+			dataDiv.append(rowDiv);
 	},
 	
 	_convertRowValue: function(flipIndex, rowValue) {
@@ -189,18 +180,17 @@ $.widget( "ui.dashboardTable", {
 		}
 	},
 
-	_onInsertProject: function(target, project) {
+	_onInsertProject: function(event, project, atTop) {
 		var self = this;
 		if (this.jsonData) {
 			$.each(this.jsonData, function(flipIndex, value) {
 				var dataDiv = self.element.find(".flip-"+flipIndex+" .data");
-				self._insertRow.apply(self, [dataDiv, flipIndex, project]);
+				self._insertRow.apply(self, [dataDiv, flipIndex, project, atTop]);
 			});
 		}
 	},
 	
 	_updateJson: function(data) {
-		console.log("update");
 		this.jsonData = data;
 	}
 });
