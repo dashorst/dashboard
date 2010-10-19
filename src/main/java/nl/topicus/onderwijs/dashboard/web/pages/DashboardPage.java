@@ -68,6 +68,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 
 	@Override
 	public JsStatement statement() {
-		return new JsQuery(this).$().chain("dashboardClock");
+		return new JsQuery(this).$().chain("dashboardClock",
+				"'resources/application/starttime'");
 	}
 }

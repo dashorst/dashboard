@@ -122,12 +122,14 @@ $.widget( "ui.dashboardTable", {
 	},
 	
 	_fillFlip: function(self, flipIndex, flipDiv) {
-		flipDiv.append("<h3>"+this.jsonData[flipIndex].label+"</h3>");
-		var dataDiv = $("<div class='data' />").appendTo(flipDiv);
-		dataDiv.addClass(this.options.htmlClasses[flipIndex]);
-		$.each($(document).data("dashboard-table-projects"), function(index, project) {
-			self._insertRow.apply(self, [dataDiv, flipIndex, project, false]);
-		});
+		if (this.jsonData) {
+			flipDiv.append("<h3>"+this.jsonData[flipIndex].label+"</h3>");
+			var dataDiv = $("<div class='data' />").appendTo(flipDiv);
+			dataDiv.addClass(this.options.htmlClasses[flipIndex]);
+			$.each($(document).data("dashboard-table-projects"), function(index, project) {
+				self._insertRow.apply(self, [dataDiv, flipIndex, project, false]);
+			});
+		}
 	},
 
 	_insertRow: function(dataDiv, flipIndex, project, atTop) {

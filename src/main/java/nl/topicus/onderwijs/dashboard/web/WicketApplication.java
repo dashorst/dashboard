@@ -1,5 +1,6 @@
 package nl.topicus.onderwijs.dashboard.web;
 
+import java.util.Date;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.modules.Project;
@@ -7,6 +8,7 @@ import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
+import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
 
 import org.apache.wicket.Application;
@@ -33,6 +35,7 @@ public class WicketApplication extends WebApplication {
 	private RandomDataRepositoryImpl randomRepository = new RandomDataRepositoryImpl(
 			repository);
 	private boolean terminated;
+	private Date startTime = new Date();
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
@@ -53,6 +56,8 @@ public class WicketApplication extends WebApplication {
 		super.init();
 
 		getMarkupSettings().setStripWicketTags(true);
+		getSharedResources().putClassAlias(Application.class, "application");
+		getSharedResources().add("starttime", new StartTimeResource());
 	}
 
 	public List<Project> getProjects() {
@@ -96,5 +101,9 @@ public class WicketApplication extends WebApplication {
 
 	public boolean isShuttingDown() {
 		return terminated;
+	}
+
+	public Date getStartTime() {
+		return startTime;
 	}
 }
