@@ -22,7 +22,7 @@ import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.Projects;
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
 import org.apache.wicket.util.time.Duration;
@@ -39,12 +39,12 @@ class VocusStatusRetriever implements Retriever,
 	private Map<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
 
 	public VocusStatusRetriever() {
-		configuration.put(Projects.ATVO, Arrays.asList(
+		configuration.put(Keys.ATVO, Arrays.asList(
 				"https://start.vocuslis.nl/app/status",
 				"https://start2.vocuslis.nl/app/status",
 				"https://start3.atvo.nl/app/status",
 				"https://start4.atvo.nl/app/status"));
-		configuration.put(Projects.EDUARTE,
+		configuration.put(Keys.EDUARTE,
 				Arrays.asList("https://krd.educus.nl/krd/app/status"));
 		// configuration.put(Projects.IRIS, Arrays
 		// .asList("https://www.irisplus.nl/irisplus-prod/app/status"),
@@ -192,6 +192,6 @@ class VocusStatusRetriever implements Retriever,
 
 	public static void main(String[] args) {
 		VocusStatusRetriever retriever = new VocusStatusRetriever();
-		retriever.getProjectData(Projects.ATVO);
+		retriever.getProjectData(Keys.ATVO);
 	}
 }

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonUpdateTask;
+import nl.topicus.onderwijs.dashboard.modules.ns.NSUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
@@ -51,7 +52,8 @@ public class Updater {
 		List<Runnable> tasks = Arrays.asList(
 				//
 				new TopicusProjectsUpdateTask(application, repository),
-				new HudsonUpdateTask(application, repository));
+				new HudsonUpdateTask(application, repository),
+				new NSUpdateTask(application, repository));
 
 		@Override
 		public void run() {

@@ -23,7 +23,7 @@ import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.Projects;
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
 import org.apache.wicket.util.time.Duration;
@@ -44,10 +44,10 @@ public class VocusOuderportaalRetriever implements Retriever,
 	}
 
 	public VocusOuderportaalRetriever() {
-		configuration.put(Projects.ATVO_OUDERS, Arrays.asList(
+		configuration.put(Keys.ATVO_OUDERS, Arrays.asList(
 				"https://start.vocuslis.nl/ouders/status",
 				"https://start2.vocuslis.nl/ouders/status"));
-		configuration.put(Projects.PARNASSYS_OUDERS, Arrays
+		configuration.put(Keys.PARNASSYS_OUDERS, Arrays
 				.asList("https://start.parnassys.net/ouderportaal/status/"));
 
 		for (Project project : configuration.keySet()) {

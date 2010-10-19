@@ -15,7 +15,7 @@ import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.Projects;
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.BuildReference;
@@ -45,13 +45,13 @@ public class HudsonService implements Retriever {
 		mapper.getDeserializationConfig().disable(
 				Feature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-		configuration.put(Projects.ATVO,
+		configuration.put(Keys.ATVO,
 				Arrays.asList(Pattern.compile("Vocus \\- (.*)")));
-		configuration.put(Projects.ATVO_OUDERS,
+		configuration.put(Keys.ATVO_OUDERS,
 				Arrays.asList(Pattern.compile("Vocus Ouders")));
-		configuration.put(Projects.EDUARTE,
+		configuration.put(Keys.EDUARTE,
 				Arrays.asList(Pattern.compile("EduArte v(.*)")));
-		configuration.put(Projects.IRIS,
+		configuration.put(Keys.IRIS,
 				Arrays.asList(Pattern.compile("Cluedo")));
 	}
 
