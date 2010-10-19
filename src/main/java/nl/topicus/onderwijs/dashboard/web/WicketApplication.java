@@ -32,6 +32,7 @@ public class WicketApplication extends WebApplication {
 
 	private RandomDataRepositoryImpl randomRepository = new RandomDataRepositoryImpl(
 			repository);
+	private boolean terminated;
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
@@ -40,6 +41,7 @@ public class WicketApplication extends WebApplication {
 
 	@Override
 	protected void onDestroy() {
+		terminated = true;
 		log.info("Shutting down the dashboard application");
 		disableLiveUpdater();
 		randomRepository.stop();
@@ -93,7 +95,6 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public boolean isShuttingDown() {
-		// TODO Auto-generated method stub
-		return false;
+		return terminated;
 	}
 }
