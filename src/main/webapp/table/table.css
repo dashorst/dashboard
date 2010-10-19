@@ -1,5 +1,3 @@
-@import url('fonts/Yanone/stylesheet.css');
-
 .statusses {
 	height: 14em;
 }
@@ -102,10 +100,6 @@
 .statusses div.col:last-child .inner-row {
 	-webkit-border-top-right-radius: 10px;
 	-webkit-border-bottom-right-radius: 10px;
-}
-.statusses #projects { text-align : right; }
-.statusses #projects .row {
-	padding-right: 1em;
 }
 .project-transition .statusses .row {
 	-webkit-transition-property: height;
