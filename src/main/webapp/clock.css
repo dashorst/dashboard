@@ -1,0 +1,10 @@
+.clock {
+	position: fixed;
+	top: 0;
+	right: 0;
+	-webkit-border-radius: 0.7em;
+	border: 0.15em solid #fe6f1f;
+	padding: 0.2em 0.5em;
+	font-size: 200%;
+	color: white;
+}
