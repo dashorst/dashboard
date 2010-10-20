@@ -16,6 +16,8 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
+import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 
 import org.apache.wicket.util.time.Duration;
 
@@ -45,10 +47,10 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 		}
 	}
 
-	public <T extends DataSource<?>> void addDataSourceForProject(Project key,
+	public <T extends DataSource<?>> void addDataSource(Key key,
 			Class<T> datasourceType, T dataSource) {
 		sources.add(datasourceType);
-		base.addDataSourceForProject(key, datasourceType, dataSource);
+		base.addDataSource(key, datasourceType, dataSource);
 	}
 
 	public List<Project> getProjects() {
@@ -102,6 +104,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 							ret.add(DotColor.values()[random.nextInt(4)]);
 						}
 						value = ret;
+					} else if (settings.type().equals(Train.class)
+							&& settings.list()) {
+						value = createRandomTrains();
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
@@ -109,6 +114,22 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					return ret == null ? value : ret;
 				}
 				throw new UnsupportedOperationException();
+			}
+
+			private List<Train> createRandomTrains() {
+				Random random = new Random();
+				List<Train> ret = new ArrayList<Train>();
+				for (int count = 0; count < 10; count++) {
+					Train train = new Train();
+					train.setType(TrainType.values()[random.nextInt(TrainType
+							.values().length)]);
+					train.setDestination("random");
+					train.setDepartureTime(random.nextInt(24) + ":"
+							+ random.nextInt(60));
+					train.setDelay(random.nextInt(10));
+					train.setPlatform(Integer.toString(random.nextInt(10)));
+				}
+				return ret;
 			}
 		};
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),

@@ -47,19 +47,19 @@ class ParnassysStatusRetriever implements Retriever,
 	@Override
 	public void onConfigure(Repository repository) {
 		for (Project project : configuration.keySet()) {
-			repository.addDataSourceForProject(project, NumberOfUsers.class,
+			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
-			repository.addDataSourceForProject(project, NumberOfServers.class,
+			repository.addDataSource(project, NumberOfServers.class,
 					new NumberOfServersImpl(project, this));
-			repository.addDataSourceForProject(project,
+			repository.addDataSource(project,
 					NumberOfServersOffline.class,
 					new NumberOfServersOfflineImpl(project, this));
-			repository.addDataSourceForProject(project, Uptime.class,
+			repository.addDataSource(project, Uptime.class,
 					new UptimeImpl(project, this));
-			repository.addDataSourceForProject(project,
+			repository.addDataSource(project,
 					ApplicationVersion.class, new ApplicationVersionImpl(
 							project, this));
-			repository.addDataSourceForProject(project, ServerStatus.class,
+			repository.addDataSource(project, ServerStatus.class,
 					new ServerStatusImpl(project, this));
 		}
 	}

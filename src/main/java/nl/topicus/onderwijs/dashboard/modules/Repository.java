@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface Repository {
-	public <T extends DataSource<?>> void addDataSourceForProject(Project key,
+	public <T extends DataSource<?>> void addDataSource(Key key,
 			Class<T> datasourceType, T dataSource);
 
 	public Collection<DataSource<?>> getData(Key key);

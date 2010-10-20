@@ -58,13 +58,13 @@ public class HudsonService implements Retriever {
 	@Override
 	public void onConfigure(Repository repository) {
 		for (Project project : configuration.keySet()) {
-			repository.addDataSourceForProject(project,
+			repository.addDataSource(project,
 					NumberOfUnitTests.class, new NumberOfUnitTestsImpl(project,
 							this));
-			repository.addDataSourceForProject(project,
+			repository.addDataSource(project,
 					HudsonBuildStatus.class, new HudsonBuildStatusImpl(project,
 							this));
-			repository.addDataSourceForProject(project,
+			repository.addDataSource(project,
 					HudsonBuildNumber.class, new HudsonBuildNumberImpl(project,
 							this));
 		}

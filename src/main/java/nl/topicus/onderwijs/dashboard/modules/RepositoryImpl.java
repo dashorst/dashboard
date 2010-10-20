@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class RepositoryImpl implements Repository {
 	private List<Key> keys = Arrays.asList((Key) Keys.PARNASSYS,
-			Keys.PARNASSYS_OUDERS, Keys.EDUARTE, Keys.ATVO,
-			Keys.ATVO_OUDERS, Keys.IRIS);
+			Keys.PARNASSYS_OUDERS, Keys.EDUARTE, Keys.ATVO, Keys.ATVO_OUDERS,
+			Keys.IRIS, Keys.NS);
 
 	private Map<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>> index1 = new HashMap<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>>();
 	private Map<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>> index2 = new HashMap<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>>();
@@ -19,7 +19,7 @@ public class RepositoryImpl implements Repository {
 	public RepositoryImpl() {
 	}
 
-	public <T extends DataSource<?>> void addDataSourceForProject(Project key,
+	public <T extends DataSource<?>> void addDataSource(Key key,
 			Class<T> datasourceType, T dataSource) {
 		Map<Class<? extends DataSource<?>>, DataSource<?>> map = index1
 				.get(key);

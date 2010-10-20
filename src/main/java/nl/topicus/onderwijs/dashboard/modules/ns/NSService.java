@@ -1,10 +1,13 @@
 package nl.topicus.onderwijs.dashboard.modules.ns;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.Trains;
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
@@ -21,11 +24,13 @@ public class NSService implements Retriever {
 	private static final int TIME = 0;
 	private static final int DESTINATION = 1;
 	private static final int PLATFORM = 2;
-	private static final int VIA = 3;
 	private static final int DETAILS = 4;
+
+	private List<Train> trains = new ArrayList<Train>();
 
 	@Override
 	public void onConfigure(Repository repository) {
+		repository.addDataSource(Keys.NS, Trains.class, new TrainsImpl(this));
 	}
 
 	@Override
@@ -42,6 +47,7 @@ public class NSService implements Retriever {
 
 			source.fullSequentialParse();
 
+			List<Train> newTrains = new ArrayList<Train>();
 			List<Element> tableRows = source.getAllElements(HTMLElementName.TR);
 			for (Element tableRow : tableRows) {
 				if (tableRow.getParentElement().getName().equals(
@@ -66,9 +72,10 @@ public class NSService implements Retriever {
 						}
 						index++;
 					}
-					System.out.println(train);
+					newTrains.add(train);
 				}
 			}
+			trains = newTrains;
 		} catch (Exception e) {
 			log.error("Unable to refresh data from ns: {} {}", e.getClass()
 					.getSimpleName(), e.getMessage());
@@ -119,8 +126,14 @@ public class NSService implements Retriever {
 			train.setType(TrainType.HIGH_SPEED);
 		else if (details.contains("ICE"))
 			train.setType(TrainType.HIGH_SPEED);
+		else if (details.contains("Rijdt vandaag niet"))
+			train.setType(TrainType.CANCELED);
 		else
 			train.setType(TrainType.UNKNOWN);
+	}
+
+	public List<Train> getTrains() {
+		return trains;
 	}
 
 	public static void main(String[] args) {
