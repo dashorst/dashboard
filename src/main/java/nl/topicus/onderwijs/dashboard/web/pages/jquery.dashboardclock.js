@@ -21,7 +21,7 @@
 				$(document).triggerHandler("dashboard-heartbeat", count);
 		});
 		doc.everyTime("200ms", "clock-update", function() {
-			$(".clock").text(Date().substring(16, 24));
+			$(".clock .time").text(Date().substring(16, 24));
 		});
 		$("#stoplink").click(function() {
 			var newValue = $(document).data("dashboard-heartbeat-enabled");

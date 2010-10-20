@@ -143,7 +143,11 @@
 }
 
 .statusses .number .row { text-align : right; padding-right : 1.1em;}
-.statusses .color-1, .statusses .color-1 .flip { background-color : #fe6f1f;}
-.statusses .color-2, .statusses .color-2 .flip { background-color : #800020;}
-.statusses .color-3, .statusses .color-3 .flip { background-color : #400040;}
-.statusses .color-4, .statusses .color-4 .flip { background-color : #303000;}
+.statusses .color-1, .statusses .color-1 .flip { background-color : #abc507;}
+.statusses .color-2, .statusses .color-2 .flip { background-color : #ec1559;}
+.statusses .color-3, .statusses .color-3 .flip { background-color : #74c6f1;}
+.statusses .color-4, .statusses .color-4 .flip { background-color : #586b7a;}
+.statusses .color-5, .statusses .color-5 .flip { background-color : #94b3c5;}
+.statusses .color-6, .statusses .color-6 .flip { background-color : #ff4a12;}
+.statusses .color-7, .statusses .color-7 .flip { background-color : #f7ae16;}
+.statusses .color-8, .statusses .color-8 .flip { background-color : #820f00;}

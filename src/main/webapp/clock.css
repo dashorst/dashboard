@@ -2,9 +2,17 @@
 	position: fixed;
 	top: 0;
 	right: 0;
-	-webkit-border-radius: 0.7em;
-	border: 0.15em solid #fe6f1f;
 	padding: 0.2em 0.5em;
-	font-size: 200%;
-	color: white;
+	font-size: 150%;
+}
+.clock .time {
+	color: #d00;
+	text-shadow: 0px 0px 7px #e90;
+	font-family: 'DigitaldreamFatRegular', arial, serif;
+}
+.clock .background {
+	position: absolute;
+	z-index: -1;
+	color: #222;
+	font-family: 'DigitaldreamRegular', arial, serif;
 }

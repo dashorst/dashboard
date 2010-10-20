@@ -46,15 +46,11 @@
 	-webkit-border-top-left-radius: 1px;
 	-webkit-border-top-right-radius: 1px;
 }
-.color-1 .bargraph .bar {
-	background-color: blue;
-}
-.color-2 .bargraph .bar {
-	background-color: red;
-}
-.color-3 .bargraph .bar {
-	background-color: yellow;
-}
-.color-4 .bargraph .bar {
-	background-color: green;
-}
+.color-1 .bargraph .bar { background-color: #abc507;}
+.color-2 .bargraph .bar { background-color: #ec1559;}
+.color-3 .bargraph .bar { background-color: #74c6f1;}
+.color-4 .bargraph .bar { background-color: #586b7a;}
+.color-5 .bargraph .bar { background-color: #94b3c5;}
+.color-6 .bargraph .bar { background-color: #ff4a12;}
+.color-7 .bargraph .bar { background-color: #f7ae16;}
+.color-8 .bargraph .bar { background-color: #820f00;}
