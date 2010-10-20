@@ -1,5 +1,7 @@
 .bargraph {
 	height: 13em;
+	padding-left: 2em;
+	font-size: 14.5pt;
 }
 .bargraph h1 {
 	position: absolute;
@@ -11,6 +13,7 @@
 	-webkit-transform: rotate(270deg);
 	-webkit-transform-origin: bottom left;
 	padding-right: 0.1em;
+	margin-left: 1.1em;
 }
 .bargraph .bar-box {
 	height: 11em;

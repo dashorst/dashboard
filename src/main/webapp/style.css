@@ -9,12 +9,18 @@ html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffees
 html, body {
 	background-color: black;
 	color : white;
-	font-size : 16pt;
+	font-size : 15pt;
 	overflow: hidden;
 	-webkit-user-select:none;
 }
 
-.widget { width : 85%; margin : 1em auto; clear : both; position: relative; }
+.debug {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.widget { margin : 2em 1em 1em; clear : both; position: relative; }
 .widget h1 { text-align : center;}
 .ui-widget {
 font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
