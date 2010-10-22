@@ -39,7 +39,7 @@ public class NSService implements Retriever {
 			// StatusPageResponse response = RetrieverUtils
 			// .getStatuspage("http://192.168.55.113/api/json");
 			StatusPageResponse response = RetrieverUtils
-					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station=Deventer");
+					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station=Amsterdam");
 			if (response.getHttpStatusCode() != 200) {
 				return;
 			}

@@ -1,12 +1,10 @@
 package nl.topicus.onderwijs.dashboard.web.components.table;
 
-import java.util.List;
-
-import nl.topicus.onderwijs.dashboard.datasources.Trains;
+import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
+import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.modules.KeyProperty;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -25,21 +23,26 @@ import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
 public class TablePanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer table;
-	private JsonResourceBehavior<List<Train>> dataResource;
+	private JsonResourceBehavior<Object> dataResource;
+	private Class<? extends DataSource<?>> dataSource;
+	private Key key;
 
-	public TablePanel(String id) {
+	public TablePanel(String id, Class<? extends DataSource<?>> dataSource,
+			Key key) {
 		super(id);
+		this.dataSource = dataSource;
+		this.key = key;
 
-		this.dataResource = new JsonResourceBehavior<List<Train>>(
-				new AbstractReadOnlyModel<List<Train>>() {
+		this.dataResource = new JsonResourceBehavior<Object>(
+				new AbstractReadOnlyModel<Object>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public List<Train> getObject() {
+					public Object getObject() {
 						Repository repository = WicketApplication.get()
 								.getRepository();
-						return repository.getData(Trains.class).get(Keys.NS)
-								.getValue();
+						return repository.getData(TablePanel.this.dataSource)
+								.get(TablePanel.this.key).getValue();
 					}
 				});
 		add(dataResource);
@@ -58,13 +61,15 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 
 	@Override
 	public JsStatement statement() {
-		DataSourceSettings settings = Trains.class
+		DataSourceSettings settings = dataSource
 				.getAnnotation(DataSourceSettings.class);
+		KeyProperty keyProperty = dataSource.getAnnotation(KeyProperty.class);
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
 		options.putLiteral("label", settings.label());
 		options.putLiteral("htmlClass", settings.htmlClass());
 		options.putLiteral("conversion", settings.conversion());
+		options.putLiteral("keyProperty", keyProperty.value());
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
 	}

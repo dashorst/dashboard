@@ -50,3 +50,20 @@
 .table.ns tbody tr:first-child td {
 	padding-top: 0.7em;
 }
+.table.ns .old {
+	-webkit-animation-name: old;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes old {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}

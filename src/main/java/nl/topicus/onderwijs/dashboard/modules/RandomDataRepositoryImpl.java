@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -131,6 +133,12 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					train.setPlatform(Integer.toString(random.nextInt(10)));
 					ret.add(train);
 				}
+				Collections.sort(ret, new Comparator<Train>() {
+					@Override
+					public int compare(Train o1, Train o2) {
+						return o1.getKey().compareTo(o2.getKey());
+					}
+				});
 				return ret;
 			}
 		};

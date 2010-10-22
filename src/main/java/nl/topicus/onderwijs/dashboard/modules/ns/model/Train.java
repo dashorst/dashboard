@@ -68,4 +68,15 @@ public class Train implements Serializable {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public String getKey() {
+		StringBuilder ret = new StringBuilder();
+		if (getDepartureTime().length() < 5) {
+			ret.append('0');
+		}
+		ret.append(getDepartureTime());
+		ret.append('-');
+		ret.append(getPlatform());
+		return ret.toString();
+	}
 }

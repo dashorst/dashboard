@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.Trains;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
@@ -57,7 +59,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 				new ListModel<Class<? extends DataSource<? extends Number>>>(
 						datasources)));
 		add(new StatusTablePanel("table"));
-		add(new TablePanel("ns"));
+		add(new TablePanel("ns", Trains.class, Keys.NS));
 	}
 
 	@Override

@@ -14,7 +14,9 @@
  */
 (function( $, undefined ) {
 
-$.conversions = {};
+if (!$.conversions) {
+	$.conversions = {};
+}
 
 $.widget( "ui.dashboardTable", {
 
@@ -22,7 +24,8 @@ $.widget( "ui.dashboardTable", {
 		dataUrl: "",
 		conversion: "",
 		htmlClass: "",
-		label: ""
+		label: "",
+		keyProperty: ""
 	},
 	
 	_create: function() {
@@ -50,11 +53,17 @@ $.widget( "ui.dashboardTable", {
 		else if ( key === "label" ) {
 			this.options.label = value;
 		}
+		else if ( key === "keyProperty" ) {
+			this.options.keyProperty = keyProperty;
+		}
 
 		$.Widget.prototype._setOption.apply( this, arguments );
 	},
 
 	_initialRead: function() {
+		this.element.empty();
+		this.element.append("<thead><tr><th colspan='5'>"+this.options.label+"</th></tr></thead>");
+		this.element.append("<tbody />");
 		var self = this;
 		var response = function() {
 			return self._redraw.apply( self, arguments );
@@ -68,16 +77,39 @@ $.widget( "ui.dashboardTable", {
 
 	_redraw: function( data ) {
 		var self = this;
-		this.element.empty();
 		if (data) {
+			var tbody = this.element.find("tbody");
+			var rows = {};
+			var ids = new Array();
+			var idCount = 0;
+			tbody.find("tr").each(function(index, element) {
+				var row = $(element);
+				ids[idCount] = row.data("id");
+				row.addClass("old");
+				rows[row.data("id")] = row;
+				idCount++;
+			});
 			this.jsonData = data;
-			this.element.append("<thead><tr><th colspan='5'>"+this.options.label+"</th></tr></thead>");
-			var tbody = $("<tbody />")
 			$.each(data, function(index, value) {
 				var conversionFunction = $.conversions[self.options.conversion];
-				tbody.append(conversionFunction(value));
+				var row = conversionFunction(value);
+				var rowId = value[self.options.keyProperty];
+				row.data("id", rowId);
+				if (!rows[rowId]) {
+					ids[idCount] = rowId;
+					idCount++;
+				}
+				rows[rowId] = row;
 			});
-			this.element.append(tbody);
+			ids.sort();
+			console.log(ids);
+			tbody.empty();
+			$.each(ids, function(index, id){
+				tbody.append(rows[id]);
+			});
+			tbody.oneTime("4s", function() {
+				tbody.find(".old").remove();
+			});
 		}
 	},
 });

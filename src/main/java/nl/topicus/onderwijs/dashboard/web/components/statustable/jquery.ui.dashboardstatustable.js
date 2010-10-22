@@ -14,26 +14,27 @@
  */
 (function( $, undefined ) {
 
+if (!$.conversions) {
+	$.conversions = {};
+}
+$.conversions.identity = function(value) {
+	return value;
+}
+$.conversions.dots = function(value) {
+	var ret = "<div class='dots-"+value.length+"'>";
+	$.each(value, function(index, curDot) {
+		ret += '<span class="dot '+curDot.toLowerCase()+'"></span>';
+	});
+	ret += "</div>";
+	return ret;
+}
+	
 $.widget( "ui.dashboardStatusTable", {
 
 	options: {
 		dataUrl: "",
 		conversion: [],
 		htmlClasses: []
-	},
-	
-	standardConversions : {
-		"identity" : function(value) {
-			return value;
-		},
-		"dots" : function(value) {
-			var ret = "<div class='dots-"+value.length+"'>";
-			$.each(value, function(index, curDot) {
-				ret += '<span class="dot '+curDot.toLowerCase()+'"></span>';
-			});
-			ret += "</div>";
-			return ret;
-		}
 	},
 
 	_create: function() {
@@ -147,8 +148,8 @@ $.widget( "ui.dashboardStatusTable", {
 	
 	_convertRowValue: function(flipIndex, rowValue) {
 		if (flipIndex >= this.options.conversion.length)
-			return this.standardConversions["identity"](rowValue);
-		return this.standardConversions[this.options.conversion[flipIndex]](rowValue);
+			return $.conversions["identity"](rowValue);
+		return $.conversions[this.options.conversion[flipIndex]](rowValue);
 	},
 
 	_onHeartBeat: function() {
