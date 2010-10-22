@@ -1,6 +1,6 @@
 (function( $, undefined ) {
 
-$.widget( "ui.dashboardTableMaster", {
+$.widget( "ui.dashboardStatusTableMaster", {
 
 	options: {
 		projects: {},
@@ -11,14 +11,14 @@ $.widget( "ui.dashboardTableMaster", {
 	},
 
 	_create: function() {
-		this.element.addClass( "ui-dashboard-table ui-widget" );
+		this.element.addClass( "ui-dashboard-status-table ui-widget" );
 
 		this._initDraw();
 		this._initHeartBeat();
 	},
 
 	destroy: function() {
-		this.element.removeClass( "ui-dashboard-table ui-widget" );
+		this.element.removeClass( "ui-dashboard-status-table ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},
@@ -119,7 +119,7 @@ $.widget( "ui.dashboardTableMaster", {
 		});
 		$(document).oneTime(fast ? "550ms" : "1100ms", function() {
 			$("body").removeClass("project-transition fast");
-			$(".ui-dashboard-table .data .row:first-child").remove();
+			$(".ui-dashboard-status-table .data .row:first-child").remove();
 		});
 	},
 
@@ -151,7 +151,7 @@ $.widget( "ui.dashboardTableMaster", {
 		});
 		$(document).oneTime(fast ? "550ms" : "1100ms", function() {
 			$("body").removeClass("project-transition animate fast");
-			$(".ui-dashboard-table .data .row:last-child").remove();
+			$(".ui-dashboard-status-table .data .row:last-child").remove();
 		});
 	}
 });

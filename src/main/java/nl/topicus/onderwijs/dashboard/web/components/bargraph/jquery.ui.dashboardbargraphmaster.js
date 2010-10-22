@@ -8,13 +8,13 @@ $.widget( "ui.dashboardBarGraphMaster", {
 	},
 
 	_create: function() {
-		this.element.addClass( "ui-dashboard-table ui-widget" );
+		this.element.addClass( "ui-dashboard-bar-graph ui-widget" );
 
 		this._initHeartBeat();
 	},
 
 	destroy: function() {
-		this.element.removeClass( "ui-dashboard-table ui-widget" );
+		this.element.removeClass( "ui-dashboard-bar-graph ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},

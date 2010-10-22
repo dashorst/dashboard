@@ -88,7 +88,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
 		manager.addJavaScriptResource(StatusTableColumnPanel.class,
-				"jquery.ui.dashboardtable.js");
+				"jquery.ui.dashboardstatustable.js");
 	}
 
 	@Override
@@ -116,7 +116,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 			throw new RuntimeException(e);
 		}
 		JsQuery jsq = new JsQuery(this);
-		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
+		return jsq.$().chain("dashboardStatusTable",
+				options.getJavaScriptOptions());
 	}
 
 	@Override

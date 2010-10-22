@@ -1,8 +1,9 @@
 @import url('fonts/Yanone/stylesheet.css');
 @import url('fonts/DigitalDream/stylesheet.css');
-@import url('table/table.css');
-@import url('table/dots.css');
-@import url('bargraph/bargraph.css');
+@import url('statustable.css');
+@import url('dots.css');
+@import url('bargraph.css');
+@import url('table.css');
 @import url('clock.css');
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }

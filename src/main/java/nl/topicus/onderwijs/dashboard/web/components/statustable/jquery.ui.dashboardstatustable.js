@@ -14,7 +14,7 @@
  */
 (function( $, undefined ) {
 
-$.widget( "ui.dashboardTable", {
+$.widget( "ui.dashboardStatusTable", {
 
 	options: {
 		dataUrl: "",
@@ -37,7 +37,7 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	_create: function() {
-		this.element.addClass( "ui-dashboard-table ui-widget" );
+		this.element.addClass( "ui-dashboard-status-table ui-widget" );
 
 		this.options.identifier = this.element.attr("id");
 		this._initialRead();
@@ -45,7 +45,7 @@ $.widget( "ui.dashboardTable", {
 	},
 
 	destroy: function() {
-		this.element.removeClass( "ui-dashboard-table ui-widget" );
+		this.element.removeClass( "ui-dashboard-status-table ui-widget" );
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},

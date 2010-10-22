@@ -124,10 +124,12 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					train.setType(TrainType.values()[random.nextInt(TrainType
 							.values().length)]);
 					train.setDestination("random");
+					int minute = random.nextInt(60);
 					train.setDepartureTime(random.nextInt(24) + ":"
-							+ random.nextInt(60));
+							+ (minute < 10 ? "0" : "") + minute);
 					train.setDelay(random.nextInt(10));
 					train.setPlatform(Integer.toString(random.nextInt(10)));
+					ret.add(train);
 				}
 				return ret;
 			}

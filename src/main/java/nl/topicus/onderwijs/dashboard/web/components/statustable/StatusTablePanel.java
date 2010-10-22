@@ -84,7 +84,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
 		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.ui.dashboardtablemaster.js");
+				"jquery.ui.dashboardstatustablemaster.js");
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		options.put("secondsBetweenRotate", WicketApplication.get()
 				.isDevelopment() ? 5 : 10);
 		JsQuery jsq = new JsQuery(projects);
-		return jsq.$().chain("dashboardTableMaster",
+		return jsq.$().chain("dashboardStatusTableMaster",
 				options.getJavaScriptOptions());
 	}
 }

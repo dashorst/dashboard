@@ -1,0 +1,52 @@
+.table {
+	height: 15em;
+	-webkit-border-radius: 1em;
+	float: left;
+}
+.table.ns {
+	background-image: url('ns.svg');
+	background-size: 100%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-color: rgba(64, 64, 64, 0.496094);
+	color: white;
+}
+.table.ns thead tr th {
+	background-color: #fc3;
+	-webkit-border-radius: 1em;
+}
+.table.ns th {
+	font-size: 150%;
+	font-weight: bold;
+	color: #006;
+}
+.table.ns tr {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 3s;
+}
+.table.ns .type {
+	width: 2em;
+}
+.table.ns .departureTime {
+	width: 2.5em;
+	text-align: right;
+	padding-right: 0.3em;
+}
+.table.ns .delay {
+	color: red;
+	font-weight: bold;
+	width: 2em;
+}
+.table.ns .platform {
+	width: 1.5em;
+}
+.table.ns .destination {
+	width: 10em;
+	overflow: hidden;
+}
+.table.ns tr:nth-child(n+10) {
+	display: none;
+}
+.table.ns tbody tr:first-child td {
+	padding-top: 0.7em;
+}

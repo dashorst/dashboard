@@ -9,6 +9,7 @@ import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
+import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
 
 import org.apache.wicket.Application;
@@ -56,6 +57,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 				new ListModel<Class<? extends DataSource<? extends Number>>>(
 						datasources)));
 		add(new StatusTablePanel("table"));
+		add(new TablePanel("ns"));
 	}
 
 	@Override

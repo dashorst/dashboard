@@ -77,10 +77,10 @@ span.dot {
 	height : 0.61em;
 }
 
-.dot.green { background-color : green; }
-.dot.yellow { background-color : yellow; }
-.dot.red { background-color : red; }
-.dot.gray { background-color : gray;}
+.dot.green { background-color : #00c000; }
+.dot.yellow { background-color : #ff0; }
+.dot.red { background-color : #f00; }
+.dot.gray { background-color : #a0a0a0;}
 
 .builds .dot.gray {
 	-webkit-animation-name: blink;
@@ -90,12 +90,12 @@ span.dot {
 
 @-webkit-keyframes blink {
 	0% {
-		background-color: gray
+		background-color: rgba(160, 160, 160, 1);
 	}
 	50% {
-		background-color: #444;
+		background-color: rgba(160, 160, 160, 0.2);
 	}
 	100% {
-		background-color: gray
+		background-color: rgba(160, 160, 160, 1);
 	}
 }
