@@ -1,7 +1,7 @@
 package nl.topicus.onderwijs.dashboard.modules.hudson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,9 +14,10 @@ import java.util.regex.Pattern;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
+import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.Project;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.BuildReference;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Hudson;
@@ -25,6 +26,7 @@ import nl.topicus.onderwijs.dashboard.modules.hudson.model.JobReference;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
+import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -35,39 +37,40 @@ public class HudsonService implements Retriever {
 	private static final Logger log = LoggerFactory
 			.getLogger(HudsonService.class);
 
-	private Map<Project, List<Pattern>> configuration = new HashMap<Project, List<Pattern>>();
 	private final ObjectMapper mapper = new ObjectMapper();
 
-	private Map<Key<BuildReference>, Build> buildsCache = new HashMap<Key<BuildReference>, Build>();
+	private Map<HudsonKey<BuildReference>, Build> buildsCache = new HashMap<HudsonKey<BuildReference>, Build>();
 	private ConcurrentHashMap<Project, List<Job>> jobsCache = new ConcurrentHashMap<Project, List<Job>>();
 
 	public HudsonService() {
 		mapper.getDeserializationConfig().disable(
 				Feature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-		configuration.put(Keys.ATVO,
-				Arrays.asList(Pattern.compile("Vocus \\- (.*)")));
-		configuration.put(Keys.ATVO_OUDERS,
-				Arrays.asList(Pattern.compile("Vocus Ouders")));
-		configuration.put(Keys.EDUARTE,
-				Arrays.asList(Pattern.compile("EduArte v(.*)")));
-		configuration.put(Keys.IRIS,
-				Arrays.asList(Pattern.compile("Cluedo")));
 	}
 
 	@Override
 	public void onConfigure(Repository repository) {
-		for (Project project : configuration.keySet()) {
-			repository.addDataSource(project,
-					NumberOfUnitTests.class, new NumberOfUnitTestsImpl(project,
-							this));
-			repository.addDataSource(project,
-					HudsonBuildStatus.class, new HudsonBuildStatusImpl(project,
-							this));
-			repository.addDataSource(project,
-					HudsonBuildNumber.class, new HudsonBuildNumberImpl(project,
-							this));
+		Settings settings = getSettings();
+
+		Map<Key, Map<String, ?>> serviceSettings = settings
+				.getServiceSettings(HudsonService.class);
+		for (Key key : serviceSettings.keySet()) {
+			if (key instanceof Project) {
+				Project project = (Project) key;
+				repository.addDataSource(project, NumberOfUnitTests.class,
+						new NumberOfUnitTestsImpl(project, this));
+				repository.addDataSource(project, HudsonBuildStatus.class,
+						new HudsonBuildStatusImpl(project, this));
+				repository.addDataSource(project, HudsonBuildNumber.class,
+						new HudsonBuildNumberImpl(project, this));
+			}
 		}
+	}
+
+	private Settings getSettings() {
+		ConfigurationRepository configurationRepository = new ConfigurationRepository();
+		Settings settings = configurationRepository
+				.getConfiguration(Settings.class);
+		return settings;
 	}
 
 	public static void main(String[] args) {
@@ -76,20 +79,39 @@ public class HudsonService implements Retriever {
 
 	public void refreshData() {
 		try {
-			StatusPageResponse response = RetrieverUtils
-					.getStatuspage("http://192.168.55.113/api/json");
-			if (response.getHttpStatusCode() != 200) {
-				return;
-			}
-			Hudson hudson = mapper.readValue(response.getPageContent(),
-					Hudson.class);
-			for (JobReference jobReference : hudson.getJobs()) {
-				String name = jobReference.getName();
-				for (Entry<Project, List<Pattern>> entry : configuration
-						.entrySet()) {
-					for (Pattern pattern : entry.getValue()) {
-						if (pattern.matcher(name).matches()) {
-							refreshData(entry.getKey(), jobReference);
+			Settings settings = getSettings();
+
+			Map<Key, Map<String, ?>> serviceSettings = settings
+					.getServiceSettings(HudsonService.class);
+			for (Entry<Key, Map<String, ?>> entry : serviceSettings.entrySet()) {
+				if (!(entry.getKey() instanceof Project))
+					continue;
+
+				Project project = (Project) entry.getKey();
+
+				Map<String, ?> hudsonSettingsForProject = entry.getValue();
+
+				String url = hudsonSettingsForProject.get("url").toString();
+
+				@SuppressWarnings("unchecked")
+				Collection<String> patterns = (Collection<String>) hudsonSettingsForProject
+						.get("matchers");
+
+				if (!url.endsWith("/"))
+					url = url + "/";
+				StatusPageResponse response = RetrieverUtils.getStatuspage(url
+						+ "api/json");
+				if (response.getHttpStatusCode() != 200) {
+					return;
+				}
+				Hudson hudson = mapper.readValue(response.getPageContent(),
+						Hudson.class);
+
+				for (JobReference jobReference : hudson.getJobs()) {
+					String name = jobReference.getName();
+					for (String pattern : patterns) {
+						if (Pattern.matches(pattern, name)) {
+							refreshData(project, jobReference);
 						}
 					}
 				}
@@ -151,8 +173,8 @@ public class HudsonService implements Retriever {
 	}
 
 	public Build getBuild(Project project, BuildReference reference) {
-		if (buildsCache.containsKey(Key.of(project, reference))) {
-			return buildsCache.get(Key.of(project, reference));
+		if (buildsCache.containsKey(HudsonKey.of(project, reference))) {
+			return buildsCache.get(HudsonKey.of(project, reference));
 		}
 		if (buildsCache.size() > 1000) {
 			buildsCache.clear();
@@ -168,7 +190,7 @@ public class HudsonService implements Retriever {
 			if (!build.isBuilding()) {
 				// don't store the build result in the cache when it's still
 				// building.
-				buildsCache.put(Key.of(project, reference), build);
+				buildsCache.put(HudsonKey.of(project, reference), build);
 			}
 			return build;
 		} catch (Exception e) {
@@ -180,11 +202,11 @@ public class HudsonService implements Retriever {
 		}
 	}
 
-	public static class Key<T> {
+	public static class HudsonKey<T> {
 		private final Project project;
 		private final T reference;
 
-		public Key(Project project, T reference) {
+		public HudsonKey(Project project, T reference) {
 			this.project = project;
 			this.reference = reference;
 		}
@@ -216,7 +238,7 @@ public class HudsonService implements Retriever {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Key<?> other = (Key<?>) obj;
+			HudsonKey<?> other = (HudsonKey<?>) obj;
 			if (project == null) {
 				if (other.project != null)
 					return false;
@@ -230,8 +252,8 @@ public class HudsonService implements Retriever {
 			return true;
 		}
 
-		static <R> Key<R> of(Project p, R reference) {
-			return new Key<R>(p, reference);
+		static <R> HudsonKey<R> of(Project p, R reference) {
+			return new HudsonKey<R>(p, reference);
 		}
 	}
 }

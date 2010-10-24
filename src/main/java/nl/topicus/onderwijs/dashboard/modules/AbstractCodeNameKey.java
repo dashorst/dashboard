@@ -5,6 +5,10 @@ public abstract class AbstractCodeNameKey implements Key {
 	private String code;
 	private String name;
 
+	public AbstractCodeNameKey(String code) {
+		this.code = code;
+	}
+
 	public AbstractCodeNameKey(String code, String name) {
 		this.code = code;
 		this.name = name;
@@ -32,6 +36,6 @@ public abstract class AbstractCodeNameKey implements Key {
 
 	@Override
 	public String toString() {
-		return name;
+		return code;
 	}
 }

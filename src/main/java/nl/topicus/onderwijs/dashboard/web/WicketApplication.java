@@ -3,10 +3,13 @@ package nl.topicus.onderwijs.dashboard.web;
 import java.util.Date;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
+import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
@@ -55,6 +58,13 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
+		ConfigurationRepository config = new ConfigurationRepository();
+		log.info("Checking for existing dashboard configuration");
+		if (!config.configurationExists(Settings.class)) {
+
+			log.info("No existing dashboard configuration found, generating a default one");
+			Keys.generateDefaultConfiguration();
+		}
 		getMarkupSettings().setStripWicketTags(true);
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());

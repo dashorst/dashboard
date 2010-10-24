@@ -2,7 +2,10 @@ package nl.topicus.onderwijs.dashboard.persistence.config;
 
 import java.io.File;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo.As;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper.DefaultTyping;
+import org.codehaus.jackson.map.SerializationConfig;
 
 public class ConfigurationRepository {
 	/**
@@ -26,14 +29,22 @@ public class ConfigurationRepository {
 			return config;
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = getJsonMapper();
 		try {
 			config = mapper.readValue(configFilename, clz);
 		} catch (Exception e) {
 			System.err.println("Unable to read configuration " + configFilename
 					+ ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		return config;
+	}
+
+	private ObjectMapper getJsonMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enableDefaultTyping(DefaultTyping.OBJECT_AND_NON_CONCRETE,
+				As.WRAPPER_OBJECT);
+		return mapper;
 	}
 
 	private <T> File getConfigFile(Class<T> clz) {
@@ -72,9 +83,10 @@ public class ConfigurationRepository {
 	 * configuration fully qualified classname as the filename.
 	 */
 	public <T> void putConfiguration(T config) {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = getJsonMapper();
 		File configFilename = getConfigFile(config.getClass());
 		try {
+			mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
 			mapper.writeValue(configFilename, config);
 		} catch (Exception e) {
 			System.err.println("Unable to write configuration to "
