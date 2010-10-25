@@ -1,28 +1,56 @@
 .table {
-	height: 15em;
+	height: 17.3em;
 	-webkit-border-radius: 1em;
 	float: left;
+	background-color: rgba(64, 64, 64, 0.496094);
+	color: white;
+	border-collapse: collapse;
+	margin-right: 2em;
 }
+.table thead tr th {
+	-webkit-border-radius: 1em;
+}
+.table th {
+	font-size: 150%;
+	font-weight: bold;
+}
+.table td {
+	padding: 0;
+}
+.table tr:nth-child(n+10) {
+	display: none;
+}
+.table tbody tr:first-child td {
+	padding-top: 0.7em;
+}
+.table .old {
+	-webkit-animation-name: old;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes old {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 .table.ns {
 	background-image: url('ns.svg');
 	background-size: 100%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	background-color: rgba(64, 64, 64, 0.496094);
-	color: white;
 }
 .table.ns thead tr th {
 	background-color: #fc3;
-	-webkit-border-radius: 1em;
 }
 .table.ns th {
-	font-size: 150%;
-	font-weight: bold;
 	color: #006;
-}
-.table.ns tr {
-	-webkit-transition-property: height;
-	-webkit-transition-duration: 3s;
 }
 .table.ns .type {
 	width: 2em;
@@ -44,26 +72,32 @@
 	width: 10em;
 	overflow: hidden;
 }
-.table.ns tr:nth-child(n+10) {
-	display: none;
-}
-.table.ns tbody tr:first-child td {
-	padding-top: 0.7em;
-}
-.table.ns .old {
-	-webkit-animation-name: old;
-	-webkit-animation-duration: 1s;
-	-webkit-animation-iteration-count: infinite;
-}
 
-@-webkit-keyframes old {
-	0% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.2;
-	}
-	100% {
-		opacity: 1;
-	}
+.table.alerts {
+	background-image: url('alert.svg');
+	background-size: auto 75%;
+	background-position: 50% 60%;
+	background-repeat: no-repeat;
+}
+.table.alerts thead tr th {
+	background-color: #fc3;
+}
+.table.alerts th {
+	color: #006;
+}
+.table.alerts .color {
+	width: 1.3em;
+	padding-left: 0.5em;
+}
+.table.alerts .time {
+	width: 2em;
+	text-align: right;
+	padding-right: 0.7em;
+}
+.table.alerts .project {
+	width: 6em;
+}
+.table.alerts .message {
+	width: 12em;
+	overflow: hidden;
 }

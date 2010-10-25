@@ -17,6 +17,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import nl.topicus.onderwijs.dashboard.datasources.Alerts;
+import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
@@ -74,7 +76,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	public <T extends DataSource<?>> Map<Key, T> getData(Class<T> datasource) {
 		Map<Key, T> ret = new HashMap<Key, T>();
 		for (Key curKey : getKeys(Key.class)) {
-			ret.put(curKey, createDataSource(curKey, datasource));
+			T dataSource = createDataSource(curKey, datasource);
+			if (dataSource != null)
+				ret.put(curKey, dataSource);
 		}
 		return ret;
 	}
@@ -82,6 +86,13 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	@SuppressWarnings("unchecked")
 	private <T extends DataSource<?>> T createDataSource(final Key key,
 			final Class<T> dataSource) {
+		// summary is a special case, use the original datasource
+		if (key.equals(Keys.SUMMARY))
+			return base.getData(dataSource).get(key);
+		// summary is a special case, use the original datasource
+		if (dataSource.equals(Alerts.class) && !(key instanceof Project))
+			return null;
+
 		final DataSourceSettings settings = dataSource
 				.getAnnotation(DataSourceSettings.class);
 		InvocationHandler handler = new InvocationHandler() {
@@ -109,11 +120,17 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					} else if (settings.type().equals(Train.class)
 							&& settings.list()) {
 						value = createRandomTrains();
+					} else if (settings.type().equals(Alert.class)
+							&& settings.list()) {
+						value = createRandomAlerts(key);
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
 					Object ret = dataCache.putIfAbsent(dataKey, value);
 					return ret == null ? value : ret;
+				} else if (method.getName().equals("toString")) {
+					String dataKey = key.getCode() + "-" + dataSource.getName();
+					return dataKey;
 				}
 				throw new UnsupportedOperationException();
 			}
@@ -136,6 +153,31 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				Collections.sort(ret, new Comparator<Train>() {
 					@Override
 					public int compare(Train o1, Train o2) {
+						return o1.getKey().compareTo(o2.getKey());
+					}
+				});
+				return ret;
+			}
+
+			private List<Alert> createRandomAlerts(Key key) {
+				if (!(key instanceof Project))
+					return null;
+
+				Random random = new Random();
+				List<Alert> ret = new ArrayList<Alert>();
+				for (int count = 0; count < random.nextInt(3); count++) {
+					Alert alert = new Alert();
+					alert.setProject((Project) key);
+					alert.setColor(DotColor.values()[random.nextInt(3)]);
+					int minute = random.nextInt(60);
+					alert.setTime(random.nextInt(24) + ":"
+							+ (minute < 10 ? "0" : "") + minute);
+					alert.setMessage("random");
+					ret.add(alert);
+				}
+				Collections.sort(ret, new Comparator<Alert>() {
+					@Override
+					public int compare(Alert o1, Alert o2) {
 						return o1.getKey().compareTo(o2.getKey());
 					}
 				});

@@ -20,6 +20,7 @@ public class Keys {
 	public static final Project EDUARTE = new Project("eduarte", "EduArte");
 
 	public static final Misc NS = new Misc("ns", "NS");
+	public static final Misc SUMMARY = new Misc("summary", "Summary");
 
 	public static void main(String[] args) {
 		ConfigurationRepository repository = new ConfigurationRepository();
@@ -43,6 +44,7 @@ public class Keys {
 			settings.addKey(PARNASSYS);
 			settings.addKey(IRIS);
 			settings.addKey(NS);
+			settings.addKey(SUMMARY);
 
 			configureHudson(settings);
 
@@ -64,8 +66,8 @@ public class Keys {
 			HashMap<String, Object> entry = new HashMap<String, Object>();
 			entry.put("matchers", value.getValue());
 			entry.put("url", "http://192.168.55.113");
-			settings.addProjectSettings(value.getKey(),
-					HudsonService.class.getName(), entry);
+			settings.addProjectSettings(value.getKey(), HudsonService.class
+					.getName(), entry);
 		}
 	}
 }

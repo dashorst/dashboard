@@ -15,15 +15,17 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Keys;
+import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 
 import org.apache.wicket.util.time.Duration;
@@ -38,6 +40,8 @@ public class VocusOuderportaalRetriever implements Retriever,
 	private Map<Project, List<String>> configuration = new HashMap<Project, List<String>>();
 
 	private Map<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
+
+	private Map<String, Alert> oldAlerts = new HashMap<String, Alert>();
 
 	public Map<Project, TopicusApplicationStatus> getStatusses() {
 		return statusses;
@@ -62,16 +66,16 @@ public class VocusOuderportaalRetriever implements Retriever,
 					new NumberOfUsersImpl(project, this));
 			repository.addDataSource(project, NumberOfServers.class,
 					new NumberOfServersImpl(project, this));
-			repository.addDataSource(project,
-					NumberOfServersOffline.class,
+			repository.addDataSource(project, NumberOfServersOffline.class,
 					new NumberOfServersOfflineImpl(project, this));
-			repository.addDataSource(project, Uptime.class,
-					new UptimeImpl(project, this));
-			repository.addDataSource(project,
-					ApplicationVersion.class, new ApplicationVersionImpl(
-							project, this));
+			repository.addDataSource(project, Uptime.class, new UptimeImpl(
+					project, this));
+			repository.addDataSource(project, ApplicationVersion.class,
+					new ApplicationVersionImpl(project, this));
 			repository.addDataSource(project, ServerStatus.class,
 					new ServerStatusImpl(project, this));
+			repository.addDataSource(project, Alerts.class, new AlertsImpl(
+					project, this));
 		}
 	}
 
@@ -97,16 +101,24 @@ public class VocusOuderportaalRetriever implements Retriever,
 			status.setVersion("n/a");
 			return status;
 		}
+		int serverIndex = 0;
 		int numberOfOfflineServers = 0;
 		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		status.setNumberOfServers(urls.size());
 		List<DotColor> serverStatusses = new ArrayList<DotColor>();
+		List<Alert> alerts = new ArrayList<Alert>();
 		for (String statusUrl : urls) {
+			serverIndex++;
+			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
 					numberOfOfflineServers++;
 					serverStatusses.add(DotColor.RED);
+					Alert alert = new Alert(oldAlert, DotColor.RED, project,
+							"Server " + serverIndex + " offline");
+					oldAlerts.put(statusUrl, alert);
+					alerts.add(alert);
 					continue;
 				}
 				String page = statuspage.getPageContent();
@@ -129,13 +141,19 @@ public class VocusOuderportaalRetriever implements Retriever,
 					}
 				}
 				serverStatusses.add(DotColor.GREEN);
+				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
 				serverStatusses.add(DotColor.YELLOW);
+				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
+						.getMessage());
+				oldAlerts.put(statusUrl, alert);
+				alerts.add(alert);
 				log.warn("Could not retrieve status for '" + statusUrl + "': "
 						+ e.getClass().getSimpleName() + " - "
 						+ e.getLocalizedMessage());
 			}
 		}
+		status.setAlerts(alerts);
 		status.setServerStatusses(serverStatusses);
 		status.setNumberOfServersOnline(status.getNumberOfServers()
 				- numberOfOfflineServers);

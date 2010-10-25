@@ -62,7 +62,8 @@ $.widget( "ui.dashboardTable", {
 
 	_initialRead: function() {
 		this.element.empty();
-		this.element.append("<thead><tr><th colspan='5'>"+this.options.label+"</th></tr></thead>");
+		this.element.parent().addClass(this.options.htmlClass);
+		this.element.append("<thead><tr><th colspan='10'>"+this.options.label+"</th></tr></thead>");
 		this.element.append("<tbody />");
 		var self = this;
 		var response = function() {
@@ -102,7 +103,6 @@ $.widget( "ui.dashboardTable", {
 				rows[rowId] = row;
 			});
 			ids.sort();
-			console.log(ids);
 			tbody.empty();
 			$.each(ids, function(index, id){
 				tbody.append(rows[id]);

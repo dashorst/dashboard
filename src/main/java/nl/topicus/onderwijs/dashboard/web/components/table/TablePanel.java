@@ -57,6 +57,8 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 		manager.addJavaScriptResource(TablePanel.class,
 				"jquery.ui.dashboardtable.js");
 		manager.addJavaScriptResource(TablePanel.class, "dashboardnstable.js");
+		manager.addJavaScriptResource(TablePanel.class,
+				"dashboardalerttable.js");
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 		options.putLiteral("htmlClass", settings.htmlClass());
 		options.putLiteral("conversion", settings.conversion());
 		options.putLiteral("keyProperty", keyProperty.value());
-		JsQuery jsq = new JsQuery(this);
+		JsQuery jsq = new JsQuery(table);
 		return jsq.$().chain("dashboardTable", options.getJavaScriptOptions());
 	}
 }

@@ -9,6 +9,7 @@ import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.modules.summary.SummaryRetriever;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
@@ -62,12 +63,15 @@ public class WicketApplication extends WebApplication {
 		log.info("Checking for existing dashboard configuration");
 		if (!config.configurationExists(Settings.class)) {
 
-			log.info("No existing dashboard configuration found, generating a default one");
+			log
+					.info("No existing dashboard configuration found, generating a default one");
 			Keys.generateDefaultConfiguration();
 		}
 		getMarkupSettings().setStripWicketTags(true);
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());
+
+		new SummaryRetriever().onConfigure(randomRepository);
 	}
 
 	public List<Project> getProjects() {
