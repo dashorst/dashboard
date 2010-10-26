@@ -12,6 +12,7 @@ $.widget( "ui.dashboardStatusTableMaster", {
 
 	_create: function() {
 		this.element.addClass( "ui-dashboard-status-table ui-widget" );
+		this.element.parent().addClass("alert-enabled");
 
 		this._initDraw();
 		this._initHeartBeat();
@@ -19,6 +20,7 @@ $.widget( "ui.dashboardStatusTableMaster", {
 
 	destroy: function() {
 		this.element.removeClass( "ui-dashboard-status-table ui-widget" );
+		this.element.parent().removeClass("alert-enabled");
 
 		$.Widget.prototype.destroy.apply( this, arguments );
 	},
@@ -84,6 +86,13 @@ $.widget( "ui.dashboardStatusTableMaster", {
 							return;
 						if (count % self.options.secondsBetweenRotate == 0) {
 							$(document).triggerHandler("dashboard-table-rotate");
+							// resync alert blinking
+							$(document).oneTime("900ms", function() {
+								self.element.parent().removeClass("alert-enabled");
+							});
+							$(document).oneTime("1000ms", function() {
+								self.element.parent().addClass("alert-enabled");
+							});
 						}
 						if (count % self.options.secondsBetweenScroll == 2 && count > 2) {
 							scrollDown();

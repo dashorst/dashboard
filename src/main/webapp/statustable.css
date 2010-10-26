@@ -5,10 +5,13 @@
 	float:left;
 	height:10.7em;
 	width:6em;
-	margin: 0 0.43em;
+	margin: 0 0.4em;
 	padding: 0.5em 1em;
 	border-radius: 0.5em;
 	line-height : 2em;
+}
+.statusses div.col.projects {
+	margin-right: 0.45em;
 }
 .effects-enabled .statusses .col { 
 	-webkit-transform-style: preserve-3d;
@@ -86,7 +89,6 @@
 }
 .statusses div.row {
 	margin : 0 -1.4em;
-	border : none;
 	clear: both;
 	height: 1.8em;
 	overflow: hidden;
@@ -94,11 +96,30 @@
 .statusses .row .inner-row {
 	height: 1.3em;
 	line-height : 1.3em;
-	width: 6.63em;
+	width: 6.65em;
 	background-color : rgba(64,64,64,0.5);
 	margin-top: 0.2em;
 	padding : 0.20em 1.1em;
 }
+
+.statusses.alert-enabled .row.alert .inner-row {
+	-webkit-animation-name: alert;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes alert {
+	0% {
+		background-color : rgba(64,64,64,0.5);
+	}
+	50% {
+		background-color : rgba(255,0,0,0.8);
+	}
+	100% {
+		background-color : rgba(64,64,64,0.5);
+	}
+}
+
+
 .statusses div.col:first-child .inner-row {
 	-webkit-border-top-left-radius: 10px;
 	-webkit-border-bottom-left-radius: 10px;
