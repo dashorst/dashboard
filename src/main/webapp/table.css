@@ -7,6 +7,9 @@
 	border-collapse: collapse;
 	margin-right: 2em;
 }
+.table:last-child {
+	margin-right: 0;
+}
 .table thead tr th {
 	-webkit-border-radius: 1em;
 }
