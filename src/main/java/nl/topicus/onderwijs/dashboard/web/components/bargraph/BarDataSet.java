@@ -1,5 +1,6 @@
 package nl.topicus.onderwijs.dashboard.web.components.bargraph;
 
+import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 
@@ -10,8 +11,8 @@ public class BarDataSet {
 
 	public BarDataSet(Class<? extends DataSource<?>> key, String scheme) {
 		this.key = key.getSimpleName();
-		DataSourceSettings settings = key
-				.getAnnotation(DataSourceSettings.class);
+		DataSourceSettings settings = DataSourceAnnotationReader
+				.getSettings(key);
 		this.label = settings.label();
 		this.scheme = scheme;
 	}

@@ -14,11 +14,11 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
-import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
@@ -79,8 +79,8 @@ class VocusStatusRetriever implements Retriever,
 					new ApplicationVersionImpl(project, this));
 			repository.addDataSource(project, ServerStatus.class,
 					new ServerStatusImpl(project, this));
-			repository.addDataSource(project, Alerts.class, new AlertsImpl(
-					project, this));
+			repository.addDataSource(project, ServerAlerts.class,
+					new AlertsImpl(project, this));
 		}
 	}
 

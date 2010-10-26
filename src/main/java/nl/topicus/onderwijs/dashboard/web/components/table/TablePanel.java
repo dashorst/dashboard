@@ -1,5 +1,6 @@
 package nl.topicus.onderwijs.dashboard.web.components.table;
 
+import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 import nl.topicus.onderwijs.dashboard.modules.Key;
@@ -63,9 +64,10 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 
 	@Override
 	public JsStatement statement() {
-		DataSourceSettings settings = dataSource
-				.getAnnotation(DataSourceSettings.class);
-		KeyProperty keyProperty = dataSource.getAnnotation(KeyProperty.class);
+		DataSourceSettings settings = DataSourceAnnotationReader
+				.getSettings(dataSource);
+		KeyProperty keyProperty = DataSourceAnnotationReader
+				.getKeyProperty(dataSource);
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
 		options.putLiteral("label", settings.label());

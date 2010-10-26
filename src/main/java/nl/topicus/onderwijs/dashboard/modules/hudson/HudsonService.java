@@ -11,9 +11,12 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
+import nl.topicus.onderwijs.dashboard.datasources.HudsonAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
+import nl.topicus.onderwijs.dashboard.datatypes.Alert;
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
@@ -23,13 +26,14 @@ import nl.topicus.onderwijs.dashboard.modules.hudson.model.BuildReference;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Hudson;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Job;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.JobReference;
+import nl.topicus.onderwijs.dashboard.modules.hudson.model.Result;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
-import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +45,7 @@ public class HudsonService implements Retriever {
 
 	private Map<HudsonKey<BuildReference>, Build> buildsCache = new HashMap<HudsonKey<BuildReference>, Build>();
 	private ConcurrentHashMap<Project, List<Job>> jobsCache = new ConcurrentHashMap<Project, List<Job>>();
+	private ConcurrentHashMap<String, Alert> alertsCache = new ConcurrentHashMap<String, Alert>();
 
 	public HudsonService() {
 		mapper.getDeserializationConfig().disable(
@@ -62,6 +67,8 @@ public class HudsonService implements Retriever {
 						new HudsonBuildStatusImpl(project, this));
 				repository.addDataSource(project, HudsonBuildNumber.class,
 						new HudsonBuildNumberImpl(project, this));
+				repository.addDataSource(project, HudsonAlerts.class,
+						new HudsonAlertsImpl(project, this));
 			}
 		}
 	}
@@ -125,7 +132,8 @@ public class HudsonService implements Retriever {
 	private void refreshData(Project project, JobReference jobReference)
 			throws Exception {
 		StatusPageResponse response = RetrieverUtils.getStatuspage(jobReference
-				.getUrl() + "api/json");
+				.getUrl()
+				+ "api/json");
 		if (response.getHttpStatusCode() != 200) {
 			return;
 		}
@@ -151,13 +159,6 @@ public class HudsonService implements Retriever {
 	}
 
 	public List<Build> getBuilds(Project project) {
-		class BuildsComparator implements Comparator<Build> {
-			@Override
-			public int compare(Build o1, Build o2) {
-				return o2.getTimestamp().compareTo(o1.getTimestamp());
-			}
-		}
-
 		List<Job> jobs = getJobs(project);
 
 		List<Build> builds = new ArrayList<Build>();
@@ -194,11 +195,53 @@ public class HudsonService implements Retriever {
 			}
 			return build;
 		} catch (Exception e) {
-			log.error(
-					"Unable to retrieve project " + project.getName()
-							+ " build " + reference.getNumber() + " from "
-							+ reference.getUrl(), e);
+			log.error("Unable to retrieve project " + project.getName()
+					+ " build " + reference.getNumber() + " from "
+					+ reference.getUrl(), e);
 			return null;
+		}
+	}
+
+	public List<Alert> getAlerts(Project project) {
+		List<Job> jobs = getJobs(project);
+
+		Map<String, Build> builds = new HashMap<String, Build>();
+		for (Job job : jobs) {
+			for (int i = 0; i < Math.min(1, job.getBuilds().size()); i++) {
+				BuildReference buildReference = job.getBuilds().get(i);
+				Build build = getBuild(project, buildReference);
+				builds.put(job.getName(), build);
+			}
+		}
+
+		List<Alert> ret = new ArrayList<Alert>();
+		for (Job curJob : jobs) {
+			Build curBuild = builds.get(curJob.getName());
+			if (curBuild == null)
+				continue;
+
+			if (Result.UNSTABLE.equals(curBuild.getResult())) {
+				Alert alert = new Alert(alertsCache.get(curJob.getName()),
+						DotColor.YELLOW, project, "Build "
+								+ curBuild.getNumber() + " is unstable");
+				alertsCache.put(curJob.getName(), alert);
+				ret.add(alert);
+			} else if (Result.FAILURE.equals(curBuild.getResult())) {
+				Alert alert = new Alert(alertsCache.get(curJob.getName()),
+						DotColor.RED, project, "Build " + curBuild.getNumber()
+								+ " failed");
+				alertsCache.put(curJob.getName(), alert);
+				ret.add(alert);
+			} else
+				alertsCache.put(curJob.getName(), null);
+		}
+		return ret;
+	}
+
+	public static class BuildsComparator implements Comparator<Build> {
+		@Override
+		public int compare(Build o1, Build o2) {
+			return o2.getTimestamp().compareTo(o1.getTimestamp());
 		}
 	}
 

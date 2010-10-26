@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 import nl.topicus.onderwijs.dashboard.modules.Key;
@@ -59,8 +60,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	protected void retrieveDataFromApplication(List<ColumnData> ret) {
 		for (Class<? extends DataSource<?>> curDataSource : dataSources
 				.getObject()) {
-			DataSourceSettings settings = curDataSource
-					.getAnnotation(DataSourceSettings.class);
+			DataSourceSettings settings = DataSourceAnnotationReader
+					.getSettings(curDataSource);
 			ret.add(getColumn(settings.label(), curDataSource));
 		}
 	}
@@ -99,8 +100,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		List<String> htmlClasses = new ArrayList<String>();
 		for (Class<? extends DataSource<?>> curDataSource : dataSources
 				.getObject()) {
-			DataSourceSettings settings = curDataSource
-					.getAnnotation(DataSourceSettings.class);
+			DataSourceSettings settings = DataSourceAnnotationReader
+					.getSettings(curDataSource);
 			conversions.add(settings.conversion());
 			htmlClasses.add(settings.htmlClass());
 		}

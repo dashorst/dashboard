@@ -3,13 +3,15 @@ package nl.topicus.onderwijs.dashboard.web;
 import java.util.Date;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
-import nl.topicus.onderwijs.dashboard.modules.summary.SummaryRetriever;
+import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
+import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
@@ -71,7 +73,12 @@ public class WicketApplication extends WebApplication {
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());
 
-		new SummaryRetriever().onConfigure(randomRepository);
+		randomRepository.addDataSource(Keys.SUMMARY, ProjectAlerts.class,
+				new AlertSumImpl());
+		for (Project curProject : repository.getProjects()) {
+			randomRepository.addDataSource(curProject, ProjectAlerts.class,
+					new ProjectAlertImpl(curProject));
+		}
 	}
 
 	public List<Project> getProjects() {

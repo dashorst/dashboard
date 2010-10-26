@@ -18,6 +18,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import nl.topicus.onderwijs.dashboard.datasources.Alerts;
+import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
@@ -90,11 +91,12 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 		if (key.equals(Keys.SUMMARY))
 			return base.getData(dataSource).get(key);
 		// summary is a special case, use the original datasource
-		if (dataSource.equals(Alerts.class) && !(key instanceof Project))
+		if (Alerts.class.isAssignableFrom(dataSource)
+				&& !(key instanceof Project))
 			return null;
 
-		final DataSourceSettings settings = dataSource
-				.getAnnotation(DataSourceSettings.class);
+		final DataSourceSettings settings = DataSourceAnnotationReader
+				.getSettings(dataSource);
 		InvocationHandler handler = new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args)
