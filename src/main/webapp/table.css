@@ -48,6 +48,7 @@
 	background-size: 100%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
+	width: 20.8em; /*416*/
 }
 .table.ns thead tr th {
 	background-color: #fc3;
@@ -81,6 +82,7 @@
 	background-size: auto 75%;
 	background-position: 50% 60%;
 	background-repeat: no-repeat;
+	width: 25.3em; /*506*/
 }
 .table.alerts thead tr th {
 	background-color: #fc3;

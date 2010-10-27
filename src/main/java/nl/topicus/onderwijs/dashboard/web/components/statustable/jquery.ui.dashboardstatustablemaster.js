@@ -6,6 +6,7 @@ $.widget( "ui.dashboardStatusTableMaster", {
 		projects: {},
 		projectKeys: [],
 		maxProjects: 5,
+		dataUrl: "",
 		secondsBetweenScroll: 15,
 		secondsBetweenRotate: 5
 	},
@@ -28,6 +29,9 @@ $.widget( "ui.dashboardStatusTableMaster", {
 	_setOption: function( key, value ) {
 		if ( key === "projects" ) {
 			this.options.projects = value;
+		}
+		else if ( key === "dataUrl" ) {
+			this.options.dataUrl = value;
 		}
 		else if ( key === "secondsBetweenScroll" ) {
 			this.options.secondsBetweenScroll = value;
@@ -65,7 +69,9 @@ $.widget( "ui.dashboardStatusTableMaster", {
 		$.each(this.options.projects, function(key, value) {
 			self.options.projectKeys[index] = key;
 			if (index < self.options.maxProjects) {
-				data.append("<div class='row'><div class='inner-row'>"+value+"</div></div>");
+				var row = $("<div class='row'><div class='inner-row'>"+value+"</div></div>");
+				row.addClass(key);
+				data.append(row);
 				startProjects[index] = key;
 			}
 			index++;
@@ -75,6 +81,11 @@ $.widget( "ui.dashboardStatusTableMaster", {
 
 	_initHeartBeat: function() {
 		var self = this;
+		var response = function() {
+			return self._updateData.apply( self, arguments );
+		};
+		$.getJSON(this.options.dataUrl, response);
+		
 		var scrollDown = function() {
 			return self._scrollDown.apply( self, [false] );
 		};
@@ -86,18 +97,32 @@ $.widget( "ui.dashboardStatusTableMaster", {
 							return;
 						if (count % self.options.secondsBetweenRotate == 0) {
 							$(document).triggerHandler("dashboard-table-rotate");
+							$.getJSON(self.options.dataUrl, response);
 							// resync alert blinking
 							$(document).oneTime("900ms", function() {
 								self.element.parent().removeClass("alert-enabled");
+								self.element.parent().find(".alert-yellow").removeClass("alert-yellow");
+								self.element.parent().find(".alert-red").removeClass("alert-red");
 							});
 							$(document).oneTime("1000ms", function() {
 								self.element.parent().addClass("alert-enabled");
+								$.each(self.options.projects, function(key, value) {
+									var color = self.projectAlerts[key];
+									if (color != undefined) {
+										self.element.parent().find("."+key).addClass("alert-"+color.toLowerCase());
+									}
+								});								
 							});
 						}
 						if (count % self.options.secondsBetweenScroll == 2 && count > 2) {
 							scrollDown();
 						}
 					});
+	},
+	
+	_updateData: function(data) {
+		console.log(data);
+		this.projectAlerts = data;
 	},
 	
 	_scrollUp: function(fast) {
@@ -110,17 +135,24 @@ $.widget( "ui.dashboardStatusTableMaster", {
 		newProjectIndex = newProjectIndex % this.options.projectKeys.length;
 		newProjects[this.options.maxProjects-1] =
 			this.options.projectKeys[ (newProjectIndex+this.options.maxProjects) % this.options.projectKeys.length];
+		var projectKey = newProjects[this.options.maxProjects-1];
 		$(document).data("dashboard-table-projects", newProjects);
 		$(document).data("dashboard-table-project-index", newProjectIndex);
-		$(document).triggerHandler("dashboard-table-insert-project", [newProjects[this.options.maxProjects-1], false]);
+		$(document).triggerHandler("dashboard-table-insert-project", [projectKey, false]);
 
 		$("body").addClass("project-transition animate");
 		if (fast)
 			$("body").addClass("fast");
 		var dataDiv = this.element.find(".data");
 		dataDiv.find(".button").appendTo(dataDiv);
-		dataDiv.append("<div class='row'><div class='inner-row'>"+
-				this.options.projects[newProjects[this.options.maxProjects-1]]+"</div></div>");
+		var row = $("<div class='row'><div class='inner-row'>"+
+				this.options.projects[projectKey]+"</div></div>");
+		row.addClass(projectKey);
+		dataDiv.append(row);
+		var color = this.projectAlerts[projectKey];
+		if (color != undefined) {
+			this.element.parent().find("."+projectKey).addClass("alert-"+color.toLowerCase());
+		}
 		// a small delay is need, because elements need to be rendered before
 		// animations can start
 		$(document).oneTime("10ms", function() {
@@ -142,17 +174,24 @@ $.widget( "ui.dashboardStatusTableMaster", {
 		newProjectIndex--;
 		if (newProjectIndex < 0)
 			newProjectIndex = this.options.projectKeys.length-1;	
+		var projectKey = newProjects[0];
 		$(document).data("dashboard-table-projects", newProjects);
 		$(document).data("dashboard-table-project-index", newProjectIndex);
-		$(document).triggerHandler("dashboard-table-insert-project", [newProjects[0], true]);
+		$(document).triggerHandler("dashboard-table-insert-project", [projectKey, true]);
  
 		$("body").addClass("project-transition");
 		if (fast)
 			$("body").addClass("fast");
 		var dataDiv = this.element.find(".data");
 		dataDiv.find(".button").prependTo(dataDiv);
-		dataDiv.prepend("<div class='row'><div class='inner-row'>"+
-				this.options.projects[newProjects[0]]+"</div></div>");
+		var row = $("<div class='row'><div class='inner-row'>"+
+				this.options.projects[projectKey]+"</div></div>");
+		row.addClass(projectKey);
+		dataDiv.prepend(row);
+		var color = this.projectAlerts[projectKey];
+		if (color != undefined) {
+			this.element.parent().find("."+projectKey).addClass("alert-"+color.toLowerCase());
+		}
 		// a small delay is need, because elements need to be rendered before
 		// animations can start
 		$(document).oneTime("10ms", function() {

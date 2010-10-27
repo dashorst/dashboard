@@ -1,6 +1,7 @@
 package nl.topicus.onderwijs.dashboard.web.components.statustable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,16 +13,21 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
+import nl.topicus.onderwijs.dashboard.datatypes.Alert;
+import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
+import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
@@ -36,8 +42,23 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer projects;
 
+	private JsonResourceBehavior<Map<String, DotColor>> dataResource;
+
 	public StatusTablePanel(String id) {
 		super(id);
+
+		this.dataResource = new JsonResourceBehavior<Map<String, DotColor>>(
+				new AbstractReadOnlyModel<Map<String, DotColor>>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public Map<String, DotColor> getObject() {
+						Map<String, DotColor> ret = new HashMap<String, DotColor>();
+						retrieveDataFromApplication(ret);
+						return ret;
+					}
+				});
+		add(dataResource);
 
 		projects = new WebMarkupContainer("projects");
 		add(projects);
@@ -80,6 +101,24 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		add(columnsView);
 	}
 
+	private void retrieveDataFromApplication(Map<String, DotColor> ret) {
+		for (Project curProject : WicketApplication.get().getProjects()) {
+			ProjectAlerts alerts = WicketApplication.get().getRepository()
+					.getData(ProjectAlerts.class).get(curProject);
+			DotColor max = null;
+			for (Alert curAlert : alerts.getValue()) {
+				if (DotColor.RED.equals(curAlert.getColor())) {
+					max = DotColor.RED;
+					break;
+				} else if (DotColor.YELLOW.equals(curAlert.getColor()))
+					max = DotColor.YELLOW;
+			}
+			if (max != null) {
+				ret.put(curProject.getCode(), max);
+			}
+		}
+	}
+
 	@Override
 	public void contribute(WiQueryResourceManager manager) {
 		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
@@ -95,6 +134,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		}
 
 		Options options = new Options();
+		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
 		options.put("projects", projectList.getJavaScriptOptions().toString());
 		options.put("secondsBetweenScroll", WicketApplication.get()
 				.isDevelopment() ? 15 : 30);

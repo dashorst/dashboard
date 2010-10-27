@@ -11,7 +11,7 @@
 	line-height : 2em;
 }
 .statusses div.col.projects {
-	margin-right: 0.45em;
+	margin-right: 0.41em;
 }
 .effects-enabled .statusses .col { 
 	-webkit-transform-style: preserve-3d;
@@ -102,20 +102,32 @@
 	padding : 0.20em 1.1em;
 }
 
-.statusses.alert-enabled .row.alert .inner-row {
-	-webkit-animation-name: alert;
+.statusses.alert-enabled .row.alert-red .inner-row {
+	-webkit-animation-name: alert-red;
 	-webkit-animation-duration: 1s;
 	-webkit-animation-iteration-count: infinite;
 }
-@-webkit-keyframes alert {
+.statusses.alert-enabled .row.alert-yellow .inner-row {
+	-webkit-animation-name: alert-yellow;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes alert-red {
 	0% {
-		background-color : rgba(64,64,64,0.5);
 	}
 	50% {
 		background-color : rgba(255,0,0,0.8);
 	}
 	100% {
-		background-color : rgba(64,64,64,0.5);
+	}
+}
+@-webkit-keyframes alert-yellow {
+	0% {
+	}
+	50% {
+		background-color : rgba(223,223,31,0.6);
+	}
+	100% {
 	}
 }
 

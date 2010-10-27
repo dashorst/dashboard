@@ -126,6 +126,7 @@ $.widget( "ui.dashboardStatusTable", {
 		else
 			rowValue = this._convertRowValue(flipIndex, rowValue);
 		var rowDiv = $("<div class='row'><div class='inner-row'>"+rowValue+"</div></div>");
+		rowDiv.addClass(project);
 		if (atTop)
 			dataDiv.prepend(rowDiv);
 		else
