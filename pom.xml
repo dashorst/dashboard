@@ -14,6 +14,12 @@
 		<twitter4j.version>2.1.4</twitter4j.version>
 		<jackson.version>1.6.1</jackson.version>
 	</properties>
+	<repositories>
+		<repository>
+  			<id>mandubian-mvn</id>
+  			<url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
+		</repository>
+	</repositories>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -62,6 +68,11 @@
 			<groupId>net.htmlparser.jericho</groupId>
 			<artifactId>jericho-html</artifactId>
 			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>gdata-calendar-2.0</artifactId>
+			<version>1.41.5</version>
 		</dependency>
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
