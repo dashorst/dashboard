@@ -233,7 +233,7 @@ public class HudsonService implements Retriever {
 				alertsCache.put(curJob.getName(), alert);
 				ret.add(alert);
 			} else
-				alertsCache.put(curJob.getName(), null);
+				alertsCache.remove(curJob.getName());
 		}
 		return ret;
 	}
