@@ -10,9 +10,6 @@
 	border-radius: 0.5em;
 	line-height : 2em;
 }
-.statusses div.col.projects {
-	margin-right: 0.41em;
-}
 .effects-enabled .statusses .col { 
 	-webkit-transform-style: preserve-3d;
 }

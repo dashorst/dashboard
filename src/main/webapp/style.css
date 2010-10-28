@@ -11,7 +11,8 @@ html, body {
 	background-color: black;
 	color : white;
 	font-size : 15pt;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	-webkit-user-select:none;
 }
 
