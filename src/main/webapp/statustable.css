@@ -101,19 +101,31 @@
 
 .statusses.alert-enabled .row.alert-red .inner-row {
 	-webkit-animation-name: alert-red;
-	-webkit-animation-duration: 1s;
+	-webkit-animation-duration: 5s;
 	-webkit-animation-iteration-count: infinite;
 }
 .statusses.alert-enabled .row.alert-yellow .inner-row {
 	-webkit-animation-name: alert-yellow;
-	-webkit-animation-duration: 1s;
+	-webkit-animation-duration: 5s;
 	-webkit-animation-iteration-count: infinite;
 }
 @-webkit-keyframes alert-red {
 	0% {
 	}
+	20% {
+		background-color : rgba(64,64,64,0.5);
+	}
+	30% {
+		background-color : rgba(255,0,0,0.6);
+	}
 	50% {
-		background-color : rgba(255,0,0,0.8);
+		background-color : rgba(64,64,64,0.5);
+	}
+	60% {
+		background-color : rgba(255,0,0,0.6);
+	}
+	80% {
+		background-color : rgba(64,64,64,0.5);
 	}
 	100% {
 	}
@@ -121,8 +133,20 @@
 @-webkit-keyframes alert-yellow {
 	0% {
 	}
-	50% {
+	20% {
+		background-color : rgba(64,64,64,0.5);
+	}
+	30% {
 		background-color : rgba(223,223,31,0.6);
+	}
+	50% {
+		background-color : rgba(64,64,64,0.5);
+	}
+	60% {
+		background-color : rgba(223,223,31,0.6);
+	}
+	80% {
+		background-color : rgba(64,64,64,0.5);
 	}
 	100% {
 	}
