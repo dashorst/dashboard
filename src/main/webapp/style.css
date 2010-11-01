@@ -4,6 +4,7 @@
 @import url('dots.css');
 @import url('bargraph.css');
 @import url('table.css');
+@import url('events.css');
 @import url('clock.css');
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
@@ -22,11 +23,19 @@ html, body {
 	left: 0;
 }
 
-.widget { margin : 2em 1em 1em; clear : both; position: relative; }
+.widget {
+	margin : 2em 1em 1em;
+	clear : both;
+	position: relative;
+	width: 1050px;
+}
+.no-overflow {
+	overflow: hidden;
+}
 .widget h1 { text-align : center;}
 .ui-widget {
-font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
-font-size: 1.1em;
+	font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
+	font-size: 1.1em;
 }
 #twitter {
 	display: none;

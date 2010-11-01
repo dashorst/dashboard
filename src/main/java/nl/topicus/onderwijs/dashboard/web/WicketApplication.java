@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.web;
 import java.util.Date;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.modules.Project;
@@ -11,6 +12,7 @@ import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
+import nl.topicus.onderwijs.dashboard.modules.standard.EventSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
@@ -75,6 +77,8 @@ public class WicketApplication extends WebApplication {
 
 		randomRepository.addDataSource(Keys.SUMMARY, ProjectAlerts.class,
 				new AlertSumImpl());
+		randomRepository.addDataSource(Keys.SUMMARY, Events.class,
+				new EventSumImpl());
 		for (Project curProject : repository.getProjects()) {
 			randomRepository.addDataSource(curProject, ProjectAlerts.class,
 					new ProjectAlertImpl(curProject));

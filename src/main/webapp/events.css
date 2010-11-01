@@ -1,0 +1,19 @@
+.majorEvent {
+	font-size: 200%;
+	text-align: center;
+}
+
+.minorEvents {
+	overflow: hidden;
+	height: 1.5em;
+	text-align: center;
+}
+.minorEvents ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 0 0;
+	line-height: 1.5em;
+	font-size: 125%;
+	-webkit-transition-property: margin;
+	-webkit-transition-duration: 3s;
+}

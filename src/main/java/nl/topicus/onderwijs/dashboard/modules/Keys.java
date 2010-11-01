@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import nl.topicus.onderwijs.dashboard.modules.google.GoogleEventService;
 import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonService;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
@@ -47,6 +48,7 @@ public class Keys {
 			settings.addKey(SUMMARY);
 
 			configureHudson(settings);
+			configureGoogle(settings);
 
 			repository.putConfiguration(settings);
 		} catch (Exception e) {
@@ -69,5 +71,15 @@ public class Keys {
 			settings.addProjectSettings(value.getKey(), HudsonService.class
 					.getName(), entry);
 		}
+	}
+
+	private static void configureGoogle(Settings settings) {
+		HashMap<String, Object> eduarteSettings = new HashMap<String, Object>();
+		eduarteSettings.put("username", "topicus.dashboard@gmail.com");
+		eduarteSettings.put("password", "****");
+		eduarteSettings.put("calendarId",
+				"k6m9icfnlsqqe38vclu2ldrj8g@group.calendar.google.com");
+		settings.addProjectSettings(EDUARTE,
+				GoogleEventService.class.getName(), eduarteSettings);
 	}
 }

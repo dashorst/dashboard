@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +22,7 @@ import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 
@@ -30,6 +32,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
+	private List<Event> eventCache;
 	private Timer timer;
 
 	public RandomDataRepositoryImpl(Repository base) {
@@ -125,6 +128,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					} else if (settings.type().equals(Alert.class)
 							&& settings.list()) {
 						value = createRandomAlerts(key);
+					} else if (settings.type().equals(Event.class)
+							&& settings.list()) {
+						value = createRandomEvents(key);
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
@@ -184,6 +190,31 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					}
 				});
 				return ret;
+			}
+
+			private List<Event> createRandomEvents(Key key) {
+				if (eventCache != null)
+					return eventCache;
+
+				Random random = new Random();
+				eventCache = new ArrayList<Event>();
+				for (int count = 0; count < 4; count++) {
+					Event event = new Event();
+					event.setKey(key);
+					event.setTitle("random");
+					Calendar cal = Calendar.getInstance();
+					cal.add(Calendar.DAY_OF_YEAR, random.nextInt(60));
+					event.setDateTime(cal.getTime());
+					event.setMajor(random.nextInt(5) == 0);
+					eventCache.add(event);
+				}
+				Collections.sort(eventCache, new Comparator<Event>() {
+					@Override
+					public int compare(Event o1, Event o2) {
+						return o1.getDateTime().compareTo(o2.getDateTime());
+					}
+				});
+				return eventCache;
 			}
 		};
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),

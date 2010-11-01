@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.google.GoogleUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.ns.NSUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
@@ -53,6 +54,7 @@ public class Updater {
 				//
 				new TopicusProjectsUpdateTask(application, repository),
 				new HudsonUpdateTask(application, repository),
+				new GoogleUpdateTask(application, repository),
 				new NSUpdateTask(application, repository));
 
 		@Override

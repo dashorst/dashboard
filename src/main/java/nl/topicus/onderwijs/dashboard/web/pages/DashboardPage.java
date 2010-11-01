@@ -2,6 +2,7 @@ package nl.topicus.onderwijs.dashboard.web.pages;
 
 import java.util.ArrayList;
 
+import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
@@ -11,6 +12,7 @@ import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
+import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
@@ -62,6 +64,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new StatusTablePanel("table"));
 		add(new TablePanel("ns", Trains.class, Keys.NS));
 		add(new TablePanel("alerts", ProjectAlerts.class, Keys.SUMMARY));
+		add(new EventsPanel("events", Events.class, Keys.SUMMARY));
 	}
 
 	@Override
