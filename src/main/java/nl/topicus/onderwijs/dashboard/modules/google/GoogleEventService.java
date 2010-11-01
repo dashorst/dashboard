@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
@@ -29,7 +31,7 @@ import com.google.gdata.data.extensions.When;
 public class GoogleEventService implements Retriever {
 	private static final Logger log = LoggerFactory
 			.getLogger(GoogleEventService.class);
-
+	private static final Pattern TAG_PATTERN = Pattern.compile("#\\w*");
 	private List<Event> events = new ArrayList<Event>();
 
 	@Override
@@ -94,6 +96,12 @@ public class GoogleEventService implements Retriever {
 						// event.setOmschrijving(entry.getPlainTextContent());
 						event.setDateTime(gDateTimeToDate(curTime
 								.getStartTime()));
+						Matcher m = TAG_PATTERN.matcher(eventEntry
+								.getPlainTextContent());
+						while (m.find()) {
+							event.getTags().add(m.group());
+
+						}
 						ret.add(event);
 					}
 				}
