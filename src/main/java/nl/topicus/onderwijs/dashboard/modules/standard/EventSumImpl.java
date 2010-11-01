@@ -2,6 +2,8 @@ package nl.topicus.onderwijs.dashboard.modules.standard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
@@ -32,6 +34,12 @@ public class EventSumImpl implements Events {
 				}
 			}
 		}
+		Collections.sort(ret, new Comparator<Event>() {
+			@Override
+			public int compare(Event o1, Event o2) {
+				return o1.getDateTime().compareTo(o2.getDateTime());
+			}
+		});
 		return ret;
 	}
 

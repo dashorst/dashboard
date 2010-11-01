@@ -32,7 +32,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
-	private List<Event> eventCache;
+	private Map<Key, List<Event>> eventCache = new HashMap<Key, List<Event>>();
 	private Timer timer;
 
 	public RandomDataRepositoryImpl(Repository base) {
@@ -192,29 +192,32 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				return ret;
 			}
 
-			private List<Event> createRandomEvents(Key key) {
-				if (eventCache != null)
-					return eventCache;
+			private synchronized List<Event> createRandomEvents(Key key) {
+
+				List<Event> ret = eventCache.get(key);
+				if (ret != null)
+					return ret;
 
 				Random random = new Random();
-				eventCache = new ArrayList<Event>();
-				for (int count = 0; count < 4; count++) {
+				ret = new ArrayList<Event>();
+				for (int count = 0; count < 2; count++) {
 					Event event = new Event();
 					event.setKey(key);
 					event.setTitle("random");
 					Calendar cal = Calendar.getInstance();
-					cal.add(Calendar.DAY_OF_YEAR, random.nextInt(60));
+					cal.add(Calendar.DAY_OF_YEAR, random.nextInt(30));
 					event.setDateTime(cal.getTime());
 					event.setMajor(random.nextInt(5) == 0);
-					eventCache.add(event);
+					ret.add(event);
 				}
-				Collections.sort(eventCache, new Comparator<Event>() {
+				Collections.sort(ret, new Comparator<Event>() {
 					@Override
 					public int compare(Event o1, Event o2) {
 						return o1.getDateTime().compareTo(o2.getDateTime());
 					}
 				});
-				return eventCache;
+				eventCache.put(key, ret);
+				return ret;
 			}
 		};
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),

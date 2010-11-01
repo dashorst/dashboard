@@ -35,17 +35,23 @@ $.widget( "ui.dashboardEvents", {
 		var response = function() {
 			return self._redraw.apply( self, arguments );
 		};
+		var scrollMinors = function() {
+			return self._scrollMinors.apply( self, arguments );
+		};
 		$.getJSON(this.options.dataUrl, response);
+		this.minorIndex = 0;
+		this.scrollDirection = 1;
 		$(document).bind("dashboard-heartbeat", function(event, count) {
 			if (count % 30 == 0)
 				$.getJSON(self.options.dataUrl, response);
+			if (count % 5 == 0)
+				scrollMinors();
 		});
 	},
 
 	_redraw: function( data ) {
-		var self = this;
 		if (data) {
-			console.log(data);
+			this.minorCount = data.minor.length;
 			var major = data.major;
 			this.element.find(".majorEvent").text(major.key.name + " " + major.dateAsString + " " + major.title);
 			var list = this.element.find(".minorEvents ul");
@@ -55,6 +61,19 @@ $.widget( "ui.dashboardEvents", {
 			});
 		}
 	},
+	
+	_scrollMinors: function() {
+		if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
+			this.minorIndex = this.minorCount-1;
+			this.scrollDirection = -1;
+		} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
+			this.minorIndex = 0;
+			this.scrollDirection = 1;
+		}
+		this.minorIndex += this.scrollDirection;
+		var list = this.element.find(".minorEvents ul");
+		list.css("margin-top", (this.minorIndex*-1.5 - 0.2)+"em");
+	}
 });
 
 $.extend( $.ui.dashboard, {
