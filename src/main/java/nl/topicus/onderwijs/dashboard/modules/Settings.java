@@ -80,7 +80,7 @@ public class Settings {
 		map.put(setter, settings);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings( { "unchecked", "rawtypes" })
 	public Map<String, ?> getProjectSettings(Project project, Class<?> service) {
 		Map<String, Map<String, ?>> map = projectSettings.get(project);
 		if (map != null) {
