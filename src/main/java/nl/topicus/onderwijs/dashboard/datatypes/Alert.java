@@ -59,6 +59,10 @@ public class Alert implements Serializable {
 		this.project = project;
 	}
 
+	public String getProjectName() {
+		return getProject().getName();
+	}
+
 	public String getMessage() {
 		return message;
 	}

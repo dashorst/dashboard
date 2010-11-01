@@ -121,7 +121,6 @@ $.widget( "ui.dashboardStatusTableMaster", {
 	},
 	
 	_updateData: function(data) {
-		console.log(data);
 		this.projectAlerts = data;
 	},
 	

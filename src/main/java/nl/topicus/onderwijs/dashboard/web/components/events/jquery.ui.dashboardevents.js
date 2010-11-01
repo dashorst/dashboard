@@ -53,24 +53,31 @@ $.widget( "ui.dashboardEvents", {
 		if (data) {
 			this.minorCount = data.minor.length;
 			var major = data.major;
-			this.element.find(".majorEvent").text(major.key.name + " " + major.dateAsString + " " + major.title);
+			if (data.major) {
+				this.element.find(".majorEvent").text(major.keyName + ": " + major.dateAsString + " - " + major.title);
+			} else {
+				this.element.find(".majorEvent").text("No upcomming major event");
+			}
 			var list = this.element.find(".minorEvents ul");
 			list.empty();
 			$.each(data.minor, function(index, minor) {
-				list.append("<li>" + minor.key.name + " " + minor.dateAsString + " " + minor.title + "</li>")
+				list.append("<li>" + minor.keyName + ": " + minor.dateAsString + " - " + minor.title + "</li>")
 			});
 		}
 	},
 	
 	_scrollMinors: function() {
-		if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
+		if (this.minorCount < 2) {
+			this.minorIndex = 0;
+		} else if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
 			this.minorIndex = this.minorCount-1;
 			this.scrollDirection = -1;
+			this.minorIndex += this.scrollDirection;
 		} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
 			this.minorIndex = 0;
 			this.scrollDirection = 1;
+			this.minorIndex += this.scrollDirection;
 		}
-		this.minorIndex += this.scrollDirection;
 		var list = this.element.find(".minorEvents ul");
 		list.css("margin-top", (this.minorIndex*-1.5 - 0.2)+"em");
 	}

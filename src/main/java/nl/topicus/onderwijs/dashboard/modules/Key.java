@@ -9,4 +9,6 @@ import org.codehaus.jackson.annotate.JsonTypeInfo.Id;
 @JsonTypeInfo(include = As.WRAPPER_OBJECT, use = Id.CLASS)
 public interface Key extends Serializable {
 	String getCode();
+
+	String getName();
 }

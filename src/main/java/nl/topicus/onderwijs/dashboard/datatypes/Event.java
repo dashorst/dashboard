@@ -30,6 +30,10 @@ public class Event implements Serializable {
 		this.key = key;
 	}
 
+	public String getKeyName() {
+		return getKey().getName();
+	}
+
 	public String getTitle() {
 		return title;
 	}
