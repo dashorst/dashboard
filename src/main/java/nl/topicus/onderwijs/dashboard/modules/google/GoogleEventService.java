@@ -99,8 +99,10 @@ public class GoogleEventService implements Retriever {
 						Matcher m = TAG_PATTERN.matcher(eventEntry
 								.getPlainTextContent());
 						while (m.find()) {
-							event.getTags().add(m.group());
-
+							String curTag = m.group();
+							event.getTags().add(curTag);
+							if ("major".equals(curTag))
+								event.setMajor(true);
 						}
 						ret.add(event);
 					}
