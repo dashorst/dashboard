@@ -56,7 +56,7 @@ $.widget( "ui.dashboardEvents", {
 			if (data.major) {
 				this.element.find(".majorEvent").text(major.keyName + ": " + major.dateAsString + " - " + major.title);
 			} else {
-				this.element.find(".majorEvent").text("No upcomming major event");
+				this.element.find(".majorEvent").text("No upcoming major event");
 			}
 			var list = this.element.find(".minorEvents ul");
 			list.empty();
