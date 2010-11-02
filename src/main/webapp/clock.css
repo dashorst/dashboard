@@ -16,3 +16,7 @@
 	color: #222;
 	font-family: 'DigitaldreamRegular', arial, serif;
 }
+.clock .date {
+	color: #bbb;
+	font-size: 66%;
+}

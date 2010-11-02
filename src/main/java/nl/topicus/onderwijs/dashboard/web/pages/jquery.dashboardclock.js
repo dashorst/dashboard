@@ -21,7 +21,10 @@
 				$(document).triggerHandler("dashboard-heartbeat", count);
 		});
 		doc.everyTime("200ms", "clock-update", function() {
-			$(".clock .time").text(new Date().toTimeString().substring(0,8));
+			var date = new Date();
+			$(".clock .time").text(date.toTimeString().substring(0,8));
+			// $(".clock .date").text(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear());
+			$(".clock .date").text(date.toLocaleDateString());
 		});
 		$("#stoplink").click(function() {
 			var newValue = $(document).data("dashboard-heartbeat-enabled");
