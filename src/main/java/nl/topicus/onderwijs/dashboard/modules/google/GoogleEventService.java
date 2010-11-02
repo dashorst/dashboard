@@ -101,7 +101,7 @@ public class GoogleEventService implements Retriever {
 						while (m.find()) {
 							String curTag = m.group();
 							event.getTags().add(curTag);
-							if ("major".equals(curTag))
+							if ("#major".equals(curTag))
 								event.setMajor(true);
 						}
 						ret.add(event);
