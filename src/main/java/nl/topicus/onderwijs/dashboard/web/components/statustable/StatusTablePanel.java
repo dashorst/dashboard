@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
@@ -14,6 +15,7 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
+import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
@@ -66,7 +68,8 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		final Map<String, List<Class<? extends DataSource<?>>>> columns = new TreeMap<String, List<Class<? extends DataSource<?>>>>();
 		List<Class<? extends DataSource<?>>> sources1 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources1.add(NumberOfUsers.class);
-		sources1.add(NumberOfUsers.class);
+		sources1.add(RequestsPerMinute.class);
+		sources1.add(AverageRequestTime.class);
 
 		List<Class<? extends DataSource<?>>> sources2 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources2.add(ApplicationVersion.class);

@@ -2,11 +2,11 @@ package nl.topicus.onderwijs.dashboard.web.pages;
 
 import java.util.ArrayList;
 
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.Events;
-import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
-import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
+import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Keys;
@@ -55,9 +55,8 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 				new PropertyModel<String>(getSession(), "mode")));
 		ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
 		datasources.add(NumberOfUsers.class);
-		// datasources.add(NumberOfServers.class);
-		datasources.add(HudsonBuildNumber.class);
-		datasources.add(NumberOfUnitTests.class);
+		datasources.add(AverageRequestTime.class);
+		datasources.add(RequestsPerMinute.class);
 		add(new BarGraphPanel("bargraph",
 				new ListModel<Class<? extends DataSource<? extends Number>>>(
 						datasources)));

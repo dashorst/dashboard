@@ -15,9 +15,11 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
@@ -69,6 +71,10 @@ class VocusStatusRetriever implements Retriever,
 		for (Project project : configuration.keySet()) {
 			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
+			repository.addDataSource(project, AverageRequestTime.class,
+					new AverageRequestTimeImpl(project, this));
+			repository.addDataSource(project, RequestsPerMinute.class,
+					new RequestsPerMinuteImpl(project, this));
 			repository.addDataSource(project, NumberOfServers.class,
 					new NumberOfServersImpl(project, this));
 			repository.addDataSource(project, NumberOfServersOffline.class,
@@ -132,9 +138,11 @@ class VocusStatusRetriever implements Retriever,
 				for (Element tableHeader : tableHeaders) {
 					String contents = tableHeader.getContent().toString();
 					if ("Applicatie".equals(contents)) {
-						getApplicationVersion(status, tableHeader);
+						fetchApplicationVersion(status, tableHeader);
 					} else if ("Sessions/Requests".equals(contents)) {
-						getNumberOfUsers(status, tableHeader);
+						fetchSessionAndRequestData(status, tableHeader);
+					} else if ("Sessies/Requests".equals(contents)) {
+						fetchSessionAndRequestData(status, tableHeader);
 					}
 				}
 
@@ -167,20 +175,43 @@ class VocusStatusRetriever implements Retriever,
 		return status;
 	}
 
-	private Integer getNumberOfUsers(TopicusApplicationStatus status,
+	private void fetchSessionAndRequestData(TopicusApplicationStatus status,
 			Element tableHeader) {
-		Element sessiesCell = tableHeader.getParentElement().getParentElement()
-				.getContent().getFirstElement("class", "value_column", true);
-
-		int currentNumberOfUsers = status.getNumberOfUsers();
-
-		Integer numberOfUsersOnServer = Integer.valueOf(sessiesCell
-				.getContent().getTextExtractor().toString());
-		status.setNumberOfUsers(currentNumberOfUsers + numberOfUsersOnServer);
-		return numberOfUsersOnServer;
+		List<Element> tableRows = tableHeader.getParentElement()
+				.getParentElement().getAllElements(HTMLElementName.TR);
+		for (Element curRow : tableRows) {
+			String name = curRow.getFirstElement("class", "name_column", true)
+					.getTextExtractor().toString();
+			String value = curRow
+					.getFirstElement("class", "value_column", true)
+					.getTextExtractor().toString();
+			if ("Live sessies".equals(name)) {
+				try {
+					status.addNumberOfUsers(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse number of users: " + value);
+				}
+			} else if ("Gem. request duur".equals(name)) {
+				try {
+					int space = value.indexOf(' ');
+					if (space > -1) {
+						value = value.substring(0, space);
+					}
+					status.addAverageRequestDuration(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse avg request duration: " + value);
+				}
+			} else if ("Requests per minuut".equals(name)) {
+				try {
+					status.addRequestsPerMinute(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse req per minute: " + value);
+				}
+			}
+		}
 	}
 
-	private void getApplicationVersion(TopicusApplicationStatus status,
+	private void fetchApplicationVersion(TopicusApplicationStatus status,
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
@@ -197,16 +228,24 @@ class VocusStatusRetriever implements Retriever,
 		Element starttijdCell = td.getParentElement().getFirstElement("class",
 				"value_column", true);
 		String starttijdText = starttijdCell.getTextExtractor().toString();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-		Date starttime;
+		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		Date starttime = null;
 		try {
-			starttime = sdf.parse(starttijdText);
+			starttime = sdf1.parse(starttijdText);
+		} catch (ParseException e) {
+			try {
+				starttime = sdf2.parse(starttijdText);
+			} catch (ParseException e2) {
+				log.error("Unable to parse starttime " + starttijdText
+						+ " according to format dd-MM-yyyy hh:mm:ss and"
+						+ " dd-MM-yyyy hh:mm", e);
+			}
+		}
+		if (starttime != null) {
 			Date now = new Date();
 			status.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
-		} catch (ParseException e) {
-			log.error("Unable to parse starttime " + starttijdText
-					+ " according to format dd-MM-yyyy hh:mm:ss", e);
 		}
 	}
 

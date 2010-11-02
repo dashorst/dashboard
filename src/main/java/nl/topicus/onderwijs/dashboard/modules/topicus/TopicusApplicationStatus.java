@@ -15,14 +15,15 @@ class TopicusApplicationStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String version;
 	private int numberOfUsers;
-	private int numberOfRequests;
 	private int numberOfErrors;
 	private int numberOfServers;
 	private int numberOfServersOnline;
 	private int averageRequestDuration;
+	private int requestsPerMinute;
 	private long uptime;
 	private List<DotColor> serverStatusses;
 	private List<Alert> alerts;
+	private int averageRequestDurationDiv;
 
 	public String getVersion() {
 		return version == null ? "n/a" : version;
@@ -40,12 +41,8 @@ class TopicusApplicationStatus implements Serializable {
 		this.numberOfUsers = numberOfUsers;
 	}
 
-	public int getNumberOfRequests() {
-		return numberOfRequests;
-	}
-
-	public void setNumberOfRequests(int numberOfRequests) {
-		this.numberOfRequests = numberOfRequests;
+	public void addNumberOfUsers(int numberOfUsers) {
+		this.numberOfUsers += numberOfUsers;
 	}
 
 	public int getNumberOfErrors() {
@@ -73,11 +70,24 @@ class TopicusApplicationStatus implements Serializable {
 	}
 
 	public int getAverageRequestDuration() {
-		return averageRequestDuration;
+		return averageRequestDuration / averageRequestDurationDiv;
 	}
 
-	public void setAverageRequestDuration(int averageRequestDuration) {
-		this.averageRequestDuration = averageRequestDuration;
+	public void addAverageRequestDuration(int averageRequestDuration) {
+		this.averageRequestDuration += averageRequestDuration;
+		averageRequestDurationDiv++;
+	}
+
+	public int getRequestsPerMinute() {
+		return requestsPerMinute;
+	}
+
+	public void setRequestsPerMinute(int requestsPerMinute) {
+		this.requestsPerMinute = requestsPerMinute;
+	}
+
+	public void addRequestsPerMinute(int requestsPerMinute) {
+		this.requestsPerMinute += requestsPerMinute;
 	}
 
 	public Long getUptime() {
