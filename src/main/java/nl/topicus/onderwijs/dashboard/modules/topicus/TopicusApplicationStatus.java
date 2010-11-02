@@ -70,6 +70,8 @@ class TopicusApplicationStatus implements Serializable {
 	}
 
 	public int getAverageRequestDuration() {
+		if (averageRequestDurationDiv == 0)
+			return 0;
 		return averageRequestDuration / averageRequestDurationDiv;
 	}
 
