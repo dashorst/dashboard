@@ -79,7 +79,7 @@ public class GoogleEventService implements Retriever {
 				CalendarQuery myQuery = new CalendarQuery(feedUrl);
 				Calendar cal = Calendar.getInstance();
 				myQuery.setMinimumStartTime(dateToGDateTime(cal.getTime()));
-				cal.add(Calendar.MONTH, 2);
+				cal.add(Calendar.MONTH, 1);
 				myQuery.setMaximumStartTime(dateToGDateTime(cal.getTime()));
 				myQuery.setMaxResults(100);
 				myQuery.setIntegerCustomParameter("max-results", 100);

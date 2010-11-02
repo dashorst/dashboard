@@ -69,13 +69,14 @@ $.widget( "ui.dashboardEvents", {
 	_scrollMinors: function() {
 		if (this.minorCount < 2) {
 			this.minorIndex = 0;
-		} else if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
-			this.minorIndex = this.minorCount-1;
-			this.scrollDirection = -1;
-			this.minorIndex += this.scrollDirection;
-		} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
-			this.minorIndex = 0;
-			this.scrollDirection = 1;
+		} else {
+			if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
+				this.minorIndex = this.minorCount-1;
+				this.scrollDirection = -1;
+			} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
+				this.minorIndex = 0;
+				this.scrollDirection = 1;
+			}
 			this.minorIndex += this.scrollDirection;
 		}
 		var list = this.element.find(".minorEvents ul");
