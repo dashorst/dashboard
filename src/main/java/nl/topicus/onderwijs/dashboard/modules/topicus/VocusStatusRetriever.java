@@ -180,8 +180,11 @@ class VocusStatusRetriever implements Retriever,
 		List<Element> tableRows = tableHeader.getParentElement()
 				.getParentElement().getAllElements(HTMLElementName.TR);
 		for (Element curRow : tableRows) {
-			String name = curRow.getFirstElement("class", "name_column", true)
-					.getTextExtractor().toString();
+			Element nameColumn = curRow.getFirstElement("class", "name_column",
+					true);
+			if (nameColumn == null)
+				continue;
+			String name = nameColumn.getTextExtractor().toString();
 			String value = curRow
 					.getFirstElement("class", "value_column", true)
 					.getTextExtractor().toString();
