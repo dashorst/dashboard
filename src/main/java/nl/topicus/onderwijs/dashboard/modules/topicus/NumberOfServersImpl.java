@@ -1,13 +1,13 @@
 package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 class NumberOfServersImpl implements NumberOfServers {
 	private final TopicusApplicationStatusProvider provider;
-	private final Project project;
+	private final Key project;
 
-	public NumberOfServersImpl(Project project,
+	public NumberOfServersImpl(Key project,
 			TopicusApplicationStatusProvider provider) {
 		this.project = project;
 		this.provider = provider;

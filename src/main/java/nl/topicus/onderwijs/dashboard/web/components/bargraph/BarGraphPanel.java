@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.apache.wicket.markup.html.list.ListItem;

@@ -1,14 +1,18 @@
 package nl.topicus.onderwijs.dashboard.modules.ns;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
@@ -26,22 +30,42 @@ public class NSService implements Retriever {
 	private static final int PLATFORM = 2;
 	private static final int DETAILS = 4;
 
-	private List<Train> trains = new ArrayList<Train>();
+	private Map<Key, List<Train>> trains = new HashMap<Key, List<Train>>();
 
 	@Override
 	public void onConfigure(Repository repository) {
-		repository.addDataSource(Keys.NS, Trains.class, new TrainsImpl(this));
+		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+				.getServiceSettings(NSService.class);
+		for (Key key : serviceSettings.keySet()) {
+			trains.put(key, Collections.<Train> emptyList());
+			repository.addDataSource(key, Trains.class, new TrainsImpl(key,
+					this));
+		}
 	}
 
 	@Override
 	public void refreshData() {
+		Map<Key, List<Train>> newTrains = new HashMap<Key, List<Train>>();
+		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+				.getServiceSettings(NSService.class);
+		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
+				.entrySet()) {
+			Key location = configEntry.getKey();
+			String station = configEntry.getValue().get("station").toString();
+			newTrains.put(location, fetchDepartures(location, station));
+		}
+		trains = newTrains;
+	}
+
+	private List<Train> fetchDepartures(Key location, String station) {
 		try {
 			// StatusPageResponse response = RetrieverUtils
 			// .getStatuspage("http://192.168.55.113/api/json");
 			StatusPageResponse response = RetrieverUtils
-					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station=Deventer");
+					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station="
+							+ station);
 			if (response.getHttpStatusCode() != 200) {
-				return;
+				return Collections.emptyList();
 			}
 			Source source = new Source(response.getPageContent());
 
@@ -75,10 +99,11 @@ public class NSService implements Retriever {
 					newTrains.add(train);
 				}
 			}
-			trains = newTrains;
+			return newTrains;
 		} catch (Exception e) {
 			log.error("Unable to refresh data from ns: {} {}", e.getClass()
 					.getSimpleName(), e.getMessage());
+			return Collections.emptyList();
 		}
 	}
 
@@ -132,11 +157,7 @@ public class NSService implements Retriever {
 			train.setType(TrainType.UNKNOWN);
 	}
 
-	public List<Train> getTrains() {
-		return trains;
-	}
-
-	public static void main(String[] args) {
-		new NSService().refreshData();
+	public List<Train> getTrains(Key key) {
+		return trains.get(key);
 	}
 }

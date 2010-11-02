@@ -17,8 +17,8 @@ import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
-import nl.topicus.onderwijs.dashboard.modules.Key;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
@@ -30,7 +30,6 @@ import nl.topicus.onderwijs.dashboard.modules.hudson.model.Result;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
-import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
@@ -54,7 +53,7 @@ public class HudsonService implements Retriever {
 
 	@Override
 	public void onConfigure(Repository repository) {
-		Settings settings = getSettings();
+		Settings settings = Settings.get();
 
 		Map<Key, Map<String, ?>> serviceSettings = settings
 				.getServiceSettings(HudsonService.class);
@@ -73,20 +72,13 @@ public class HudsonService implements Retriever {
 		}
 	}
 
-	private Settings getSettings() {
-		ConfigurationRepository configurationRepository = new ConfigurationRepository();
-		Settings settings = configurationRepository
-				.getConfiguration(Settings.class);
-		return settings;
-	}
-
 	public static void main(String[] args) {
 		new HudsonService().refreshData();
 	}
 
 	public void refreshData() {
 		try {
-			Settings settings = getSettings();
+			Settings settings = Settings.get();
 
 			Map<Key, Map<String, ?>> serviceSettings = settings
 					.getServiceSettings(HudsonService.class);

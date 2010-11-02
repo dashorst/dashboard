@@ -1,15 +1,15 @@
 package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 import org.apache.wicket.util.time.Duration;
 
 class UptimeImpl implements Uptime {
 	private final TopicusApplicationStatusProvider provider;
-	private final Project project;
+	private final Key project;
 
-	public UptimeImpl(Project project, TopicusApplicationStatusProvider provider) {
+	public UptimeImpl(Key project, TopicusApplicationStatusProvider provider) {
 		this.project = project;
 		this.provider = provider;
 	}

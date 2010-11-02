@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -18,12 +18,12 @@ public class Alert implements Serializable {
 	private DotColor color;
 	private String time;
 	private String message;
-	private Project project;
+	private Key project;
 
 	public Alert() {
 	}
 
-	public Alert(Alert oldAlert, DotColor color, Project project, String message) {
+	public Alert(Alert oldAlert, DotColor color, Key project, String message) {
 		this.color = color;
 		this.project = project;
 		this.message = message;
@@ -51,11 +51,11 @@ public class Alert implements Serializable {
 		this.time = time;
 	}
 
-	public Project getProject() {
+	public Key getProject() {
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(Key project) {
 		this.project = project;
 	}
 

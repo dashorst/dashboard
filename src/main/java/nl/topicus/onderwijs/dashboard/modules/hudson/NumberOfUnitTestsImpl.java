@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Action;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
 

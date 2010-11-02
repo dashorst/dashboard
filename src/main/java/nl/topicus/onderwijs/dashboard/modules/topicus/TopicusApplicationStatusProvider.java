@@ -1,7 +1,7 @@
 package nl.topicus.onderwijs.dashboard.modules.topicus;
 
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 interface TopicusApplicationStatusProvider {
-	TopicusApplicationStatus getStatus(Project project);
+	TopicusApplicationStatus getStatus(Key project);
 }

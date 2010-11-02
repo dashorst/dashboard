@@ -4,7 +4,7 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
-import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 public class EventsImpl implements Events {
 	private Key key;

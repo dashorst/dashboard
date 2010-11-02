@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules;
+package nl.topicus.onderwijs.dashboard.keys;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;

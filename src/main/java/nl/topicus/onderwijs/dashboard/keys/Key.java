@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules;
+package nl.topicus.onderwijs.dashboard.keys;
 
 import java.io.Serializable;
 

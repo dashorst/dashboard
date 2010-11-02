@@ -1,18 +1,17 @@
 package nl.topicus.onderwijs.dashboard.modules;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RepositoryImpl implements Repository {
-	private List<Key> keys = Arrays.asList((Key) Keys.PARNASSYS,
-			Keys.PARNASSYS_OUDERS, Keys.EDUARTE, Keys.ATVO, Keys.ATVO_OUDERS,
-			Keys.IRIS, Keys.NS, Keys.SUMMARY);
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
+import nl.topicus.onderwijs.dashboard.keys.Summary;
 
+public class RepositoryImpl implements Repository {
 	private Map<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>> index1 = new HashMap<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>>();
 	private Map<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>> index2 = new HashMap<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>>();
 
@@ -43,9 +42,11 @@ public class RepositoryImpl implements Repository {
 
 	public <T extends Key> List<T> getKeys(Class<T> keyType) {
 		List<T> ret = new ArrayList<T>();
-		for (Key curKey : keys)
+		for (Key curKey : Settings.get().getKeys())
 			if (keyType.isInstance(curKey))
 				ret.add(keyType.cast(curKey));
+		if (keyType.isAssignableFrom(Summary.class))
+			ret.add(keyType.cast(Summary.get()));
 		return ret;
 	}
 

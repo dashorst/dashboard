@@ -1,9 +1,9 @@
 package nl.topicus.onderwijs.dashboard.web.components.table;
 
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
-import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.KeyProperty;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -30,12 +30,14 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 	private JsonResourceBehavior<Object> dataResource;
 	private Class<? extends DataSource<?>> dataSource;
 	private Key key;
+	private boolean useKeyLabel;
 
 	public TablePanel(String id, Class<? extends DataSource<?>> dataSource,
-			Key key) {
+			Key key, boolean useKeyLabel) {
 		super(id);
 		this.dataSource = dataSource;
 		this.key = key;
+		this.useKeyLabel = useKeyLabel;
 
 		this.dataResource = new JsonResourceBehavior<Object>(
 				new AbstractReadOnlyModel<Object>() {
@@ -81,7 +83,8 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 				.getKeyProperty(dataSource);
 		Options options = new Options();
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
-		options.putLiteral("label", settings.label());
+		options.putLiteral("label", useKeyLabel ? key.getName() : settings
+				.label());
 		options.putLiteral("htmlClass", settings.htmlClass());
 		options.putLiteral("conversion", settings.conversion());
 		options.putLiteral("keyProperty", keyProperty.value());

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
-import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;

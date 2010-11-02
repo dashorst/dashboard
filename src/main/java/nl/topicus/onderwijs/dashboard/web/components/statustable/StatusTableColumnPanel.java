@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
-import nl.topicus.onderwijs.dashboard.modules.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;

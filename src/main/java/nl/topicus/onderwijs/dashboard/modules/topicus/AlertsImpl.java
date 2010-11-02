@@ -4,13 +4,13 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 public class AlertsImpl implements ServerAlerts {
 	private final TopicusApplicationStatusProvider provider;
-	private final Project project;
+	private final Key project;
 
-	public AlertsImpl(Project project, TopicusApplicationStatusProvider provider) {
+	public AlertsImpl(Key project, TopicusApplicationStatusProvider provider) {
 		this.project = project;
 		this.provider = provider;
 	}

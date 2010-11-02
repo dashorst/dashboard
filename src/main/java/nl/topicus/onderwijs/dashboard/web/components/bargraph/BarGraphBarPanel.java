@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Key;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;

@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Job;
 
 class HudsonBuildNumberImpl implements HudsonBuildNumber {

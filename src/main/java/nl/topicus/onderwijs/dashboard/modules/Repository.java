@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
+
 public interface Repository {
 	public <T extends DataSource<?>> void addDataSource(Key key,
 			Class<T> datasourceType, T dataSource);

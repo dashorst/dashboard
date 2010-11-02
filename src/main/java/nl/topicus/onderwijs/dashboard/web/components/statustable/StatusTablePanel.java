@@ -20,8 +20,8 @@ import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 

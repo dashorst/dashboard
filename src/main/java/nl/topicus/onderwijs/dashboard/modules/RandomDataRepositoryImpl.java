@@ -23,6 +23,9 @@ import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
+import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 
@@ -91,7 +94,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	private <T extends DataSource<?>> T createDataSource(final Key key,
 			final Class<T> dataSource) {
 		// summary is a special case, use the original datasource
-		if (key.equals(Keys.SUMMARY))
+		if (key.equals(Summary.get()))
 			return base.getData(dataSource).get(key);
 		// summary is a special case, use the original datasource
 		if (Alerts.class.isAssignableFrom(dataSource)
@@ -175,7 +178,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				List<Alert> ret = new ArrayList<Alert>();
 				for (int count = 0; count < random.nextInt(3); count++) {
 					Alert alert = new Alert();
-					alert.setProject((Project) key);
+					alert.setProject(key);
 					alert.setColor(DotColor.values()[random.nextInt(3)]);
 					int minute = random.nextInt(60);
 					alert.setTime(random.nextInt(24) + ":"

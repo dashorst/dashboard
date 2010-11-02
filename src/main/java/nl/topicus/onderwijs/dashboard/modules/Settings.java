@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.keys.Project;
+import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
+
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -30,6 +34,16 @@ public class Settings {
 			throw ctxt.weirdKeyException(String.class, id,
 					"Onbekend project sleutel gevonden");
 		}
+	}
+
+	public static Settings get() {
+		ConfigurationRepository configurationRepository = new ConfigurationRepository();
+		if (!configurationRepository.configurationExists(Settings.class))
+			throw new IllegalStateException("No configuration exists for "
+					+ Settings.class.getName());
+		Settings settings = configurationRepository
+				.getConfiguration(Settings.class);
+		return settings;
 	}
 
 	private static ArrayList<Key> keys = new ArrayList<Key>();

@@ -8,9 +8,11 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
+import nl.topicus.onderwijs.dashboard.keys.Location;
+import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
 import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
+import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
@@ -61,9 +63,10 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 				new ListModel<Class<? extends DataSource<? extends Number>>>(
 						datasources)));
 		add(new StatusTablePanel("table"));
-		add(new TablePanel("ns", Trains.class, Keys.NS));
-		add(new TablePanel("alerts", ProjectAlerts.class, Keys.SUMMARY));
-		add(new EventsPanel("events", Events.class, Keys.SUMMARY));
+		add(new TablePanel("ns", Trains.class, WicketApplication.get()
+				.getRepository().getKeys(Location.class).get(0), true));
+		add(new TablePanel("alerts", ProjectAlerts.class, Summary.get(), false));
+		add(new EventsPanel("events", Events.class, Summary.get()));
 	}
 
 	@Override

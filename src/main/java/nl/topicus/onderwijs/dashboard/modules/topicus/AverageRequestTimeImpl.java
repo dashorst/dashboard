@@ -1,13 +1,13 @@
 package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 class AverageRequestTimeImpl implements AverageRequestTime {
 	private final TopicusApplicationStatusProvider provider;
-	private final Project project;
+	private final Key project;
 
-	public AverageRequestTimeImpl(Project project,
+	public AverageRequestTimeImpl(Key project,
 			TopicusApplicationStatusProvider provider) {
 		this.project = project;
 		this.provider = provider;

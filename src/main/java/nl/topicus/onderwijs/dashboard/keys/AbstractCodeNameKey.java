@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules;
+package nl.topicus.onderwijs.dashboard.keys;
 
 public abstract class AbstractCodeNameKey implements Key {
 	private static final long serialVersionUID = 1L;

@@ -12,11 +12,10 @@ import java.util.regex.Pattern;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
-import nl.topicus.onderwijs.dashboard.modules.Key;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
-import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class GoogleEventService implements Retriever {
 
 	@Override
 	public void onConfigure(Repository repository) {
-		Settings settings = getSettings();
+		Settings settings = Settings.get();
 
 		Map<Key, Map<String, ?>> serviceSettings = settings
 				.getServiceSettings(GoogleEventService.class);
@@ -46,17 +45,10 @@ public class GoogleEventService implements Retriever {
 		}
 	}
 
-	private Settings getSettings() {
-		ConfigurationRepository configurationRepository = new ConfigurationRepository();
-		Settings settings = configurationRepository
-				.getConfiguration(Settings.class);
-		return settings;
-	}
-
 	@Override
 	public void refreshData() {
 		try {
-			Settings settings = getSettings();
+			Settings settings = Settings.get();
 			Map<Key, Map<String, ?>> serviceSettings = settings
 					.getServiceSettings(GoogleEventService.class);
 			List<Event> ret = new ArrayList<Event>();

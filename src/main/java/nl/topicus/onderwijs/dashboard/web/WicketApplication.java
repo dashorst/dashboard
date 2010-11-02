@@ -5,16 +5,14 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Project;
+import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
 import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.EventSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
-import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
@@ -63,21 +61,13 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
-		ConfigurationRepository config = new ConfigurationRepository();
-		log.info("Checking for existing dashboard configuration");
-		if (!config.configurationExists(Settings.class)) {
-
-			log
-					.info("No existing dashboard configuration found, generating a default one");
-			Keys.generateDefaultConfiguration();
-		}
 		getMarkupSettings().setStripWicketTags(true);
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());
 
-		randomRepository.addDataSource(Keys.SUMMARY, ProjectAlerts.class,
+		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,
 				new AlertSumImpl());
-		randomRepository.addDataSource(Keys.SUMMARY, Events.class,
+		randomRepository.addDataSource(Summary.get(), Events.class,
 				new EventSumImpl());
 		for (Project curProject : repository.getProjects()) {
 			randomRepository.addDataSource(curProject, ProjectAlerts.class,

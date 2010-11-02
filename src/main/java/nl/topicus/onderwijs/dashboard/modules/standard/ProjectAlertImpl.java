@@ -7,8 +7,8 @@ import java.util.List;
 import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Project;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.HudsonAlerts;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Project;
 
 class HudsonAlertsImpl implements HudsonAlerts {
 	private Project project;

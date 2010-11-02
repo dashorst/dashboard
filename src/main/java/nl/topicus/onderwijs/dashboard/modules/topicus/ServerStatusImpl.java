@@ -4,13 +4,13 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 
 class ServerStatusImpl implements ServerStatus {
 	private final TopicusApplicationStatusProvider provider;
-	private final Project project;
+	private final Key project;
 
-	public ServerStatusImpl(Project project,
+	public ServerStatusImpl(Key project,
 			TopicusApplicationStatusProvider provider) {
 		this.project = project;
 		this.provider = provider;

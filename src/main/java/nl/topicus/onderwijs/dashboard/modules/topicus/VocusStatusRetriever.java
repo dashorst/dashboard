@@ -5,7 +5,6 @@ import static nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils.getS
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +24,9 @@ import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
-import nl.topicus.onderwijs.dashboard.modules.Keys;
-import nl.topicus.onderwijs.dashboard.modules.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.Settings;
 
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
@@ -38,37 +37,24 @@ class VocusStatusRetriever implements Retriever,
 	private static final Logger log = LoggerFactory
 			.getLogger(VocusStatusRetriever.class);
 
-	private Map<Project, List<String>> configuration = new HashMap<Project, List<String>>();
-
-	private Map<Project, TopicusApplicationStatus> statusses = new HashMap<Project, TopicusApplicationStatus>();
+	private Map<Key, TopicusApplicationStatus> statusses = new HashMap<Key, TopicusApplicationStatus>();
 
 	private Map<String, Alert> oldAlerts = new HashMap<String, Alert>();
 
 	public VocusStatusRetriever() {
-		configuration.put(Keys.ATVO, Arrays.asList(
-				"https://start.vocuslis.nl/app/status",
-				"https://start2.vocuslis.nl/app/status",
-				"https://start3.atvo.nl/app/status",
-				"https://start4.atvo.nl/app/status"));
-		configuration.put(Keys.EDUARTE, Arrays
-				.asList("https://krd.educus.nl/krd/app/status"));
-		// configuration.put(Projects.IRIS, Arrays
-		// .asList("https://www.irisplus.nl/irisplus-prod/app/status"),
-		// );
-
-		for (Project project : configuration.keySet()) {
-			statusses.put(project, new TopicusApplicationStatus());
-		}
 	}
 
 	@Override
-	public TopicusApplicationStatus getStatus(Project project) {
+	public TopicusApplicationStatus getStatus(Key project) {
 		return statusses.get(project);
 	}
 
 	@Override
 	public void onConfigure(Repository repository) {
-		for (Project project : configuration.keySet()) {
+		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+				.getServiceSettings(VocusStatusRetriever.class);
+		for (Key project : serviceSettings.keySet()) {
+			statusses.put(project, new TopicusApplicationStatus());
 			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
 			repository.addDataSource(project, AverageRequestTime.class,
@@ -91,17 +77,25 @@ class VocusStatusRetriever implements Retriever,
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void refreshData() {
-		HashMap<Project, TopicusApplicationStatus> newStatusses = new HashMap<Project, TopicusApplicationStatus>();
-		for (Project project : configuration.keySet()) {
-			TopicusApplicationStatus status = getProjectData(project);
+		HashMap<Key, TopicusApplicationStatus> newStatusses = new HashMap<Key, TopicusApplicationStatus>();
+		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+				.getServiceSettings(VocusStatusRetriever.class);
+
+		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
+				.entrySet()) {
+			Key project = configEntry.getKey();
+			List<String> urls = (List<String>) configEntry.getValue().get(
+					"urls");
+			TopicusApplicationStatus status = getProjectData(project, urls);
 			newStatusses.put(project, status);
 		}
 		statusses = newStatusses;
 	}
 
-	private TopicusApplicationStatus getProjectData(Project project) {
-		List<String> urls = configuration.get(project);
+	private TopicusApplicationStatus getProjectData(Key project,
+			List<String> urls) {
 		if (urls == null || urls.isEmpty()) {
 			TopicusApplicationStatus status = new TopicusApplicationStatus();
 			status.setVersion("n/a");
@@ -250,10 +244,5 @@ class VocusStatusRetriever implements Retriever,
 			status.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
 		}
-	}
-
-	public static void main(String[] args) {
-		VocusStatusRetriever retriever = new VocusStatusRetriever();
-		retriever.getProjectData(Keys.ATVO);
 	}
 }
