@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 
 import nl.topicus.onderwijs.dashboard.modules.Key;
 
@@ -20,7 +21,7 @@ public class Event implements Serializable {
 	private String title;
 	private Date dateTime;
 	private boolean major;
-	private Set<String> tags;
+	private Set<String> tags = new TreeSet<String>();
 
 	public Key getKey() {
 		return key;
