@@ -19,9 +19,12 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
 import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WiQueryUIPlugin
 public class TablePanel extends Panel implements IWiQueryPlugin {
+	private static final Logger log = LoggerFactory.getLogger(TablePanel.class);
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer table;
 	private JsonResourceBehavior<Object> dataResource;
@@ -40,10 +43,18 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public Object getObject() {
-						Repository repository = WicketApplication.get()
-								.getRepository();
-						return repository.getData(TablePanel.this.dataSource)
-								.get(TablePanel.this.key).getValue();
+						try {
+							Repository repository = WicketApplication.get()
+									.getRepository();
+							return repository.getData(
+									TablePanel.this.dataSource).get(
+									TablePanel.this.key).getValue();
+						} catch (NullPointerException e) {
+							log.error("Cannot find datasource for "
+									+ TablePanel.this.dataSource.getName()
+									+ " for " + TablePanel.this.key.getCode());
+							return null;
+						}
 					}
 				});
 		add(dataResource);
