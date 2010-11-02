@@ -188,7 +188,7 @@ class VocusStatusRetriever implements Retriever,
 			String value = curRow
 					.getFirstElement("class", "value_column", true)
 					.getTextExtractor().toString();
-			if ("Live sessies".equals(name)) {
+			if ("Live sessies".equals(name) || "Live Sessions".equals(name)) {
 				try {
 					status.addNumberOfUsers(Integer.parseInt(value));
 				} catch (NumberFormatException e) {

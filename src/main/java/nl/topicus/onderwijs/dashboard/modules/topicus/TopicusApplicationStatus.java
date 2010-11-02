@@ -18,11 +18,11 @@ class TopicusApplicationStatus implements Serializable {
 	private int numberOfErrors;
 	private int numberOfServers;
 	private int numberOfServersOnline;
-	private int averageRequestDuration;
-	private int requestsPerMinute;
 	private long uptime;
 	private List<DotColor> serverStatusses;
 	private List<Alert> alerts;
+	private Integer requestsPerMinute;
+	private int averageRequestDuration;
 	private int averageRequestDurationDiv;
 
 	public String getVersion() {
@@ -69,9 +69,9 @@ class TopicusApplicationStatus implements Serializable {
 		this.numberOfServersOnline = numberOfServersOnline;
 	}
 
-	public int getAverageRequestDuration() {
+	public Integer getAverageRequestDuration() {
 		if (averageRequestDurationDiv == 0)
-			return 0;
+			return null;
 		return averageRequestDuration / averageRequestDurationDiv;
 	}
 
@@ -80,16 +80,19 @@ class TopicusApplicationStatus implements Serializable {
 		averageRequestDurationDiv++;
 	}
 
-	public int getRequestsPerMinute() {
+	public Integer getRequestsPerMinute() {
 		return requestsPerMinute;
 	}
 
-	public void setRequestsPerMinute(int requestsPerMinute) {
+	public void setRequestsPerMinute(Integer requestsPerMinute) {
 		this.requestsPerMinute = requestsPerMinute;
 	}
 
 	public void addRequestsPerMinute(int requestsPerMinute) {
-		this.requestsPerMinute += requestsPerMinute;
+		if (this.requestsPerMinute == null)
+			this.requestsPerMinute = requestsPerMinute;
+		else
+			this.requestsPerMinute += requestsPerMinute;
 	}
 
 	public Long getUptime() {
