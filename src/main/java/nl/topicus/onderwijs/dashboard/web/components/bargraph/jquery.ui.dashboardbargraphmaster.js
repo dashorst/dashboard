@@ -47,6 +47,7 @@ $.widget( "ui.dashboardBarGraphMaster", {
 					});
 		this.element.find("h1").text(this.options.dataSets[0].label);
 		this.element.addClass(this.options.dataSets[0].scheme);
+		this.element.find(".bargraph").addClass("bars-"+this.element.find(".bar-box").length);
 	},
 
 	_heartBeatDataSet: function() {

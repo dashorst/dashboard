@@ -56,7 +56,7 @@ $.widget( "ui.dashboardBarGraph", {
 			this.element.find(".bar").css("height", data.height+"em");
 			var valueElement = this.element.find(".value");
 			var oldTextValue = valueElement.text();
-			valueElement.css("bottom", Math.max(1.0, data.height)+"em");
+			valueElement.css("bottom", data.height+"em");
 			if (isNaN(parseInt(data.value)) || isNaN(parseInt(oldTextValue))) {
 				valueElement.text(data.value);
 			} else {
