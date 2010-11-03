@@ -8,7 +8,7 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
-import nl.topicus.onderwijs.dashboard.keys.Project;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -21,9 +21,8 @@ public class EventSumImpl implements Events {
 	public List<Event> getValue() {
 		List<Event> ret = new ArrayList<Event>();
 		Repository repository = WicketApplication.get().getRepository();
-		for (Project curProject : repository.getProjects()) {
-			Collection<DataSource<?>> dataSources = repository
-					.getData(curProject);
+		for (Key curKey : repository.getKeys(Key.class)) {
+			Collection<DataSource<?>> dataSources = repository.getData(curKey);
 			for (DataSource<?> curDataSource : dataSources) {
 				if (curDataSource instanceof EventSumImpl)
 					continue;
