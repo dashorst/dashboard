@@ -34,9 +34,8 @@ public class NSService implements Retriever {
 
 	@Override
 	public void onConfigure(Repository repository) {
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
-				.getServiceSettings(NSService.class);
-		for (Key key : serviceSettings.keySet()) {
+		for (Key key : Settings.get().getKeysWithConfigurationFor(
+				NSService.class)) {
 			trains.put(key, Collections.<Train> emptyList());
 			repository.addDataSource(key, Trains.class, new TrainsImpl(key,
 					this));

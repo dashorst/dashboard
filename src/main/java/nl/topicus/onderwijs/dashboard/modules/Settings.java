@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import nl.topicus.onderwijs.dashboard.keys.Key;
@@ -13,7 +14,6 @@ import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
 import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.KeyDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
@@ -48,17 +48,7 @@ public class Settings {
 
 	private static ArrayList<Key> keys = new ArrayList<Key>();
 
-	private HashMap<Project, Map<String, Map<String, ?>>> projectSettings = new HashMap<Project, Map<String, Map<String, ?>>>();
-
-	@JsonIgnore
-	public List<Project> getProjects() {
-		ArrayList<Project> projects = new ArrayList<Project>();
-		for (Key key : projects) {
-			if (key instanceof Project)
-				projects.add(Project.class.cast(key));
-		}
-		return projects;
-	}
+	private HashMap<Key, Map<String, Map<String, ?>>> projectSettings = new HashMap<Key, Map<String, Map<String, ?>>>();
 
 	public void addKey(Key key) {
 		if (!keys.contains(key))
@@ -73,14 +63,14 @@ public class Settings {
 		Settings.keys = new ArrayList<Key>(projects);
 	}
 
-	public Map<Project, Map<String, Map<String, ?>>> getProjectSettings() {
+	public Map<Key, Map<String, Map<String, ?>>> getProjectSettings() {
 		return projectSettings;
 	}
 
 	@JsonDeserialize(keyUsing = ProjectKeyDeserializer.class)
 	public void setProjectSettings(
 			Map<Project, Map<String, Map<String, ?>>> projectSettings) {
-		this.projectSettings = new HashMap<Project, Map<String, Map<String, ?>>>(
+		this.projectSettings = new HashMap<Key, Map<String, Map<String, ?>>>(
 				projectSettings);
 	}
 
@@ -107,7 +97,7 @@ public class Settings {
 		Map<Key, Map<String, ?>> serviceSettings = new HashMap<Key, Map<String, ?>>();
 		String key = service.getName();
 
-		for (Entry<Project, Map<String, Map<String, ?>>> projectSetting : projectSettings
+		for (Entry<Key, Map<String, Map<String, ?>>> projectSetting : projectSettings
 				.entrySet()) {
 			Map<String, Map<String, ?>> settings = projectSetting.getValue();
 			if (settings.containsKey(key)) {
@@ -115,5 +105,9 @@ public class Settings {
 			}
 		}
 		return serviceSettings;
+	}
+
+	public Set<Key> getKeysWithConfigurationFor(Class<?> service) {
+		return getServiceSettings(service).keySet();
 	}
 }
