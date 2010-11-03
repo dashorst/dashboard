@@ -44,7 +44,7 @@
 }
 
 .table.ns {
-	background-image: url('ns.svg');
+	background-image: url('images/ns.svg');
 	background-size: 100%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
@@ -60,6 +60,34 @@ table.ns table {
 }
 .table.ns .type {
 	width: 2em;
+}
+.table.ns .type div {
+	background-size: 65% auto;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 2em;
+	height: 1em;
+}
+.table.ns .type .sprinter {
+	background-image: url('images/sp.svg');
+}
+.table.ns .type .stoptrein {
+	background-image: url('images/st.svg');
+}
+.table.ns .type .sneltrein {
+	background-image: url('images/sn.svg');
+}
+.table.ns .type .intercity {
+	background-image: url('images/ic.svg');
+}
+.table.ns .type .international {
+	background-image: url('images/int.svg');
+}
+.table.ns .type .high_speed {
+	background-image: url('images/hs.svg');
+}
+.table.ns .type .canceled {
+	background-image: url('images/x.svg');
 }
 .table.ns .departureTime {
 	width: 2.5em;
@@ -80,7 +108,7 @@ table.ns table {
 }
 
 .table.alerts {
-	background-image: url('alert.svg');
+	background-image: url('images/alert.svg');
 	background-size: auto 75%;
 	background-position: 50% 60%;
 	background-repeat: no-repeat;

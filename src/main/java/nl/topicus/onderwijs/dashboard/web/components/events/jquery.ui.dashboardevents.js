@@ -70,14 +70,15 @@ $.widget( "ui.dashboardEvents", {
 		if (this.minorCount < 4) {
 			this.minorIndex = 0;
 		} else {
-			if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-3) {
-				this.minorIndex = this.minorCount-3;
-				this.scrollDirection = -1;
-			} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
+			if (this.minorIndex >= this.minorCount-3) {
 				this.minorIndex = 0;
-				this.scrollDirection = 1;
+				this.skipScroll = 1;
+			} else {
+				if (this.skipScroll == 0)
+					this.minorIndex ++;
+				else
+					this.skipScroll = 0;
 			}
-			this.minorIndex += this.scrollDirection;
 		}
 		var list = this.element.find(".minorEvents ul");
 		list.css("margin-top", (this.minorIndex*-1.5)+"em");
