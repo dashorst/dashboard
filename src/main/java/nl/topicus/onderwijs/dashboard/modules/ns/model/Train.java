@@ -14,6 +14,7 @@ public class Train implements Serializable {
 	private String departureTime;
 	private int delay;
 	private String platform;
+	private boolean platformChange;
 
 	public String getDestination() {
 		return destination;
@@ -53,6 +54,14 @@ public class Train implements Serializable {
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+
+	public boolean isPlatformChange() {
+		return platformChange;
+	}
+
+	public void setPlatformChange(boolean platformChange) {
+		this.platformChange = platformChange;
 	}
 
 	@Override

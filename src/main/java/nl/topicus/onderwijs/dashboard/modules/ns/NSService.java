@@ -61,8 +61,8 @@ public class NSService implements Retriever {
 			// StatusPageResponse response = RetrieverUtils
 			// .getStatuspage("http://192.168.55.113/api/json");
 			StatusPageResponse response = RetrieverUtils
-					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station="
-							+ station);
+					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station=Arnhem"
+					/* + station */);
 			if (response.getHttpStatusCode() != 200) {
 				return Collections.emptyList();
 			}
@@ -87,7 +87,8 @@ public class NSService implements Retriever {
 							setDestination(train, contents);
 							break;
 						case PLATFORM:
-							setPlatform(train, contents);
+							setPlatform(train, contents, curCell
+									.getAttributeValue("class"));
 							break;
 						case DETAILS:
 							setDetails(train, contents);
@@ -129,8 +130,10 @@ public class NSService implements Retriever {
 		train.setDestination(destination);
 	}
 
-	private void setPlatform(Train train, String platform) {
+	private void setPlatform(Train train, String platform, String classAttr) {
 		train.setPlatform(platform);
+		if (classAttr != null && classAttr.contains("highlight"))
+			train.setPlatformChange(true);
 	}
 
 	private void setDetails(Train train, String details) {

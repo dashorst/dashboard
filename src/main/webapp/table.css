@@ -94,7 +94,8 @@ table.ns table {
 	text-align: right;
 	padding-right: 0.3em;
 }
-.table.ns .delay {
+.table.ns .delay,
+.table.ns .platform.change {
 	color: red;
 	font-weight: bold;
 	width: 2em;
