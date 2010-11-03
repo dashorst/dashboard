@@ -21,23 +21,33 @@ public class Updater {
 	private static final Logger log = LoggerFactory.getLogger(Updater.class);
 	private ScheduledExecutorService timer;
 	private WicketApplication application;
-	private ScheduledFuture<?> scheduledFuture;
-	private Repository repository;
+	private ScheduledFuture<?> slowScheduledFuture;
+	private ScheduledFuture<?> fastScheduledFuture;
 
 	public Updater(WicketApplication application, Repository repository) {
 		this.application = application;
-		this.repository = repository;
 
-		timer = Executors.newScheduledThreadPool(1);
+		timer = Executors.newScheduledThreadPool(2);
 
-		log.info("Scheduling timer task at one minute intervals");
-		scheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(), 0, 1,
-				TimeUnit.MINUTES);
+		log.info("Scheduling timer tasks");
+		List<Runnable> slowtasks = Arrays.asList(
+				//
+				new HudsonUpdateTask(application, repository),
+				new GoogleUpdateTask(application, repository),
+				new NSUpdateTask(application, repository));
+		List<Runnable> fasttasks = Arrays.<Runnable> asList(
+		//
+				new TopicusProjectsUpdateTask(application, repository));
+		slowScheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(
+				slowtasks), 0, 60, TimeUnit.SECONDS);
+		fastScheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(
+				fasttasks), 0, 30, TimeUnit.SECONDS);
 	}
 
 	public void stop() {
 		log.info("Stopping timer task");
-		scheduledFuture.cancel(true);
+		slowScheduledFuture.cancel(true);
+		fastScheduledFuture.cancel(true);
 		timer.shutdownNow();
 		try {
 			boolean terminated = timer.awaitTermination(10, TimeUnit.SECONDS);
@@ -50,12 +60,11 @@ public class Updater {
 	}
 
 	class TimerTask implements Runnable {
-		List<Runnable> tasks = Arrays.asList(
-				//
-				new TopicusProjectsUpdateTask(application, repository),
-				new HudsonUpdateTask(application, repository),
-				new GoogleUpdateTask(application, repository),
-				new NSUpdateTask(application, repository));
+		private List<Runnable> tasks;
+
+		public TimerTask(List<Runnable> tasks) {
+			this.tasks = tasks;
+		}
 
 		@Override
 		public void run() {
