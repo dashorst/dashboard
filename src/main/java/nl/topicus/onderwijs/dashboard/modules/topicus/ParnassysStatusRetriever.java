@@ -13,9 +13,11 @@ import java.util.Map;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
@@ -46,6 +48,10 @@ public class ParnassysStatusRetriever implements Retriever,
 				.getServiceSettings(ParnassysStatusRetriever.class);
 		for (Key project : serviceSettings.keySet()) {
 			statusses.put(project, new TopicusApplicationStatus());
+			repository.addDataSource(project, RequestsPerMinute.class,
+					new RequestsPerMinuteImpl(project, this));
+			repository.addDataSource(project, AverageRequestTime.class,
+					new AverageRequestTimeImpl(project, this));
 			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
 			repository.addDataSource(project, NumberOfServers.class,
@@ -119,9 +125,13 @@ public class ParnassysStatusRetriever implements Retriever,
 				for (Element tableHeader : tableHeaders) {
 					String contents = tableHeader.getContent().toString();
 					if ("Actieve sessies:".equals(contents)) {
-						getNumberOfUsers(status, tableHeader);
+						fetchNumberOfUsers(status, tableHeader);
 					} else if ("Gestart op:".equals(contents)) {
-						getStartTijd(status, tableHeader);
+						fetchStartTijd(status, tableHeader);
+					} else if ("Gemiddelde requesttijd:".equals(contents)) {
+						fetchAvgRequestTime(status, tableHeader);
+					} else if ("Requests per minuut:".equals(contents)) {
+						fetchRequestsPerMinute(status, tableHeader);
 					}
 				}
 				serverStatusses.add(DotColor.GREEN);
@@ -145,20 +155,17 @@ public class ParnassysStatusRetriever implements Retriever,
 		return status;
 	}
 
-	private Integer getNumberOfUsers(TopicusApplicationStatus status,
+	private void fetchNumberOfUsers(TopicusApplicationStatus status,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
 
-		int currentNumberOfUsers = status.getNumberOfUsers();
-
 		String tdContents = sessiesCell.getTextExtractor().toString();
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
-		status.setNumberOfUsers(currentNumberOfUsers + numberOfUsersOnServer);
-		return numberOfUsersOnServer;
+		status.addNumberOfUsers(numberOfUsersOnServer);
 	}
 
-	private Date getStartTijd(TopicusApplicationStatus status,
+	private void fetchStartTijd(TopicusApplicationStatus status,
 			Element tableHeader) {
 		Element starttijdCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
@@ -170,12 +177,34 @@ public class ParnassysStatusRetriever implements Retriever,
 			Date now = new Date();
 			status.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
-			return starttime;
 		} catch (ParseException e) {
 			log.error("Unable to parse starttime " + starttijdText
 					+ " according to format dd MMMM yyyy, hh:mm", e);
-			return null;
 		}
+	}
+
+	private void fetchAvgRequestTime(TopicusApplicationStatus status,
+			Element tableHeader) {
+		Element sessiesCell = tableHeader.getParentElement().getContent()
+				.getChildElements().get(1);
+
+		String tdContents = sessiesCell.getTextExtractor().toString();
+		int space = tdContents.indexOf(' ');
+		if (space > -1) {
+			tdContents = tdContents.substring(0, space);
+		}
+		int avgRequestTime = Integer.parseInt(tdContents);
+		status.addAverageRequestDuration(avgRequestTime);
+	}
+
+	private void fetchRequestsPerMinute(TopicusApplicationStatus status,
+			Element tableHeader) {
+		Element sessiesCell = tableHeader.getParentElement().getContent()
+				.getChildElements().get(1);
+
+		String tdContents = sessiesCell.getTextExtractor().toString();
+		Integer requestsPerMinute = Integer.valueOf(tdContents);
+		status.addRequestsPerMinute(requestsPerMinute);
 	}
 
 	@Override
