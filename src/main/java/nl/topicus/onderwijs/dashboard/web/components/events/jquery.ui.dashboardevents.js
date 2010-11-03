@@ -67,11 +67,11 @@ $.widget( "ui.dashboardEvents", {
 	},
 	
 	_scrollMinors: function() {
-		if (this.minorCount < 2) {
+		if (this.minorCount < 4) {
 			this.minorIndex = 0;
 		} else {
-			if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-1) {
-				this.minorIndex = this.minorCount-1;
+			if (this.scrollDirection == 1 && this.minorIndex >= this.minorCount-3) {
+				this.minorIndex = this.minorCount-3;
 				this.scrollDirection = -1;
 			} else if (this.scrollDirection == -1 && this.minorIndex <= 0) {
 				this.minorIndex = 0;
@@ -80,7 +80,7 @@ $.widget( "ui.dashboardEvents", {
 			this.minorIndex += this.scrollDirection;
 		}
 		var list = this.element.find(".minorEvents ul");
-		list.css("margin-top", (this.minorIndex*-1.5 - 0.2)+"em");
+		list.css("margin-top", (this.minorIndex*-1.5)+"em");
 	}
 });
 

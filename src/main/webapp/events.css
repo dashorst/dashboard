@@ -5,7 +5,8 @@
 
 .minorEvents {
 	overflow: hidden;
-	height: 1.5em;
+	font-size: 125%;
+	height: 4.5em;
 	text-align: center;
 }
 .minorEvents ul {
@@ -13,7 +14,6 @@
 	padding: 0;
 	margin: 0 0 0 0;
 	line-height: 1.5em;
-	font-size: 125%;
 	-webkit-transition-property: margin;
 	-webkit-transition-duration: 2s;
 }
