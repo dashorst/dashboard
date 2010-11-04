@@ -51,14 +51,14 @@ public class Event implements Serializable {
 		nowDate.set(Calendar.MILLISECOND, 0);
 		nowDate.set(Calendar.SECOND, 0);
 		nowDate.set(Calendar.MINUTE, 0);
-		nowDate.set(Calendar.HOUR, 0);
+		nowDate.set(Calendar.HOUR_OF_DAY, 0);
 
 		Calendar eventDate = Calendar.getInstance();
 		eventDate.setTime(getDateTime());
 		eventDate.set(Calendar.MILLISECOND, 0);
 		eventDate.set(Calendar.SECOND, 0);
 		eventDate.set(Calendar.MINUTE, 0);
-		eventDate.set(Calendar.HOUR, 0);
+		eventDate.set(Calendar.HOUR_OF_DAY, 0);
 
 		long diffInMs = eventDate.getTimeInMillis() - nowDate.getTimeInMillis();
 		return (int) (diffInMs / (24 * 3600 * 1000));
