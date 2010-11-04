@@ -1,14 +1,16 @@
 .events .major {
 	font-size: 175%;
-	text-align: center;
+}
+.events .major div {
+	clear: both;
 }
 
 .events .minorEvents {
 	overflow: hidden;
 	font-size: 125%;
-	height: 3.6em;
-	text-align: center;
+	height: 3.75em;
 	margin-top: 0.7em;
+	clear: both;
 }
 .events .minorEvents ul {
 	list-style: none;
@@ -18,20 +20,32 @@
 	-webkit-transition-duration: 2s;
 }
 .events .minorEvents li {
-	height: 1.2em;
+	height: 1.25em;
 }
 
 .events span {
 	margin: 0 0.1em;
+	display: block;
+	float: left;
 }
 .events .project {
-	margin-right: 0.4em;	
+	margin-right: 0.4em;
+	width: 20%;
+	text-align: right;
+}
+.events .days {
+	width: 4.3em;
 }
 .events .title {
 	color: #888;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 15em;
 }
 .events .date {
-	margin-left: 0.5em;	
+	margin-left: 0.5em;
+	margin-top: 1em;
 	font-size: 50%;
 	color: #888;
 }
