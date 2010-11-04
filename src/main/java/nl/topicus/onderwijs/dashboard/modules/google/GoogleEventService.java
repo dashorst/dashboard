@@ -23,8 +23,10 @@ import org.slf4j.LoggerFactory;
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.DateTime;
+import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarEventFeed;
+import com.google.gdata.data.calendar.CalendarFeed;
 import com.google.gdata.data.extensions.When;
 
 public class GoogleEventService implements Retriever {
@@ -65,8 +67,22 @@ public class GoogleEventService implements Retriever {
 
 				CalendarService service = new CalendarService("Dashboard");
 				service.setUserCredentials(username, password);
+
 				URL feedUrl = new URL("http://www.google.com/calendar/feeds/"
 						+ calendarId + "/private/full");
+				CalendarQuery calendarQuery = new CalendarQuery(
+						new URL(
+								"https://www.google.com/calendar/feeds/default/owncalendars/full"));
+				CalendarFeed calendarFeed = service.query(calendarQuery,
+						CalendarFeed.class);
+				String color = null;
+				for (CalendarEntry curCalendar : calendarFeed.getEntries()) {
+					if (curCalendar.getId().endsWith(
+							calendarId.replaceAll("@", "%40"))) {
+						color = curCalendar.getColor().getValue();
+						break;
+					}
+				}
 
 				CalendarQuery myQuery = new CalendarQuery(feedUrl);
 				Calendar cal = Calendar.getInstance();
@@ -77,8 +93,8 @@ public class GoogleEventService implements Retriever {
 				myQuery.setIntegerCustomParameter("max-results", 100);
 
 				// Send the request and receive the response:
-				CalendarEventFeed resultFeed;
-				resultFeed = service.query(myQuery, CalendarEventFeed.class);
+				CalendarEventFeed resultFeed = service.query(myQuery,
+						CalendarEventFeed.class);
 
 				for (CalendarEventEntry eventEntry : resultFeed.getEntries()) {
 					for (When curTime : eventEntry.getTimes()) {
@@ -88,6 +104,7 @@ public class GoogleEventService implements Retriever {
 						// event.setOmschrijving(entry.getPlainTextContent());
 						event.setDateTime(gDateTimeToDate(curTime
 								.getStartTime()));
+						event.setColor(color);
 						Matcher m = TAG_PATTERN.matcher(eventEntry
 								.getPlainTextContent());
 						while (m.find()) {

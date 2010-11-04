@@ -1,19 +1,43 @@
-.majorEvent {
-	font-size: 200%;
+.events .major {
+	font-size: 175%;
 	text-align: center;
 }
 
-.minorEvents {
+.events .minorEvents {
 	overflow: hidden;
 	font-size: 125%;
-	height: 4.5em;
+	height: 3.6em;
 	text-align: center;
+	margin-top: 0.7em;
 }
-.minorEvents ul {
+.events .minorEvents ul {
 	list-style: none;
 	padding: 0;
 	margin: 0 0 0 0;
-	line-height: 1.5em;
 	-webkit-transition-property: margin;
 	-webkit-transition-duration: 2s;
+}
+.events .minorEvents li {
+	height: 1.2em;
+}
+
+.events span {
+	margin: 0 0.1em;
+}
+.events .project {
+	margin-right: 0.4em;	
+}
+.events .title {
+	color: #888;
+}
+.events .date {
+	margin-left: 0.5em;	
+	font-size: 50%;
+	color: #888;
+}
+.events .date:before {
+	content: '(';
+}
+.events .date:after {
+	content: ')';
 }

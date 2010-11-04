@@ -211,6 +211,13 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					cal.add(Calendar.DAY_OF_YEAR, random.nextInt(30));
 					event.setDateTime(cal.getTime());
 					event.setMajor(random.nextInt(5) == 0);
+					if (event.isMajor())
+						event.getTags().add("#major");
+					event.setColor(Integer.toHexString(random
+							.nextInt(256 * 256 * 256)));
+					while (event.getColor().length() < 0)
+						event.setColor("0" + event.getColor());
+					event.setColor("#" + event.getColor());
 					ret.add(event);
 				}
 				Collections.sort(ret, new Comparator<Event>() {

@@ -8,7 +8,8 @@ import java.util.List;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 
 public class EventData {
-	private Event major;
+	private Event major1;
+	private Event major2;
 	private List<Event> minor;
 
 	public EventData(List<Event> events) {
@@ -26,19 +27,30 @@ public class EventData {
 		});
 		minor = new ArrayList<Event>();
 		for (Event curEvent : events) {
-			if (curEvent.isMajor() && major == null)
-				major = curEvent;
-			else
-				minor.add(curEvent);
+			if (curEvent.isMajor()) {
+				if (major1 == null)
+					major1 = curEvent;
+				else if (major2 == null)
+					major2 = curEvent;
+			}
+			minor.add(curEvent);
 		}
 	}
 
-	public Event getMajor() {
-		return major;
+	public Event getMajor1() {
+		return major1;
 	}
 
-	public void setMajor(Event major) {
-		this.major = major;
+	public void setMajor1(Event major1) {
+		this.major1 = major1;
+	}
+
+	public Event getMajor2() {
+		return major2;
+	}
+
+	public void setMajor2(Event major2) {
+		this.major2 = major2;
 	}
 
 	public List<Event> getMinor() {
