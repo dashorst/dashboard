@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
+import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
@@ -12,6 +13,7 @@ import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.EventSumImpl;
+import nl.topicus.onderwijs.dashboard.modules.standard.IssueSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
 import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
@@ -22,6 +24,7 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,11 +67,14 @@ public class WicketApplication extends WebApplication {
 		getMarkupSettings().setStripWicketTags(true);
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());
+		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
 		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,
 				new AlertSumImpl());
 		randomRepository.addDataSource(Summary.get(), Events.class,
 				new EventSumImpl());
+		randomRepository.addDataSource(Summary.get(), Issues.class,
+				new IssueSumImpl());
 		for (Project curProject : repository.getProjects()) {
 			randomRepository.addDataSource(curProject, ProjectAlerts.class,
 					new ProjectAlertImpl(curProject));
@@ -80,8 +86,10 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public synchronized void enableLiveUpdater() {
-		if (updater == null)
+		if (updater == null) {
 			updater = new Updater(this, randomRepository);
+			updater.start();
+		}
 	}
 
 	public synchronized void disableLiveUpdater() {

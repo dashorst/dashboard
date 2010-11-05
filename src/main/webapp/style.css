@@ -27,7 +27,7 @@ html, body {
 	margin : 2em 1em 1em;
 	clear : both;
 	position: relative;
-	width: 1050px;
+	width: 1000px;
 }
 .no-overflow {
 	overflow: hidden;

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.google.GoogleUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonUpdateTask;
+import nl.topicus.onderwijs.dashboard.modules.mantis.MantisUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.ns.NSUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -23,28 +24,29 @@ public class Updater {
 	private WicketApplication application;
 	private ScheduledFuture<?> slowScheduledFuture;
 	private ScheduledFuture<?> fastScheduledFuture;
+	private Repository repository;
 
 	public Updater(WicketApplication application, Repository repository) {
 		this.application = application;
+		this.repository = repository;
 
 		timer = Executors.newScheduledThreadPool(2);
+	}
 
+	public void start() {
 		log.info("Scheduling timer tasks");
 		TimerTask slowtasks = new TimerTask(Arrays.asList(
 				//
 				new HudsonUpdateTask(application, repository),
+				new MantisUpdateTask(application, repository),
 				new GoogleUpdateTask(application, repository),
 				new NSUpdateTask(application, repository)));
 		TimerTask fasttasks = new TimerTask(Arrays.<Runnable> asList( //
 				new TopicusProjectsUpdateTask(application, repository)));
 
-		// run them both now, scheduling with no initial delay does not work
-		// properly
-		slowtasks.run();
-		fasttasks.run();
-		slowScheduledFuture = timer.scheduleWithFixedDelay(slowtasks, 60, 60,
+		slowScheduledFuture = timer.scheduleWithFixedDelay(slowtasks, 0, 60,
 				TimeUnit.SECONDS);
-		fastScheduledFuture = timer.scheduleWithFixedDelay(fasttasks, 30, 30,
+		fastScheduledFuture = timer.scheduleWithFixedDelay(fasttasks, 0, 30,
 				TimeUnit.SECONDS);
 	}
 

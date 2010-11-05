@@ -5,11 +5,17 @@
 	background-color: rgba(64, 64, 64, 0.496094);
 	color: white;
 	margin-right: 1.5em;
-	width: 16em;
+	width: 15.5em;
 }
 .table table {
 	border-collapse: collapse;
-	width: 14.5em;
+	width: 14em;
+}
+.table.double {
+	width: 32.5em;
+}
+.table.double table {
+	width: 29.5em;
 }
 .table table td {
 	overflow: hidden;
@@ -143,4 +149,56 @@
 }
 .table.alerts .message {
 	max-width: 7.75em;
+}
+
+
+.table.issues {
+	background-image: url('images/mantis.svg');
+	background-size: auto 75%;
+	background-position: 50% 60%;
+	background-repeat: no-repeat;
+}
+.table.issues thead tr th {
+	background-color: #fcbdbd;
+}
+.table.issues th {
+	color: #200;
+}
+.table.issues .priority {
+	width: 2em;
+}
+.table.issues .priority div {
+	background-size: auto 100%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 2em;
+	height: 1em;
+}
+.table.issues .priority .none {
+	background-image: url('images/none.svg');
+}
+.table.issues .priority .low {
+	background-image: url('images/low.svg');
+}
+.table.issues .priority .normal {
+	background-image: url('images/normal.svg');
+}
+.table.issues .priority .high {
+	background-image: url('images/high.svg');
+}
+.table.issues .priority .urgent {
+	background-image: url('images/urgent.svg');
+}
+.table.issues .priority .immediate {
+	background-image: url('images/immediate.svg');
+}
+.table.issues .id {
+	width: 3em;
+}
+.table.issues .project {
+	max-width: 5em;
+	width: 5em;
+}
+.table.issues .summary {
+	max-width: 22em;
 }
