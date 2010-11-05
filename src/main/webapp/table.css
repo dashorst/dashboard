@@ -1,11 +1,20 @@
 .table {
-	height: 17.3em;
+	height: 15.5em;
 	-webkit-border-radius: 1em;
 	float: left;
 	background-color: rgba(64, 64, 64, 0.496094);
 	color: white;
+	margin-right: 1.5em;
+	width: 16em;
+}
+.table table {
 	border-collapse: collapse;
-	margin-right: 2em;
+	width: 14.5em;
+}
+.table table td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .table:last-child {
 	margin-right: 0;
@@ -19,6 +28,7 @@
 }
 .table td {
 	padding: 0;
+	font-size: 90%;
 }
 .table tr:nth-child(n+10) {
 	display: none;
@@ -49,9 +59,6 @@
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }
-table.ns table {
-	width: 20.8em; /*416*/
-}
 .table.ns thead tr th {
 	background-color: #fc3;
 }
@@ -65,7 +72,7 @@ table.ns table {
 	background-size: 65% auto;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	width: 2em;
+	width: 2.4em;
 	height: 1em;
 }
 .table.ns .type .sprinter {
@@ -90,7 +97,7 @@ table.ns table {
 	background-image: url('images/x.svg');
 }
 .table.ns .departureTime {
-	width: 2.5em;
+	width: 2em;
 	text-align: right;
 	padding-right: 0.3em;
 }
@@ -98,14 +105,15 @@ table.ns table {
 .table.ns .platform.change {
 	color: red;
 	font-weight: bold;
+}
+.table.ns .delay {
 	width: 2em;
 }
 .table.ns .platform {
 	width: 1.5em;
 }
 .table.ns .destination {
-	width: 10em;
-	overflow: hidden;
+	max-width: 8em;
 }
 
 .table.alerts {
@@ -113,9 +121,6 @@ table.ns table {
 	background-size: auto 75%;
 	background-position: 50% 60%;
 	background-repeat: no-repeat;
-}
-.table.alerts table {
-	width: 25.3em; /*506*/
 }
 .table.alerts thead tr th {
 	background-color: #fc3;
@@ -133,9 +138,9 @@ table.ns table {
 	padding-right: 0.7em;
 }
 .table.alerts .project {
-	width: 6em;
+	max-width: 4em;
+	width: 4em;
 }
 .table.alerts .message {
-	width: 12em;
-	overflow: hidden;
+	max-width: 7.75em;
 }

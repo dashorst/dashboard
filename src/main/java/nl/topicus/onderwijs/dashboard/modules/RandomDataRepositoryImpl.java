@@ -153,7 +153,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					Train train = new Train();
 					train.setType(TrainType.values()[random.nextInt(TrainType
 							.values().length)]);
-					train.setDestination("random");
+					train.setDestination("random random random centraal");
 					int minute = random.nextInt(60);
 					train.setDepartureTime(random.nextInt(24) + ":"
 							+ (minute < 10 ? "0" : "") + minute);
@@ -183,7 +183,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					int minute = random.nextInt(60);
 					alert.setTime(random.nextInt(24) + ":"
 							+ (minute < 10 ? "0" : "") + minute);
-					alert.setMessage("random");
+					alert.setMessage("random exception with long message");
 					ret.add(alert);
 				}
 				Collections.sort(ret, new Comparator<Alert>() {
