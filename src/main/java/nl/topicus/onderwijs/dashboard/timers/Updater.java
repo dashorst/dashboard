@@ -30,18 +30,22 @@ public class Updater {
 		timer = Executors.newScheduledThreadPool(2);
 
 		log.info("Scheduling timer tasks");
-		List<Runnable> slowtasks = Arrays.asList(
+		TimerTask slowtasks = new TimerTask(Arrays.asList(
 				//
 				new HudsonUpdateTask(application, repository),
 				new GoogleUpdateTask(application, repository),
-				new NSUpdateTask(application, repository));
-		List<Runnable> fasttasks = Arrays.<Runnable> asList(
-		//
-				new TopicusProjectsUpdateTask(application, repository));
-		slowScheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(
-				slowtasks), 0, 60, TimeUnit.SECONDS);
-		fastScheduledFuture = timer.scheduleWithFixedDelay(new TimerTask(
-				fasttasks), 0, 30, TimeUnit.SECONDS);
+				new NSUpdateTask(application, repository)));
+		TimerTask fasttasks = new TimerTask(Arrays.<Runnable> asList( //
+				new TopicusProjectsUpdateTask(application, repository)));
+
+		// run them both now, scheduling with no initial delay does not work
+		// properly
+		slowtasks.run();
+		fasttasks.run();
+		slowScheduledFuture = timer.scheduleWithFixedDelay(slowtasks, 60, 60,
+				TimeUnit.SECONDS);
+		fastScheduledFuture = timer.scheduleWithFixedDelay(fasttasks, 30, 30,
+				TimeUnit.SECONDS);
 	}
 
 	public void stop() {
