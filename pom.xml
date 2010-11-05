@@ -7,9 +7,9 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>Dashboard</name>
 	<properties>
-		<wicket.version>1.4.12</wicket.version>
+		<wicket.version>1.4.13</wicket.version>
 		<jetty.version>6.1.25</jetty.version>
-		<slf4j.version>1.5.8</slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<restlet.version>2.0.1</restlet.version>
 		<twitter4j.version>2.1.4</twitter4j.version>
 		<jackson.version>1.6.1</jackson.version>
@@ -27,6 +27,15 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>99.0-does-not-exist</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<!-- WICKET DEPENDENCIES -->
 		<dependency>
@@ -42,7 +51,7 @@
 		<dependency>
 			<groupId>org.odlabs.wiquery</groupId>
 			<artifactId>wiquery</artifactId>
-			<version>1.1.TOPICUS3</version>
+			<version>1.1.TOPICUS4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -81,16 +90,21 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
+			<version>1.2.16</version>
 		</dependency>
 
 		<!-- JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -112,6 +126,38 @@
 			<artifactId>jetty-management</artifactId>
 			<version>${jetty.version}</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- matis -->
+		<dependency>
+			<groupId>org.mantisbt.mantisconnect</groupId>
+			<artifactId>client-api</artifactId>
+			<version>1.1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis-jaxrpc</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis-saaj</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 	<build>
