@@ -75,6 +75,8 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 				"dashboardalerttable.js");
 		manager.addJavaScriptResource(TablePanel.class,
 				"dashboardissuetable.js");
+		manager.addJavaScriptResource(TablePanel.class,
+				"dashboardcommittable.js");
 	}
 
 	@Override

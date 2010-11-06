@@ -12,6 +12,7 @@ import nl.topicus.onderwijs.dashboard.modules.google.GoogleUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.hudson.HudsonUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.mantis.MantisUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.ns.NSUpdateTask;
+import nl.topicus.onderwijs.dashboard.modules.svn.SvnUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
@@ -39,6 +40,7 @@ public class Updater {
 				//
 				new HudsonUpdateTask(application, repository),
 				new MantisUpdateTask(application, repository),
+				new SvnUpdateTask(application, repository),
 				new GoogleUpdateTask(application, repository),
 				new NSUpdateTask(application, repository)));
 		TimerTask fasttasks = new TimerTask(Arrays.<Runnable> asList( //
