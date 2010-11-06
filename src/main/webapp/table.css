@@ -129,10 +129,10 @@
 	background-repeat: no-repeat;
 }
 .table.alerts thead tr th {
-	background-color: #fc3;
+	background-color: #fdb42d;
 }
 .table.alerts th {
-	color: #006;
+	color: #800;
 }
 .table.alerts .color {
 	width: 1.3em;
@@ -201,4 +201,29 @@
 }
 .table.issues .summary {
 	max-width: 22em;
+}
+
+
+.table.commits {
+	background-image: url('images/svn.svg');
+	background-size: auto 65%;
+	background-position: 50% 60%;
+	background-repeat: no-repeat;
+}
+.table.commits thead tr th {
+	background-color: #809cc8;
+}
+.table.commits th {
+	color: #fff;
+}
+.table.commits .revision {
+	padding-left: 0.5em;
+	width: 3em;
+}
+.table.commits .project {
+	max-width: 5em;
+	width: 5em;
+}
+.table.commits .message {
+	max-width: 23em;
 }

@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.web;
 import java.util.Date;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.datasources.Commits;
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
@@ -12,6 +13,7 @@ import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
+import nl.topicus.onderwijs.dashboard.modules.standard.CommitSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.EventSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.IssueSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
@@ -75,6 +77,8 @@ public class WicketApplication extends WebApplication {
 				new EventSumImpl());
 		randomRepository.addDataSource(Summary.get(), Issues.class,
 				new IssueSumImpl());
+		randomRepository.addDataSource(Summary.get(), Commits.class,
+				new CommitSumImpl());
 		for (Project curProject : repository.getProjects()) {
 			randomRepository.addDataSource(curProject, ProjectAlerts.class,
 					new ProjectAlertImpl(curProject));
