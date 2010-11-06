@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.Commits;
 import nl.topicus.onderwijs.dashboard.datasources.Events;
+import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
 import nl.topicus.onderwijs.dashboard.keys.Location;
@@ -66,6 +68,8 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new TablePanel("ns", Trains.class, WicketApplication.get()
 				.getRepository().getKeys(Location.class).get(0), true));
 		add(new TablePanel("commits", Commits.class, Summary.get(), false));
+		add(new TablePanel("alerts", ProjectAlerts.class, Summary.get(), false));
+		add(new TablePanel("issues", Issues.class, Summary.get(), false));
 		add(new EventsPanel("events", Events.class, Summary.get()));
 	}
 

@@ -129,10 +129,10 @@
 	background-repeat: no-repeat;
 }
 .table.alerts thead tr th {
-	background-color: #fc3;
+	background-color: #fdb42d;
 }
 .table.alerts th {
-	color: #006;
+	color: #800;
 }
 .table.alerts .color {
 	width: 1.3em;
