@@ -9,12 +9,17 @@
 
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
 html, body {
-	background-color: black;
 	color : white;
 	font-size : 15pt;
 	overflow-y: auto;
 	overflow-x: hidden;
 	-webkit-user-select:none;
+}
+body {
+	background: -webkit-gradient(linear, right top, left bottom,
+		from(#000),
+		color-stop(0.5, #222),
+		to(#000));
 }
 
 .debug {
