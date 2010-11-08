@@ -19,7 +19,6 @@ import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
-import nl.topicus.onderwijs.dashboard.web.components.twitter.TwitterPanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
 
 import org.apache.wicket.Application;
@@ -72,7 +71,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new TablePanel("alerts", ProjectAlerts.class, Summary.get(), false));
 		add(new TablePanel("issues", Issues.class, Summary.get(), false));
 		add(new EventsPanel("events", Events.class, Summary.get()));
-		add(new TwitterPanel("twitters"));
+		// add(new TwitterPanel("twitters"));
 	}
 
 	@Override

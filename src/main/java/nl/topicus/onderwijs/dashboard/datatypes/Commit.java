@@ -23,6 +23,9 @@ public class Commit implements Serializable {
 	private String message;
 	private String author;
 
+	public Commit() {
+	}
+
 	public Commit(Key project, SVNLogEntry logEntry) {
 		this.project = project;
 		this.dateTime = logEntry.getDate();
