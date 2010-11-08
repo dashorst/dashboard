@@ -138,7 +138,7 @@ dashboard plugin will take it from there using the Hudson JSON API.
 
 MantisBT integration requires MantisConnect 1.2.1.0 which is unfortunately not
 available in a Maven repository. You can rebuild the connector yourself
-against a l.2+ MantisBT installation.
+against a 1.2+ MantisBT installation.
 
 Configuring the MantisBT integration:
 
