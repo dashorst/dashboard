@@ -22,6 +22,7 @@ public class Commit implements Serializable {
 	private long revision;
 	private String message;
 	private String author;
+	private int filesChanged;
 
 	public Commit() {
 	}
@@ -32,6 +33,7 @@ public class Commit implements Serializable {
 		this.revision = logEntry.getRevision();
 		this.message = logEntry.getMessage();
 		this.author = logEntry.getAuthor();
+		this.filesChanged = logEntry.getChangedPaths().size();
 	}
 
 	public Key getProject() {
@@ -80,6 +82,14 @@ public class Commit implements Serializable {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public int getFilesChanged() {
+		return filesChanged;
+	}
+
+	public void setFilesChanged(int filesChanged) {
+		this.filesChanged = filesChanged;
 	}
 
 	@Override

@@ -203,7 +203,12 @@
 	max-width: 22em;
 }
 
-
+.table.commits tr {
+	display: table-row;
+}
+.table.commits tr:nth-child(n+13) {
+	display: none;
+}
 .table.commits {
 	background-image: url('images/svn.svg');
 	background-size: auto 65%;
@@ -226,4 +231,23 @@
 }
 .table.commits .message {
 	max-width: 23em;
+}
+.table.commits .details {
+	font-size: 60%;
+	color: #aaa;
+	padding-left: 4em;
+}
+.table.commits .details .detail {
+	padding-left: 1em;
+	display: block;
+	width: 10em;
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.table.commits .details em {
+	font-style: normal;
+	color: #fff;
+	padding: 0 0.3em;
 }

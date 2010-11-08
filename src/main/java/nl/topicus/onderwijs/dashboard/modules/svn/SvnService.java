@@ -70,7 +70,7 @@ public class SvnService implements Retriever {
 					new DefaultSVNOptions(), username, password);
 			SVNLogClient logClient = clientManager.getLogClient();
 			logClient.doLog(svnUrl, new String[] { "." }, SVNRevision.HEAD,
-					SVNRevision.HEAD, SVNRevision.create(0), true, false, 10,
+					SVNRevision.HEAD, SVNRevision.create(0), true, true, 10,
 					new ISVNLogEntryHandler() {
 						@Override
 						public void handleLogEntry(SVNLogEntry logEntry)
