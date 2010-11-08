@@ -39,7 +39,6 @@ public class BarGraphPanel extends Panel implements IWiQueryPlugin {
 
 			@Override
 			protected void populateItem(ListItem<Project> item) {
-
 				item.add(new BarGraphBarPanel("bar", item.getModel(),
 						dataSources));
 			}

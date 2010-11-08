@@ -71,6 +71,10 @@ public class WicketApplication extends WebApplication {
 		getSharedResources().add("starttime", new StartTimeResource());
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
+		getRequestLoggerSettings().setRequestLoggerEnabled(true);
+		getRequestLoggerSettings().setRequestsWindowSize(200);
+		getRequestLoggerSettings().setRecordSessionSize(true);
+
 		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,
 				new AlertSumImpl());
 		randomRepository.addDataSource(Summary.get(), Events.class,
