@@ -11,11 +11,9 @@ public class TwitterTask implements Runnable {
 			.getLogger(TwitterTask.class);
 	private TwitterService service;
 	private WicketApplication application;
-	private Repository repository;
 
 	public TwitterTask(WicketApplication application, Repository repository) {
 		this.application = application;
-		this.repository = repository;
 		this.service = new TwitterService();
 		this.service.onConfigure(repository);
 	}

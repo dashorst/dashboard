@@ -18,13 +18,15 @@ public class Issue implements Serializable {
 			"dd-MM-yyyy HH:mm");
 
 	private Date dateTime;
-	private String time;
 	private IssueStatus status;
 	private IssuePriority priority;
 	private IssueSeverity severity;
 	private long id;
 	private String summary;
 	private Key project;
+
+	public Issue() {
+	}
 
 	public Issue(Key project, IIssueHeader issue) {
 		this.project = project;
@@ -33,7 +35,6 @@ public class Issue implements Serializable {
 		this.severity = IssueSeverity.get(issue.getSeverity());
 		this.id = issue.getId();
 		this.summary = issue.getSummary();
-		this.time = TIME_FORMAT.format(issue.getDateLastUpdated());
 		this.dateTime = issue.getDateLastUpdated();
 	}
 
@@ -46,11 +47,7 @@ public class Issue implements Serializable {
 	}
 
 	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
+		return TIME_FORMAT.format(getDateTime());
 	}
 
 	public long getId() {

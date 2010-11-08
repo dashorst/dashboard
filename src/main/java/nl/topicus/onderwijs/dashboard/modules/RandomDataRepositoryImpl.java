@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
+import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
+import nl.topicus.onderwijs.dashboard.datatypes.Issue;
+import nl.topicus.onderwijs.dashboard.datatypes.IssuePriority;
+import nl.topicus.onderwijs.dashboard.datatypes.IssueSeverity;
+import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
@@ -131,6 +137,12 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					} else if (settings.type().equals(Alert.class)
 							&& settings.list()) {
 						value = createRandomAlerts(key);
+					} else if (settings.type().equals(Commit.class)
+							&& settings.list()) {
+						value = createRandomCommits(key);
+					} else if (settings.type().equals(Issue.class)
+							&& settings.list()) {
+						value = createRandomIssues(key);
 					} else if (settings.type().equals(Event.class)
 							&& settings.list()) {
 						value = createRandomEvents(key);
@@ -192,6 +204,42 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 						return o1.getKey().compareTo(o2.getKey());
 					}
 				});
+				return ret;
+			}
+
+			private List<Commit> createRandomCommits(Key key) {
+				Random random = new Random();
+				List<Commit> ret = new ArrayList<Commit>();
+				for (int count = 0; count < 5; count++) {
+					Commit commit = new Commit();
+					commit.setProject(key);
+					commit.setRevision(random.nextInt(100000));
+					commit.setDateTime(new Date(System.currentTimeMillis()
+							- random.nextInt(3600000)));
+					commit.setMessage("random commit with long message");
+					commit.setAuthor("random");
+					ret.add(commit);
+				}
+				return ret;
+			}
+
+			private List<Issue> createRandomIssues(Key key) {
+				Random random = new Random();
+				List<Issue> ret = new ArrayList<Issue>();
+				for (int count = 0; count < 5; count++) {
+					Issue issue = new Issue();
+					issue.setProject(key);
+					issue.setId(random.nextInt(100000));
+					issue.setDateTime(new Date(System.currentTimeMillis()
+							- random.nextInt(3600000)));
+					issue.setSummary("random issue with long message");
+					issue.setStatus(IssueStatus.NEW);
+					issue.setSeverity(IssueSeverity.values()[random
+							.nextInt(IssueSeverity.values().length)]);
+					issue.setPriority(IssuePriority.values()[random
+							.nextInt(IssuePriority.values().length)]);
+					ret.add(issue);
+				}
 				return ret;
 			}
 
