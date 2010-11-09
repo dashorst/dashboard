@@ -54,15 +54,6 @@ public class TwitterSettings implements Serializable {
 		}
 	}
 
-	public TwitterSettings() {
-		this.applicationKey = new OAuthKey("zxEEUXKLSFB442x1nnEeLw",
-				"GHm3pi4n6Cg3PAYYswHuzISdmhOeLUq1tWa74qM5w");
-
-		this.tokens.put("topicus_dashboard", new OAuthKey(
-				"195868565-h7eGia6JeFl3IdfsPv4iZiV8WLgIH5jetV7y0t3L",
-				"6w6kLYlXGqWBiY0ZvZdJoYQ47dRQ81hfD1rC93dpM"));
-	}
-
 	public OAuthKey getApplicationKey() {
 		return applicationKey;
 	}
