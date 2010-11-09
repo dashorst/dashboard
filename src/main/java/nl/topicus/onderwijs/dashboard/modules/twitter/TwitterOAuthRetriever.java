@@ -12,11 +12,8 @@ import twitter4j.http.RequestToken;
 
 public class TwitterOAuthRetriever {
 	public static void main(String args[]) throws Exception {
-
-		TwitterSettings settings = new TwitterSettings();
-
-		String oAuthConsumerKey = settings.getApplicationKey().getKey();
-		String oAuthConsumerSecret = settings.getApplicationKey().getSecret();
+		String oAuthConsumerKey = args[0];
+		String oAuthConsumerSecret = args[1];
 
 		// The factory instance is re-useable and thread safe.
 		Twitter twitter = new TwitterFactory().getInstance();
