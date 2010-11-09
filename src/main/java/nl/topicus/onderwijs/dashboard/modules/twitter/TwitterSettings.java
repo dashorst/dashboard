@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.modules.twitter;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Settings for accessing multiple twitter accounts using OAuth.
@@ -13,6 +14,11 @@ public class TwitterSettings implements Serializable {
 	public static class OAuthKey {
 		private String key;
 		private String secret;
+
+		public OAuthKey(Map<String, String> keyAndSecret) {
+			key = keyAndSecret.get("key");
+			secret = keyAndSecret.get("secret");
+		}
 
 		public OAuthKey(String key, String secret) {
 			this.key = key;
@@ -36,7 +42,25 @@ public class TwitterSettings implements Serializable {
 	private OAuthKey applicationKey;
 	private HashMap<String, OAuthKey> tokens = new HashMap<String, OAuthKey>();
 
+	@SuppressWarnings("unchecked")
+	public TwitterSettings(Map<String, ?> settings) {
+		applicationKey = new OAuthKey((Map<String, String>) settings
+				.get("application"));
+		for (Entry<String, ?> curEntry : settings.entrySet()) {
+			if (!"application".equals(curEntry.getKey())) {
+				tokens.put(curEntry.getKey(), new OAuthKey(
+						(Map<String, String>) curEntry.getValue()));
+			}
+		}
+	}
+
 	public TwitterSettings() {
+		this.applicationKey = new OAuthKey("zxEEUXKLSFB442x1nnEeLw",
+				"GHm3pi4n6Cg3PAYYswHuzISdmhOeLUq1tWa74qM5w");
+
+		this.tokens.put("topicus_dashboard", new OAuthKey(
+				"195868565-h7eGia6JeFl3IdfsPv4iZiV8WLgIH5jetV7y0t3L",
+				"6w6kLYlXGqWBiY0ZvZdJoYQ47dRQ81hfD1rC93dpM"));
 	}
 
 	public OAuthKey getApplicationKey() {
