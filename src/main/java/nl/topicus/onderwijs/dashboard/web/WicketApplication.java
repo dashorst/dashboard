@@ -25,7 +25,9 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +89,11 @@ public class WicketApplication extends WebApplication {
 			randomRepository.addDataSource(curProject, ProjectAlerts.class,
 					new ProjectAlertImpl(curProject));
 		}
+	}
+
+	@Override
+	protected ISessionStore newSessionStore() {
+		return new HttpSessionStore(this);
 	}
 
 	public List<Project> getProjects() {

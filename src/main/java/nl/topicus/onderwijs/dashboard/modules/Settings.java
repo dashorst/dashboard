@@ -19,6 +19,9 @@ import org.codehaus.jackson.map.KeyDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 public class Settings {
+
+	private static Settings INSTANCE;
+
 	/**
 	 * Custom JSON deserializer for projects that are used as key values in a
 	 * Map.
@@ -37,13 +40,14 @@ public class Settings {
 	}
 
 	public static Settings get() {
-		ConfigurationRepository configurationRepository = new ConfigurationRepository();
-		if (!configurationRepository.configurationExists(Settings.class))
-			throw new IllegalStateException("No configuration exists for "
-					+ Settings.class.getName());
-		Settings settings = configurationRepository
-				.getConfiguration(Settings.class);
-		return settings;
+		if (INSTANCE == null) {
+			ConfigurationRepository configurationRepository = new ConfigurationRepository();
+			if (!configurationRepository.configurationExists(Settings.class))
+				throw new IllegalStateException("No configuration exists for "
+						+ Settings.class.getName());
+			INSTANCE = configurationRepository.getConfiguration(Settings.class);
+		}
+		return INSTANCE;
 	}
 
 	private static ArrayList<Key> keys = new ArrayList<Key>();
