@@ -57,7 +57,6 @@ public class SvnService implements Retriever {
 			newCommits.put(project, fetchCommits(project, url, username,
 					password));
 		}
-		System.out.println(newCommits);
 		commits = newCommits;
 	}
 
