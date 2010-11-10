@@ -8,6 +8,8 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
+import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
@@ -72,6 +74,10 @@ public class TwitterService {
 			twitters.put(key, keyTwitters);
 			mentions.put(key, new TreeSet<Status>());
 			timeline.put(key, new TreeSet<Status>());
+			repository.addDataSource(key, TwitterTimeline.class,
+					new TwitterTimelineImpl(key, this));
+			repository.addDataSource(key, TwitterMentions.class,
+					new TwitterMentionsImpl(key, this));
 		}
 	}
 

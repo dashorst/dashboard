@@ -1,0 +1,15 @@
+.effects-enabled .twitter ul {
+	height : 2em; 
+	-webkit-marquee-direction:left;
+	-webkit-marquee-increment:medium;
+	-webkit-marquee-repetition:0;
+	-webkit-marquee-speed:normal;
+	-webkit-marquee-style:scroll;
+	white-space: nowrap;
+	overflow:hidden;
+	overflow-x:-webkit-marquee;
+}
+.twitter li { 
+	display: inline;
+	padding-right : 3em;
+}
