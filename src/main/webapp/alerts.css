@@ -1,0 +1,68 @@
+.alerts-overlay {
+	position: fixed;
+	top: 0.5em;
+	left: 0.5em;
+	width: 34em;
+	height: 12em;
+	font-size: 130%;
+	border: 3px solid red;
+	z-index: 10;
+	background-color: red;
+	background-size: auto 75%;
+	background-position: 3% 50%;
+	background-repeat: no-repeat;	
+	border-radius: 1em;
+	opacity: 1;
+	-webkit-transform: scale(0, 0.03);
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: 1s;
+}
+.alerts-overlay.hide {
+	opacity: 0;
+}
+.alerts-overlay.showX {
+	-webkit-transform: scale(1, 0.03);
+}
+.alerts-overlay.showY {
+	-webkit-transform: scale(1);
+	background-color: rgba(64, 64, 64, 0.9);
+	background-image: url('images/alert-fg.svg');
+}
+.alerts-overlay.showY ul {
+	display: block;
+}
+
+.alerts-overlay ul {
+	display: none;
+	list-style: none;
+	padding: 0;
+	margin: 1em 0 0 5em;
+}
+.alerts-overlay li {
+	clear: both;
+}
+.alerts-overlay li:nth-child(n+8) {
+	display: none;
+}
+
+.alerts-overlay li span {
+	margin: 0.13em 0.2em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: block;
+	float: left;
+}
+.alerts-overlay span.dot {
+	margin-top: 0.3em;
+}
+.alerts-overlay span.time {
+	width: 2em;
+	text-align: right;
+}
+.alerts-overlay span.project {
+	width: 6em;
+}
+.alerts-overlay span.message {
+	width: 18em;
+}

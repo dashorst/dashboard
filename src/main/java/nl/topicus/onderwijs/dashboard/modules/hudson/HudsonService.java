@@ -216,12 +216,16 @@ public class HudsonService implements Retriever {
 				Alert alert = new Alert(alertsCache.get(curJob.getName()),
 						DotColor.YELLOW, project, "Build "
 								+ curBuild.getNumber() + " is unstable");
+				alert.setOverlayVisible((System.currentTimeMillis() - curBuild
+						.getTimestamp().getTime()) < 90 * 1000);
 				alertsCache.put(curJob.getName(), alert);
 				ret.add(alert);
 			} else if (Result.FAILURE.equals(curBuild.getResult())) {
 				Alert alert = new Alert(alertsCache.get(curJob.getName()),
 						DotColor.RED, project, "Build " + curBuild.getNumber()
 								+ " failed");
+				alert.setOverlayVisible((System.currentTimeMillis() - curBuild
+						.getTimestamp().getTime()) < 90 * 1000);
 				alertsCache.put(curJob.getName(), alert);
 				ret.add(alert);
 			} else

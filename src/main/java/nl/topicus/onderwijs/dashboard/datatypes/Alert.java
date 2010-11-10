@@ -19,6 +19,7 @@ public class Alert implements Serializable {
 	private String time;
 	private String message;
 	private Key project;
+	private boolean overlayVisible = true;
 
 	public Alert() {
 	}
@@ -69,6 +70,14 @@ public class Alert implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public boolean isOverlayVisible() {
+		return overlayVisible;
+	}
+
+	public void setOverlayVisible(boolean overlayVisible) {
+		this.overlayVisible = overlayVisible;
 	}
 
 	@Override

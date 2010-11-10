@@ -191,6 +191,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				for (int count = 0; count < random.nextInt(3); count++) {
 					Alert alert = new Alert();
 					alert.setProject(key);
+					alert.setOverlayVisible(random.nextInt(10) == 0);
 					alert.setColor(DotColor.values()[random.nextInt(3)]);
 					int minute = random.nextInt(60);
 					alert.setTime(random.nextInt(24) + ":"
