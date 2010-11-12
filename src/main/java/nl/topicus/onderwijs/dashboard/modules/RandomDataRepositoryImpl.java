@@ -29,6 +29,8 @@ import nl.topicus.onderwijs.dashboard.datatypes.Issue;
 import nl.topicus.onderwijs.dashboard.datatypes.IssuePriority;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueSeverity;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
+import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
+import nl.topicus.onderwijs.dashboard.datatypes.WeatherType;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
@@ -36,6 +38,8 @@ import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 
 import org.apache.wicket.util.time.Duration;
+
+import twitter4j.Status;
 
 public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 	private Repository base;
@@ -123,7 +127,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 								.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
 						value = "random";
-					else if (settings.type().equals(DotColor.class)
+					else if (settings.type().equals(WeatherReport.class)) {
+						value = createRandomWeather();
+					} else if (settings.type().equals(DotColor.class)
 							&& settings.list()) {
 						Random random = new Random();
 						List<DotColor> ret = new ArrayList<DotColor>();
@@ -146,6 +152,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					} else if (settings.type().equals(Event.class)
 							&& settings.list()) {
 						value = createRandomEvents(key);
+					} else if (settings.type().equals(Status.class)
+							&& settings.list()) {
+						value = createRandomTweets(key);
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
@@ -156,6 +165,21 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					return dataKey;
 				}
 				throw new UnsupportedOperationException();
+			}
+
+			private WeatherReport createRandomWeather() {
+				Random random = new Random();
+				WeatherReport ret = new WeatherReport();
+				ret.setMaxTemperature(random.nextDouble() * 50.0 - 15.0);
+				ret.setMinTemperature(ret.getMaxTemperature()
+						- random.nextDouble() * 10.0);
+				ret.setRainfallProbability(random.nextInt(100));
+				ret.setType(WeatherType.values()[random.nextInt(WeatherType
+						.values().length)]);
+				ret.setWindDirection(random.nextInt(360));
+				ret.setWindSpeed(random.nextDouble() * 100.0);
+				ret.setDay(random.nextInt(2) == 0);
+				return ret;
 			}
 
 			private List<Train> createRandomTrains() {
@@ -276,6 +300,11 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					}
 				});
 				eventCache.put(key, ret);
+				return ret;
+			}
+
+			private List<Status> createRandomTweets(Key key) {
+				List<Status> ret = new ArrayList<Status>();
 				return ret;
 			}
 		};

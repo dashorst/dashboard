@@ -21,6 +21,7 @@ import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.twitter.TwitterPanel;
+import nl.topicus.onderwijs.dashboard.web.components.weather.WeatherPanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
 
 import org.apache.wicket.Application;
@@ -70,6 +71,8 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new TablePanel("ns", Trains.class, WicketApplication.get()
 				.getRepository().getKeys(Location.class).get(0), true));
 		add(new TablePanel("commits", Commits.class, Summary.get(), false));
+		add(new WeatherPanel("weather", WicketApplication.get().getRepository()
+				.getKeys(Location.class).get(0)));
 		add(new TablePanel("issues", Issues.class, Summary.get(), false));
 		add(new EventsPanel("events", Events.class, Summary.get()));
 		add(new AlertsPanel("alerts"));

@@ -1,0 +1,91 @@
+.weatherIcon {
+	width: 8em;
+	height: 8em;
+	background-size: auto 75%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+
+
+.clear.day {
+	background-image: url('weathericons/weather-clear.svg');
+}
+.few_clouds.day {
+	background-image: url('weathericons/weather-few-clouds.svg');
+}
+.partly_cloudy.day {
+	background-image: url('weathericons/weather-clouds.svg');
+}
+.overcast {
+	background-image: url('weathericons/weather-many-clouds.svg');
+}
+.rain {
+	background-image: url('weathericons/weather-showers.svg');
+}
+.light_rain {
+	background-image: url('weathericons/weather-showers-scattered.svg');
+}
+.showers {
+	background-image: url('weathericons/weather-showers-scattered.svg');
+}
+.chance_showers.day {
+	background-image: url('weathericons/weather-showers-scattered-day.svg');
+}
+.chance_showers.night {
+	background-image: url('weathericons/weather-showers-scattered-night.svg');
+}
+.chance_snow.day {
+	background-image: url('weathericons/weather-snow-scattered-day.svg');
+}
+.chance_snow.night {
+	background-image: url('weathericons/weather-snow-scattered-night.svg');
+}
+.thunderstorm {
+	background-image: url('weathericons/weather-storm.svg');
+}
+.hail {
+	background-image: url('weathericons/weather-hail.svg');
+}
+.snow {
+	background-image: url('weathericons/weather-snow.svg');
+}
+.light_snow {
+	background-image: url('weathericons/weather-snow-scattered.svg');
+}
+.flurries {
+	background-image: url('weathericons/weather-snow-scattered.svg');
+}
+.rain_snow {
+	background-image: url('weathericons/weather-snow-rain.svg');
+}
+.few_clouds.night {
+	background-image: url('weathericons/weather-few-clouds-night.svg');
+}
+.partly_cloudy.night {
+	background-image: url('weathericons/weather-clouds-night.svg');
+}
+.clear.night {
+	background-image: url('weathericons/weather-clear-night.svg');
+}
+.mist {
+	background-image: url('weathericons/weather-mist.svg');
+}
+.haze {
+	background-image: url('weathericons/weather-mist.svg');
+}
+.freezing_rain {
+	background-image: url('weathericons/weather-freezing-rain.svg');
+}
+.freezing_drizzle {
+	background-image: url('weathericons/weather-freezing-rain.svg');
+}
+.chance_thunderstorm.day {
+	background-image: url('weathericons/weather-storm-day.svg');
+}
+.chance_thunderstorm.night {
+	background-image: url('weathericons/weather-storm-night.svg');
+}
+.not_available,
+.unknown {
+	background-image: url('weathericons/weather-none-available.svg');
+}

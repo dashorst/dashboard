@@ -15,6 +15,7 @@ import nl.topicus.onderwijs.dashboard.modules.ns.NSUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.svn.SvnUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.topicus.TopicusProjectsUpdateTask;
 import nl.topicus.onderwijs.dashboard.modules.twitter.TwitterTask;
+import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComUpdateTask;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class Updater {
 	private static final Logger log = LoggerFactory.getLogger(Updater.class);
 	private ScheduledExecutorService timer;
 	private WicketApplication application;
+	private ScheduledFuture<?> verySlowScheduledFuture;
 	private ScheduledFuture<?> slowScheduledFuture;
 	private ScheduledFuture<?> fastScheduledFuture;
 	private Repository repository;
@@ -37,6 +39,8 @@ public class Updater {
 
 	public void start() {
 		log.info("Scheduling timer tasks");
+		TimerTask veryslowtasks = new TimerTask(Arrays.asList(//
+				new WetterComUpdateTask(application, repository)));
 		TimerTask slowtasks = new TimerTask(Arrays.asList(
 				//
 				new HudsonUpdateTask(application, repository),
@@ -45,9 +49,11 @@ public class Updater {
 				new GoogleUpdateTask(application, repository),
 				new NSUpdateTask(application, repository), new TwitterTask(
 						application, repository)));
-		TimerTask fasttasks = new TimerTask(Arrays.<Runnable> asList( //
+		TimerTask fasttasks = new TimerTask(Arrays.asList( //
 				new TopicusProjectsUpdateTask(application, repository)));
 
+		verySlowScheduledFuture = timer.scheduleWithFixedDelay(veryslowtasks,
+				0, 30, TimeUnit.MINUTES);
 		slowScheduledFuture = timer.scheduleWithFixedDelay(slowtasks, 0, 60,
 				TimeUnit.SECONDS);
 		fastScheduledFuture = timer.scheduleWithFixedDelay(fasttasks, 0, 30,
@@ -56,6 +62,7 @@ public class Updater {
 
 	public void stop() {
 		log.info("Stopping timer task");
+		verySlowScheduledFuture.cancel(true);
 		slowScheduledFuture.cancel(true);
 		fastScheduledFuture.cancel(true);
 		timer.shutdownNow();
@@ -70,9 +77,9 @@ public class Updater {
 	}
 
 	class TimerTask implements Runnable {
-		private List<Runnable> tasks;
+		private List<? extends Runnable> tasks;
 
-		public TimerTask(List<Runnable> tasks) {
+		public TimerTask(List<? extends Runnable> tasks) {
 			this.tasks = tasks;
 		}
 
