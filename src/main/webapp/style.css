@@ -32,10 +32,13 @@ body {
 }
 
 .widget {
-	margin : 1.5em 1em 1em;
+	margin : 1em 1em 1em;
 	clear : both;
 	position: relative;
 	width: 1000px;
+}
+.widget.first {
+	margin-top: 2em;
 }
 .no-overflow {
 	overflow: hidden;
