@@ -42,6 +42,13 @@ $.widget( "ui.dashboardWeather", {
 		if (data) {
 			var icon = this.element.find(".weatherIcon");
 			icon.attr("class", "weatherIcon "+data.type.toLowerCase()+" "+(data.day ? "day" : "night"));
+			
+			this.element.find(".wind .icon").css("-webkit-transform", "rotate("+data.windDirection+"deg)");
+			this.element.find(".wind .speed").text(data.windSpeed+" km/h");
+			this.element.find(".temperature .min").text(data.minTemperature+"°C");
+			this.element.find(".temperature .max").text(data.maxTemperature+"°C");
+			this.element.find(".sun .rise").text(data.sunriseTime);
+			this.element.find(".sun .set").text(data.sunsetTime);
 		}
 	}
 });

@@ -1,11 +1,92 @@
+.weather {
+	position: relative;
+	height: 100%;
+}
+.weatherHeader {
+	-webkit-border-radius: 1em;
+	font-size: 150%;
+	font-weight: bold;
+	background-color: #1059c2;
+	padding: 1px;
+	text-align: center;
+}
 .weatherIcon {
-	width: 8em;
-	height: 8em;
+	width: 7em;
+	height: 7em;
+	background-size: auto 90%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	margin-left: 1em;
+	float: left;
+}
+.wind {
+	margin-top: 1em;
+	width: 5em;
+	height: 5em;
+	float: left;
+}
+.wind .icon {
+	margin: 1em 1em 0em 1em;
+	width: 3em;
+	height: 3em;
 	background-size: auto 75%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
+	background-image: url('weathericons/go-down.svg');
 }
-
+.wind .speed {
+	text-align: center;
+	font-size: 75%;
+}
+.sun {
+	float: left;
+	margin: 0.5em;
+	width: 5em;
+	background-size: auto 75%;
+	background-position: right;
+	background-repeat: no-repeat;
+	background-image: url('weathericons/weather-clear.svg');
+}
+.sun .rise {
+	padding-left: 1.2em;
+	background-size: auto 75%;
+	background-position: left;
+	background-repeat: no-repeat;
+	background-image: url('weathericons/arrow-up.svg');
+}
+.sun .set {
+	padding-left: 1.2em;
+	background-size: auto 75%;
+	background-position: left;
+	background-repeat: no-repeat;
+	background-image: url('weathericons/arrow-down.svg');
+}
+.temperature {
+	float: left;
+	clear: both;
+	margin: 0.5em 1.5em;
+	width: 4em;
+	background-size: auto 75%;
+	background-position: right;
+	background-repeat: no-repeat;
+	background-image: url('weathericons/thermometer.png');
+}
+.temperature .max {
+	color: #f44;
+}
+.temperature .min {
+	color: #66f;
+}
+.credits {
+	position: absolute;
+	bottom: 0.5em;
+	right: 1em;
+	font-size: 60%;
+}
+.credits a {
+	color: #bbb;
+	text-decoration: none;
+}
 
 .clear.day {
 	background-image: url('weathericons/weather-clear.svg');

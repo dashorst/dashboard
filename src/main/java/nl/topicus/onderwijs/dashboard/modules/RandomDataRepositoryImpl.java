@@ -36,6 +36,7 @@ import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
 import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
+import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService;
 
 import org.apache.wicket.util.time.Duration;
 
@@ -178,7 +179,10 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 						.values().length)]);
 				ret.setWindDirection(random.nextInt(360));
 				ret.setWindSpeed(random.nextDouble() * 100.0);
-				ret.setDay(random.nextInt(2) == 0);
+				double lat = random.nextDouble() * 180.0 - 90.0;
+				double lon = random.nextDouble() * 180.0 - 90.0;
+				ret.setSunrise(WetterComService.getSunrize(lat, lon));
+				ret.setSunset(WetterComService.getSunset(lat, lon));
 				return ret;
 			}
 

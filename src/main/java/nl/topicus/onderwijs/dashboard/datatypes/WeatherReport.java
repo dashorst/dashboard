@@ -2,6 +2,8 @@ package nl.topicus.onderwijs.dashboard.datatypes;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -9,6 +11,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class WeatherReport implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat(
+			"HH:mm");
 
 	private WeatherType type;
 
@@ -22,7 +26,9 @@ public class WeatherReport implements Serializable {
 
 	private double windSpeed;
 
-	private boolean day;
+	private Date sunrise;
+
+	private Date sunset;
 
 	public WeatherReport() {
 	}
@@ -76,11 +82,32 @@ public class WeatherReport implements Serializable {
 	}
 
 	public boolean isDay() {
-		return day;
+		long now = System.currentTimeMillis();
+		return sunrise.getTime() <= now && sunset.getTime() >= now;
 	}
 
-	public void setDay(boolean day) {
-		this.day = day;
+	public Date getSunrise() {
+		return sunrise;
+	}
+
+	public String getSunriseTime() {
+		return TIME_FORMAT.format(getSunrise());
+	}
+
+	public void setSunrise(Date sunrise) {
+		this.sunrise = sunrise;
+	}
+
+	public Date getSunset() {
+		return sunset;
+	}
+
+	public String getSunsetTime() {
+		return TIME_FORMAT.format(getSunset());
+	}
+
+	public void setSunset(Date sunset) {
+		this.sunset = sunset;
 	}
 
 	@Override

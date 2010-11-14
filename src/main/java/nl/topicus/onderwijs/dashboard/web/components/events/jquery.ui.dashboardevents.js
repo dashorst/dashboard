@@ -51,7 +51,6 @@ $.widget( "ui.dashboardEvents", {
 
 	_redraw: function( data ) {
 		if (data) {
-			console.log(data);
 			this.minorCount = data.minor.length;
 			var major1Div = this.element.find(".major .event1").empty();
 			var major2Div = this.element.find(".major .event2").empty();

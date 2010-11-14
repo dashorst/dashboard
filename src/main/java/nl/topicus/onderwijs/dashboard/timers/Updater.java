@@ -53,7 +53,7 @@ public class Updater {
 				new TopicusProjectsUpdateTask(application, repository)));
 
 		verySlowScheduledFuture = timer.scheduleWithFixedDelay(veryslowtasks,
-				0, 30, TimeUnit.MINUTES);
+				0, 10, TimeUnit.MINUTES);
 		slowScheduledFuture = timer.scheduleWithFixedDelay(slowtasks, 0, 60,
 				TimeUnit.SECONDS);
 		fastScheduledFuture = timer.scheduleWithFixedDelay(fasttasks, 0, 30,
