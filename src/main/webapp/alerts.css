@@ -2,9 +2,9 @@
 	position: fixed;
 	top: 0.5em;
 	left: 0.5em;
-	width: 34em;
-	height: 12em;
-	font-size: 130%;
+	width: 35em;
+	height: 11em;
+	font-size: 125%;
 	border: 3px solid red;
 	z-index: 10;
 	background-color: red;
@@ -36,7 +36,7 @@
 	display: none;
 	list-style: none;
 	padding: 0;
-	margin: 1em 0 0 5em;
+	margin: 0.5em 0 0 5em;
 }
 .alerts-overlay li {
 	clear: both;
@@ -46,7 +46,7 @@
 }
 
 .alerts-overlay li span {
-	margin: 0.13em 0.2em;
+	margin: 0.1em 0.2em;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -64,5 +64,5 @@
 	width: 6em;
 }
 .alerts-overlay span.message {
-	width: 18em;
+	width: 19em;
 }

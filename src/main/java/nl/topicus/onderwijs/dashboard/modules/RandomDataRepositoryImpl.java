@@ -171,16 +171,18 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 			private WeatherReport createRandomWeather() {
 				Random random = new Random();
 				WeatherReport ret = new WeatherReport();
-				ret.setMaxTemperature(random.nextDouble() * 50.0 - 15.0);
-				ret.setMinTemperature(ret.getMaxTemperature()
-						- random.nextDouble() * 10.0);
+				ret.setMaxTemperature(Math
+						.round(random.nextDouble() * 500.0 - 150.0) / 10.0);
+				ret.setMinTemperature(Math.round(ret.getMaxTemperature() * 10.0
+						- random.nextDouble() * 100.0) / 10.0);
 				ret.setRainfallProbability(random.nextInt(100));
 				ret.setType(WeatherType.values()[random.nextInt(WeatherType
 						.values().length)]);
 				ret.setWindDirection(random.nextInt(360));
-				ret.setWindSpeed(random.nextDouble() * 100.0);
-				double lat = random.nextDouble() * 180.0 - 90.0;
-				double lon = random.nextDouble() * 180.0 - 90.0;
+				ret
+						.setWindSpeed(Math.round(random.nextDouble() * 1000.0) / 10.0);
+				double lat = 52.25;
+				double lon = 6.2;
 				ret.setSunrise(WetterComService.getSunrize(lat, lon));
 				ret.setSunset(WetterComService.getSunset(lat, lon));
 				return ret;
