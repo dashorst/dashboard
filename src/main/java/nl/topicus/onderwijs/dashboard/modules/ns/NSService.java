@@ -137,7 +137,7 @@ public class NSService implements Retriever {
 	}
 
 	private void setDetails(Train train, String details) {
-		if (details.contains("Sprinter"))
+		if (details.contains("Sprinter") || details.contains("SPR"))
 			train.setType(TrainType.SPRINTER);
 		else if (details.contains("Intercity"))
 			train.setType(TrainType.INTERCITY);
