@@ -45,7 +45,12 @@
 	background-size: auto 75%;
 	background-position: right;
 	background-repeat: no-repeat;
+}
+.sun.day {
 	background-image: url('weathericons/weather-clear.svg');
+}
+.sun.night {
+	background-image: url('weathericons/weather-clear-night.svg');
 }
 .sun .rise {
 	padding-left: 1.2em;

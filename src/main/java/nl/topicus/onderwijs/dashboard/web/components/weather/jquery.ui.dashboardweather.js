@@ -47,6 +47,7 @@ $.widget( "ui.dashboardWeather", {
 			this.element.find(".wind .speed").text(data.windSpeed+" km/h");
 			this.element.find(".temperature .min").text(data.minTemperature+"°C");
 			this.element.find(".temperature .max").text(data.maxTemperature+"°C");
+			this.element.find(".sun").removeClass("day night").addClass(data.day ? "day" : "night");
 			this.element.find(".sun .rise").text(data.sunriseTime);
 			this.element.find(".sun .set").text(data.sunsetTime);
 		}
