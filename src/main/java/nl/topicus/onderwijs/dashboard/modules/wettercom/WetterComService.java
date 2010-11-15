@@ -108,8 +108,8 @@ public class WetterComService implements Retriever {
 				reports.put(curSettingEntry.getKey(), report);
 			}
 		} catch (Exception e) {
-			log.error("Unable to refresh data from google: {} {}", e.getClass()
-					.getSimpleName(), e.getMessage());
+			log.error("Unable to refresh data from wetter.com: {} {}", e
+					.getClass().getSimpleName(), e);
 		}
 	}
 
