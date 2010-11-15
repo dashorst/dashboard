@@ -20,7 +20,8 @@ $.widget( "ui.dashboardStatusTable", {
 	options: {
 		dataUrl: "",
 		conversion: [],
-		htmlClasses: []
+		htmlClasses: [],
+		units: []
 	},
 
 	_create: function() {
@@ -43,6 +44,9 @@ $.widget( "ui.dashboardStatusTable", {
 		}
 		else if ( key === "htmlClasses" ) {
 			this.options.htmlClasses = value;
+		}
+		else if ( key === "units" ) {
+			this.options.units = value;
 		}
 		else if ( key === "dataUrl" ) {
 			this.options.dataUrl = value;
@@ -136,7 +140,8 @@ $.widget( "ui.dashboardStatusTable", {
 	_convertRowValue: function(flipIndex, rowValue) {
 		if (flipIndex >= this.options.conversion.length)
 			return $.conversions["identity"](rowValue);
-		return $.conversions[this.options.conversion[flipIndex]](rowValue);
+		return $.conversions[this.options.conversion[flipIndex]](rowValue) + " "
+			+ this.options.units[flipIndex];
 	},
 
 	_onHeartBeat: function() {

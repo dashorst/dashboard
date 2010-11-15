@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 public @interface DataSourceSettings {
 	String label();
 
+	String unit() default "";
+
 	String conversion() default "identity";
 
 	String htmlClass();

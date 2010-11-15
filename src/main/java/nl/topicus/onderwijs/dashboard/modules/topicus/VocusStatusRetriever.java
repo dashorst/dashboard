@@ -96,25 +96,21 @@ class VocusStatusRetriever implements Retriever,
 
 	private TopicusApplicationStatus getProjectData(Key project,
 			List<String> urls) {
+		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		if (urls == null || urls.isEmpty()) {
-			TopicusApplicationStatus status = new TopicusApplicationStatus();
-			status.setVersion("n/a");
 			return status;
 		}
 		int serverIndex = 0;
-		int numberOfOfflineServers = 0;
-		TopicusApplicationStatus status = new TopicusApplicationStatus();
-		status.setNumberOfServers(urls.size());
-		List<DotColor> serverStatusses = new ArrayList<DotColor>();
 		List<Alert> alerts = new ArrayList<Alert>();
 		for (String statusUrl : urls) {
+			TopicusServerStatus server = new TopicusServerStatus(statusUrl);
+			status.addServer(server);
 			serverIndex++;
 			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
-					numberOfOfflineServers++;
-					serverStatusses.add(DotColor.RED);
+					server.setServerStatus(DotColor.RED);
 					Alert alert = new Alert(oldAlert, DotColor.RED, project,
 							"Server " + serverIndex + " offline");
 					oldAlerts.put(statusUrl, alert);
@@ -132,11 +128,11 @@ class VocusStatusRetriever implements Retriever,
 				for (Element tableHeader : tableHeaders) {
 					String contents = tableHeader.getContent().toString();
 					if ("Applicatie".equals(contents)) {
-						fetchApplicationVersion(status, tableHeader);
+						fetchApplicationVersion(server, tableHeader);
 					} else if ("Sessions/Requests".equals(contents)) {
-						fetchSessionAndRequestData(status, tableHeader);
+						fetchSessionAndRequestData(server, tableHeader);
 					} else if ("Sessies/Requests".equals(contents)) {
-						fetchSessionAndRequestData(status, tableHeader);
+						fetchSessionAndRequestData(server, tableHeader);
 					}
 				}
 
@@ -145,13 +141,13 @@ class VocusStatusRetriever implements Retriever,
 				for (Element td : tdHeaders) {
 					String contents = td.getContent().toString();
 					if ("Starttijd".equals(contents)) {
-						getStartTime(status, td);
+						getStartTime(server, td);
 					}
 				}
-				serverStatusses.add(DotColor.GREEN);
+				server.setServerStatus(DotColor.GREEN);
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
-				serverStatusses.add(DotColor.YELLOW);
+				server.setServerStatus(DotColor.YELLOW);
 				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
 						.getMessage());
 				oldAlerts.put(statusUrl, alert);
@@ -162,14 +158,11 @@ class VocusStatusRetriever implements Retriever,
 			}
 		}
 		status.setAlerts(alerts);
-		status.setServerStatusses(serverStatusses);
-		status.setNumberOfServersOnline(status.getNumberOfServers()
-				- numberOfOfflineServers);
 		log.info("Application status: {}->{}", project, status);
 		return status;
 	}
 
-	private void fetchSessionAndRequestData(TopicusApplicationStatus status,
+	private void fetchSessionAndRequestData(TopicusServerStatus server,
 			Element tableHeader) {
 		List<Element> tableRows = tableHeader.getParentElement()
 				.getParentElement().getAllElements(HTMLElementName.TR);
@@ -184,7 +177,7 @@ class VocusStatusRetriever implements Retriever,
 					.getTextExtractor().toString();
 			if ("Live sessies".equals(name) || "Live Sessions".equals(name)) {
 				try {
-					status.addNumberOfUsers(Integer.parseInt(value));
+					server.setNumberOfUsers(Integer.parseInt(value));
 				} catch (NumberFormatException e) {
 					log.error("Cannot parse number of users: " + value);
 				}
@@ -194,13 +187,13 @@ class VocusStatusRetriever implements Retriever,
 					if (space > -1) {
 						value = value.substring(0, space);
 					}
-					status.addAverageRequestDuration(Integer.parseInt(value));
+					server.setAverageRequestDuration(Integer.parseInt(value));
 				} catch (NumberFormatException e) {
 					log.error("Cannot parse avg request duration: " + value);
 				}
 			} else if ("Requests per minuut".equals(name)) {
 				try {
-					status.addRequestsPerMinute(Integer.parseInt(value));
+					server.setRequestsPerMinute(Integer.parseInt(value));
 				} catch (NumberFormatException e) {
 					log.error("Cannot parse req per minute: " + value);
 				}
@@ -208,11 +201,11 @@ class VocusStatusRetriever implements Retriever,
 		}
 	}
 
-	private void fetchApplicationVersion(TopicusApplicationStatus status,
+	private void fetchApplicationVersion(TopicusServerStatus server,
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
-		status
+		server
 				.setVersion(versieCell.getContent().getTextExtractor()
 						.toString());
 	}
@@ -221,7 +214,7 @@ class VocusStatusRetriever implements Retriever,
 	 * <tr><td class="name_column">Starttijd</td><td
 	 * class="value_column"><span>10-10-2010 03:51:22</span></td></tr>
 	 */
-	private void getStartTime(TopicusApplicationStatus status, Element td) {
+	private void getStartTime(TopicusServerStatus server, Element td) {
 		Element starttijdCell = td.getParentElement().getFirstElement("class",
 				"value_column", true);
 		String starttijdText = starttijdCell.getTextExtractor().toString();
@@ -241,7 +234,7 @@ class VocusStatusRetriever implements Retriever,
 		}
 		if (starttime != null) {
 			Date now = new Date();
-			status.setUptime(Duration.milliseconds(
+			server.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
 		}
 	}

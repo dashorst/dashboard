@@ -89,25 +89,21 @@ public class ParnassysStatusRetriever implements Retriever,
 
 	private TopicusApplicationStatus getProjectData(Key project,
 			List<String> urls) {
+		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		if (urls == null || urls.isEmpty()) {
-			TopicusApplicationStatus status = new TopicusApplicationStatus();
-			status.setVersion("n/a");
 			return status;
 		}
 		int serverIndex = 0;
-		int numberOfOfflineServers = 0;
-		List<DotColor> serverStatusses = new ArrayList<DotColor>();
-		TopicusApplicationStatus status = new TopicusApplicationStatus();
-		status.setNumberOfServers(urls.size());
 		List<Alert> alerts = new ArrayList<Alert>();
 		for (String statusUrl : urls) {
+			TopicusServerStatus server = new TopicusServerStatus(statusUrl);
+			status.addServer(server);
 			serverIndex++;
 			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
-					numberOfOfflineServers++;
-					serverStatusses.add(DotColor.RED);
+					server.setServerStatus(DotColor.RED);
 					Alert alert = new Alert(oldAlert, DotColor.RED, project,
 							"Server " + serverIndex + " offline");
 					oldAlerts.put(statusUrl, alert);
@@ -125,19 +121,19 @@ public class ParnassysStatusRetriever implements Retriever,
 				for (Element tableHeader : tableHeaders) {
 					String contents = tableHeader.getContent().toString();
 					if ("Actieve sessies:".equals(contents)) {
-						fetchNumberOfUsers(status, tableHeader);
+						fetchNumberOfUsers(server, tableHeader);
 					} else if ("Gestart op:".equals(contents)) {
-						fetchStartTijd(status, tableHeader);
+						fetchStartTijd(server, tableHeader);
 					} else if ("Gemiddelde requesttijd:".equals(contents)) {
-						fetchAvgRequestTime(status, tableHeader);
+						fetchAvgRequestTime(server, tableHeader);
 					} else if ("Requests per minuut:".equals(contents)) {
-						fetchRequestsPerMinute(status, tableHeader);
+						fetchRequestsPerMinute(server, tableHeader);
 					}
 				}
-				serverStatusses.add(DotColor.GREEN);
+				server.setServerStatus(DotColor.GREEN);
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
-				serverStatusses.add(DotColor.YELLOW);
+				server.setServerStatus(DotColor.YELLOW);
 				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
 						.getMessage());
 				oldAlerts.put(statusUrl, alert);
@@ -148,25 +144,21 @@ public class ParnassysStatusRetriever implements Retriever,
 			}
 		}
 		status.setAlerts(alerts);
-		status.setServerStatusses(serverStatusses);
-		status.setNumberOfServersOnline(status.getNumberOfServers()
-				- numberOfOfflineServers);
 		log.info("Application status: {}->{}", project, status);
 		return status;
 	}
 
-	private void fetchNumberOfUsers(TopicusApplicationStatus status,
+	private void fetchNumberOfUsers(TopicusServerStatus server,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
 
 		String tdContents = sessiesCell.getTextExtractor().toString();
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
-		status.addNumberOfUsers(numberOfUsersOnServer);
+		server.setNumberOfUsers(numberOfUsersOnServer);
 	}
 
-	private void fetchStartTijd(TopicusApplicationStatus status,
-			Element tableHeader) {
+	private void fetchStartTijd(TopicusServerStatus server, Element tableHeader) {
 		Element starttijdCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
 		String starttijdText = starttijdCell.getTextExtractor().toString();
@@ -175,7 +167,7 @@ public class ParnassysStatusRetriever implements Retriever,
 		try {
 			Date starttime = sdf.parse(starttijdText);
 			Date now = new Date();
-			status.setUptime(Duration.milliseconds(
+			server.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
 		} catch (ParseException e) {
 			log.error("Unable to parse starttime " + starttijdText
@@ -183,7 +175,7 @@ public class ParnassysStatusRetriever implements Retriever,
 		}
 	}
 
-	private void fetchAvgRequestTime(TopicusApplicationStatus status,
+	private void fetchAvgRequestTime(TopicusServerStatus server,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
@@ -194,17 +186,17 @@ public class ParnassysStatusRetriever implements Retriever,
 			tdContents = tdContents.substring(0, space);
 		}
 		int avgRequestTime = Integer.parseInt(tdContents);
-		status.addAverageRequestDuration(avgRequestTime);
+		server.setAverageRequestDuration(avgRequestTime);
 	}
 
-	private void fetchRequestsPerMinute(TopicusApplicationStatus status,
+	private void fetchRequestsPerMinute(TopicusServerStatus server,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getChildElements().get(1);
 
 		String tdContents = sessiesCell.getTextExtractor().toString();
 		Integer requestsPerMinute = Integer.valueOf(tdContents);
-		status.addRequestsPerMinute(requestsPerMinute);
+		server.setRequestsPerMinute(requestsPerMinute);
 	}
 
 	@Override

@@ -91,25 +91,21 @@ public class VocusOuderportaalRetriever implements Retriever,
 
 	private TopicusApplicationStatus getProjectData(Key project,
 			List<String> urls) {
+		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		if (urls == null || urls.isEmpty()) {
-			TopicusApplicationStatus status = new TopicusApplicationStatus();
-			status.setVersion("n/a");
 			return status;
 		}
 		int serverIndex = 0;
-		int numberOfOfflineServers = 0;
-		TopicusApplicationStatus status = new TopicusApplicationStatus();
-		status.setNumberOfServers(urls.size());
-		List<DotColor> serverStatusses = new ArrayList<DotColor>();
 		List<Alert> alerts = new ArrayList<Alert>();
 		for (String statusUrl : urls) {
+			TopicusServerStatus server = new TopicusServerStatus(statusUrl);
+			status.addServer(server);
 			serverIndex++;
 			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
-					numberOfOfflineServers++;
-					serverStatusses.add(DotColor.RED);
+					server.setServerStatus(DotColor.RED);
 					Alert alert = new Alert(oldAlert, DotColor.RED, project,
 							"Server " + serverIndex + " offline");
 					oldAlerts.put(statusUrl, alert);
@@ -130,15 +126,15 @@ public class VocusOuderportaalRetriever implements Retriever,
 						// getApplicationVersion(status, tableHeader);
 					} else if ("Actieve sessies|Live sessions"
 							.contains(contents)) {
-						getNumberOfUsers(status, tableHeader);
+						getNumberOfUsers(server, tableHeader);
 					} else if ("Start tijd|Start time".contains(contents)) {
-						getStartTijd(status, tableHeader);
+						getStartTijd(server, tableHeader);
 					}
 				}
-				serverStatusses.add(DotColor.GREEN);
+				server.setServerStatus(DotColor.GREEN);
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
-				serverStatusses.add(DotColor.YELLOW);
+				server.setServerStatus(DotColor.YELLOW);
 				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
 						.getMessage());
 				oldAlerts.put(statusUrl, alert);
@@ -149,9 +145,6 @@ public class VocusOuderportaalRetriever implements Retriever,
 			}
 		}
 		status.setAlerts(alerts);
-		status.setServerStatusses(serverStatusses);
-		status.setNumberOfServersOnline(status.getNumberOfServers()
-				- numberOfOfflineServers);
 		log.info("Application status: {}->{}", project, status);
 		return status;
 	}
@@ -165,17 +158,15 @@ public class VocusOuderportaalRetriever implements Retriever,
 	 * sessies</th><td>706</td></tr> <tr><th>Actieve
 	 * requests</th><td>3</td></tr> </table> </div>
 	 */
-	private Integer getNumberOfUsers(TopicusApplicationStatus status,
+	private Integer getNumberOfUsers(TopicusServerStatus server,
 			Element tableHeader) {
 		Element sessiesCell = tableHeader.getParentElement().getContent()
 				.getFirstElement("td");
 
-		int currentNumberOfUsers = status.getNumberOfUsers();
-
 		String tdContents = sessiesCell.getContent().getTextExtractor()
 				.toString();
 		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
-		status.setNumberOfUsers(currentNumberOfUsers + numberOfUsersOnServer);
+		server.setNumberOfUsers(numberOfUsersOnServer);
 		return numberOfUsersOnServer;
 	}
 
@@ -188,8 +179,7 @@ public class VocusOuderportaalRetriever implements Retriever,
 	 * <tr><th>Status</th><td>OK</td></tr> </table> </div>
 	 */
 
-	private Date getStartTijd(TopicusApplicationStatus status,
-			Element tableHeader) {
+	private Date getStartTijd(TopicusServerStatus server, Element tableHeader) {
 		Element starttijdCell = tableHeader.getParentElement().getContent()
 				.getFirstElement("td");
 		String starttijdText = starttijdCell.getContent().getTextExtractor()
@@ -199,7 +189,7 @@ public class VocusOuderportaalRetriever implements Retriever,
 		try {
 			Date starttime = sdf.parse(starttijdText);
 			Date now = new Date();
-			status.setUptime(Duration.milliseconds(
+			server.setUptime(Duration.milliseconds(
 					now.getTime() - starttime.getTime()).getMilliseconds());
 			return starttime;
 		} catch (ParseException e) {

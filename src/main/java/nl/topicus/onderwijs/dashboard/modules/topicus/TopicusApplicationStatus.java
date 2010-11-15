@@ -2,6 +2,7 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
@@ -13,102 +14,113 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 class TopicusApplicationStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String version;
-	private int numberOfUsers;
-	private int numberOfErrors;
-	private int numberOfServers;
-	private int numberOfServersOnline;
-	private long uptime;
-	private List<DotColor> serverStatusses;
 	private List<Alert> alerts;
-	private Integer requestsPerMinute;
-	private int averageRequestDuration;
-	private int averageRequestDurationDiv;
+	private List<TopicusServerStatus> servers = new ArrayList<TopicusServerStatus>();
 
-	public String getVersion() {
-		return version == null ? "n/a" : version;
+	public TopicusApplicationStatus() {
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
+	public void addServer(TopicusServerStatus server) {
+		servers.add(server);
+	}
+
+	public List<TopicusServerStatus> getServers() {
+		return servers;
+	}
+
+	public List<TopicusServerStatus> getOnlineServers() {
+		List<TopicusServerStatus> ret = new ArrayList<TopicusServerStatus>();
+		for (TopicusServerStatus curServer : getServers()) {
+			if (curServer.isOnline())
+				ret.add(curServer);
+		}
+		return ret;
+	}
+
+	public String getVersion() {
+		String ret = null;
+		for (TopicusServerStatus curServer : getServers()) {
+			if (curServer.getVersion() != null) {
+				if (ret == null || ret.compareTo(curServer.getVersion()) > 0)
+					ret = curServer.getVersion();
+			}
+		}
+		return ret == null ? "n/a" : ret;
 	}
 
 	public int getNumberOfUsers() {
-		return numberOfUsers;
+		int ret = 0;
+		for (TopicusServerStatus curServer : getOnlineServers()) {
+			ret += curServer.getNumberOfUsers();
+		}
+		return ret;
 	}
 
-	public void setNumberOfUsers(int numberOfUsers) {
-		this.numberOfUsers = numberOfUsers;
-	}
-
-	public void addNumberOfUsers(int numberOfUsers) {
-		this.numberOfUsers += numberOfUsers;
+	public List<Integer> getUsersPerServer() {
+		List<Integer> ret = new ArrayList<Integer>();
+		for (TopicusServerStatus curServer : getServers()) {
+			ret.add(curServer.getNumberOfUsers());
+		}
+		return ret;
 	}
 
 	public int getNumberOfErrors() {
-		return numberOfErrors;
-	}
-
-	public void setNumberOfErrors(int numberOfErrors) {
-		this.numberOfErrors = numberOfErrors;
+		int ret = 0;
+		for (TopicusServerStatus curServer : getServers()) {
+			ret += curServer.getNumberOfErrors();
+		}
+		return ret;
 	}
 
 	public int getNumberOfServers() {
-		return numberOfServers;
-	}
-
-	public void setNumberOfServers(int numberOfServers) {
-		this.numberOfServers = numberOfServers;
+		return servers.size();
 	}
 
 	public int getNumberOfServersOnline() {
-		return numberOfServersOnline;
-	}
-
-	public void setNumberOfServersOnline(int numberOfServersOnline) {
-		this.numberOfServersOnline = numberOfServersOnline;
+		return getOnlineServers().size();
 	}
 
 	public Integer getAverageRequestDuration() {
-		if (averageRequestDurationDiv == 0)
-			return null;
-		return averageRequestDuration / averageRequestDurationDiv;
-	}
-
-	public void addAverageRequestDuration(int averageRequestDuration) {
-		this.averageRequestDuration += averageRequestDuration;
-		averageRequestDurationDiv++;
+		int div = 0;
+		int total = 0;
+		for (TopicusServerStatus curServer : getOnlineServers()) {
+			if (curServer.getAverageRequestDuration() != null) {
+				div++;
+				total += curServer.getAverageRequestDuration();
+			}
+		}
+		return div == 0 ? null : total / div;
 	}
 
 	public Integer getRequestsPerMinute() {
-		return requestsPerMinute;
-	}
-
-	public void setRequestsPerMinute(Integer requestsPerMinute) {
-		this.requestsPerMinute = requestsPerMinute;
-	}
-
-	public void addRequestsPerMinute(int requestsPerMinute) {
-		if (this.requestsPerMinute == null)
-			this.requestsPerMinute = requestsPerMinute;
-		else
-			this.requestsPerMinute += requestsPerMinute;
+		Integer total = null;
+		for (TopicusServerStatus curServer : getOnlineServers()) {
+			if (curServer.getRequestsPerMinute() != null) {
+				if (total == null)
+					total = 0;
+				total += curServer.getRequestsPerMinute();
+			}
+		}
+		return total;
 	}
 
 	public Long getUptime() {
-		return uptime;
-	}
-
-	public void setUptime(Long uptime) {
-		this.uptime = uptime;
-	}
-
-	public void setServerStatusses(List<DotColor> serverStatusses) {
-		this.serverStatusses = serverStatusses;
+		Long ret = null;
+		for (TopicusServerStatus curServer : getOnlineServers()) {
+			if (curServer.getUptime() != null) {
+				if (ret == null || curServer.getUptime() < ret)
+					ret = curServer.getUptime();
+			}
+		}
+		return ret;
 	}
 
 	public List<DotColor> getServerStatusses() {
-		return serverStatusses;
+		List<DotColor> ret = new ArrayList<DotColor>();
+		for (TopicusServerStatus curServer : getServers()) {
+			ret.add(curServer.getServerStatus());
+		}
+		return ret;
 	}
 
 	public List<Alert> getAlerts() {

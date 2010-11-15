@@ -76,7 +76,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		for (Entry<Key, T> entry : data.entrySet()) {
 			Object value = entry.getValue().getValue();
 			if (value == null)
-				value = "n/a";
+				continue;
 			if (!(value instanceof String || value instanceof Number || value instanceof List<?>))
 				value = value.toString();
 
@@ -98,17 +98,20 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
 		List<String> conversions = new ArrayList<String>();
 		List<String> htmlClasses = new ArrayList<String>();
+		List<String> units = new ArrayList<String>();
 		for (Class<? extends DataSource<?>> curDataSource : dataSources
 				.getObject()) {
 			DataSourceSettings settings = DataSourceAnnotationReader
 					.getSettings(curDataSource);
 			conversions.add(settings.conversion());
 			htmlClasses.add(settings.htmlClass());
+			units.add(settings.unit());
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			options.put("conversion", mapper.writeValueAsString(conversions));
 			options.put("htmlClasses", mapper.writeValueAsString(htmlClasses));
+			options.put("units", mapper.writeValueAsString(units));
 		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {
