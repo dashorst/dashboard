@@ -22,6 +22,8 @@ Currently the dashboard has the following modules:
  * Google Calendar
  * Hudson
  * Subversion
+ * Twitter
+ * Weather
 
 A twitter status module is in the works.
 
@@ -180,3 +182,42 @@ standard layout like:
 Setting the path to the root of the project will track all commits done to
 trunk, tags and branches. If you set the path to the `trunk` folder, only
 commits to `trunk` will be logged.
+
+### Twitter Integration ###
+
+	"nl.topicus.onderwijs.dashboard.modules.twitter.TwitterService" : {
+	  "application" : {
+	    "key" : "<application key>",
+	    "secret" : "<application secret>"
+	  },
+	  "topicus_dashboard" : {
+	    "key" : "<key for topicus_dashboard>",
+	    "secret" : "<secret for topicus_dashboard"
+	  },
+	  ... <more feeds>
+	}
+
+### Weather Integration ###
+
+The weather module takes local weather from www.wetter.com. It needs to know
+the wetter.com city key to get the weather for. This key can be found on
+wetter.com by searching for the city of choice. The key will show up in the
+URL. For Deventer, the key is 'NL0OI0046'.
+
+To compute the sunrise and sunset times, it also needs the latitude and
+longitude of the city. For the longitude, use positive values for eastward
+movement and negative values for westward movevent. Specify the coordinates
+in decimal notation. For Deventer, the coordinates are: latitude = 52.25 and
+longitude = 6.2.
+
+You can use our API key and application name for the wetter.com integration.
+It is also possible to register your own account at wetter.com.
+
+	"nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService" : {
+	  "apiKey" : "a810d551e21496e8123b82752c4171d5",
+	  "applicationName" : "topicusdashboard",
+	  "cityKey" : "<wetter.com citykey>",
+	  "latitude" : <latitude>,     
+	  "longitude" : <longitude> 
+	}
+ 
