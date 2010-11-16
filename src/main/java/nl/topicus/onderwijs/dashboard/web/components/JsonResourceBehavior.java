@@ -13,9 +13,13 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonResourceBehavior<T> extends AbstractDefaultAjaxBehavior {
 	private static final long serialVersionUID = 1L;
+	private static final Logger log = LoggerFactory
+			.getLogger(JsonResourceBehavior.class);
 
 	private IModel<T> model;
 
@@ -50,8 +54,11 @@ public class JsonResourceBehavior<T> extends AbstractDefaultAjaxBehavior {
 				try {
 					mapper.writeValue(r.getOutputStream(), model.getObject());
 				} catch (JsonGenerationException e) {
+					log.error("Unable to serialize value", e);
 				} catch (JsonMappingException e) {
+					log.error("Unable to serialize value", e);
 				} catch (IOException e) {
+					log.error("Unable to serialize value", e);
 				}
 			}
 		});

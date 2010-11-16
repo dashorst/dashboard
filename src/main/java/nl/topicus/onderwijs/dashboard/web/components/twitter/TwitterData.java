@@ -3,31 +3,32 @@ package nl.topicus.onderwijs.dashboard.web.components.twitter;
 import java.io.Serializable;
 import java.util.List;
 
-import twitter4j.Status;
+import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 
 public class TwitterData implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private List<Status> timeline;
-	private List<Status> mentions;
+	private List<TwitterStatus> timeline;
+	private List<TwitterStatus> mentions;
 
-	public TwitterData(List<Status> timeline, List<Status> mentions) {
+	public TwitterData(List<TwitterStatus> timeline,
+			List<TwitterStatus> mentions) {
 		this.timeline = timeline;
 		this.mentions = mentions;
 	}
 
-	public List<Status> getTimeline() {
+	public List<TwitterStatus> getTimeline() {
 		return timeline;
 	}
 
-	public void setTimeline(List<Status> timeline) {
+	public void setTimeline(List<TwitterStatus> timeline) {
 		this.timeline = timeline;
 	}
 
-	public List<Status> getMentions() {
+	public List<TwitterStatus> getMentions() {
 		return mentions;
 	}
 
-	public void setMentions(List<Status> mentions) {
+	public void setMentions(List<TwitterStatus> mentions) {
 		this.mentions = mentions;
 	}
 }

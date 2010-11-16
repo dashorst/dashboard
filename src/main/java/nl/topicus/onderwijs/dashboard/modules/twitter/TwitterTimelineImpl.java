@@ -3,8 +3,8 @@ package nl.topicus.onderwijs.dashboard.modules.twitter;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
+import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import twitter4j.Status;
 
 public class TwitterTimelineImpl implements TwitterTimeline {
 	private TwitterService service;
@@ -16,7 +16,7 @@ public class TwitterTimelineImpl implements TwitterTimeline {
 	}
 
 	@Override
-	public List<Status> getValue() {
+	public List<TwitterStatus> getValue() {
 		return service.getTimeline(key);
 	}
 }

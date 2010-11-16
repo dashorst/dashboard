@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
+import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.Settings;
@@ -136,11 +137,19 @@ public class TwitterService {
 		}
 	}
 
-	public synchronized List<Status> getTimeline(Key key) {
-		return new ArrayList<Status>(timeline.get(key));
+	public synchronized List<TwitterStatus> getTimeline(Key key) {
+		List<TwitterStatus> ret = new ArrayList<TwitterStatus>();
+		for (Status curStatus : timeline.get(key)) {
+			ret.add(new TwitterStatus(key, curStatus));
+		}
+		return ret;
 	}
 
-	public synchronized List<Status> getMentions(Key key) {
-		return new ArrayList<Status>(mentions.get(key));
+	public synchronized List<TwitterStatus> getMentions(Key key) {
+		List<TwitterStatus> ret = new ArrayList<TwitterStatus>();
+		for (Status curStatus : mentions.get(key)) {
+			ret.add(new TwitterStatus(key, curStatus));
+		}
+		return ret;
 	}
 }
