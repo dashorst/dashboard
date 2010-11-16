@@ -14,6 +14,8 @@ public class BarDataSet {
 		DataSourceSettings settings = DataSourceAnnotationReader
 				.getSettings(key);
 		this.label = settings.label();
+		if (settings.unit().length() > 0)
+			this.label += " (" + settings.unit() + ")";
 		this.scheme = scheme;
 	}
 
