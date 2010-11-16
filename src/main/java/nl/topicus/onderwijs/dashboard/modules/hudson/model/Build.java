@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Build implements Serializable {
 	private static final long serialVersionUID = 1L;
+	/** job is set by the application, and not retrieved from Hudson */
+	private Job job;
 	private List<Action> actions = new ArrayList<Action>();
 	private boolean building;
 	private String description;
@@ -21,6 +23,14 @@ public class Build implements Serializable {
 	private String builtOn;
 	private ChangeSet changeSet;
 	private List<User> culprits = new ArrayList<User>();
+
+	public Job getJob() {
+		return job;
+	}
+
+	public void setJob(Job job) {
+		this.job = job;
+	}
 
 	public List<Action> getActions() {
 		return actions;

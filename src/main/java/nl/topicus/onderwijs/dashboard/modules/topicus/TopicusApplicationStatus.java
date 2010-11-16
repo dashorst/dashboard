@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
-import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
@@ -115,10 +115,10 @@ class TopicusApplicationStatus implements Serializable {
 		return ret;
 	}
 
-	public List<DotColor> getServerStatusses() {
-		List<DotColor> ret = new ArrayList<DotColor>();
+	public List<Dot> getServerStatusses() {
+		List<Dot> ret = new ArrayList<Dot>();
 		for (TopicusServerStatus curServer : getServers()) {
-			ret.add(curServer.getServerStatus());
+			ret.add(new Dot(curServer.getServerStatus(), curServer.getCode()));
 		}
 		return ret;
 	}

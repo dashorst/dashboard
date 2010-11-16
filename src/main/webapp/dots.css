@@ -1,44 +1,58 @@
 span.dot {
-	border-radius: 0.5em;
-	width : 1em;
-	height : 1em;
+	border-radius: 11px;
+	width : 22px;
+	height : 22px;
+	line-height: 22px;
 	display: block;
 	float :left;
+	text-align: center;
+	font-size: 73.3%;
+	color: #444;
 }
 .builds span.dot:nth-child(1) {
-	border-radius: 0.7em;
-	width : 1.4em;
-	height : 1.4em;
-	margin-top: -0.05em;
-	margin-bottom: -0.05em;
+	border-radius: 15px;
+	width : 30px;
+	height : 30px;
+	line-height: 30px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+	font-size: 100%;
 }
 .builds span.dot:nth-child(2) {
-	border-radius: 0.6em;
-	width : 1.2em;
-	height : 1.2em;
-	margin-top: 0.05em;
-	margin-bottom: 0.05em;
+	border-radius: 13px;
+	width : 26px;
+	height : 26px;
+	line-height: 26px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	font-size: 86.7%;
 }
 .builds span.dot:nth-child(3) {
-	border-radius: 0.5em;
-	width : 1em;
-	height : 1em;
-	margin-top: 0.15em;
-	margin-bottom: 0.15em;
+	border-radius: 11px;
+	width : 22px;
+	height : 22px;
+	line-height: 22px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	font-size: 73.3%;
 }
 .builds span.dot:nth-child(4) {
-	border-radius: 0.4em;
-	width : 0.8em;
-	height : 0.8em;
-	margin-top: 0.25em;
-	margin-bottom: 0.25em;
+	border-radius: 9px;
+	width : 18px;
+	height : 18px;
+	line-height: 18px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 60%;
 }
 .builds span.dot:nth-child(5) {
-	border-radius: 0.3em;
-	width : 0.6em;
-	height : 0.6em;
-	margin-top: 0.35em;
-	margin-bottom: 0.35em;
+	border-radius: 7px;
+	width : 14px;
+	height : 14px;
+	line-height: 14px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+	font-size: 46.7%;
 }
 
 .dots-1 span.dot,
@@ -46,35 +60,43 @@ span.dot {
 .dots-3 span.dot,
 .dots-4 span.dot,
 .dots-5 span.dot {
-	margin : 0.15em 0.15em 0.15em 0.15em;
+	margin : 3px;
 }
 .dots-6 span.dot {
-	margin : 0.15em 0.05em 0.15em 0.05em;
+	margin : 3px 1px;
 }
 .dots-7 span.dot {
-	margin : 0.22em 0.05em 0.22em 0.05em;
-	border-radius: 0.43em;
-	width : 0.86em;
-	height : 0.86em;
+	margin : 4px 1px;
+	border-radius: 9px;
+	width : 18px;
+	height : 18px;
+	line-height: 18px;
+	font-size: 60%;
 }
 .dots-8 span.dot {
-	margin : 0.27em 0.05em 0.27em 0.05em;
-	border-radius: 0.38em;
-	width : 0.76em;
-	height : 0.76em;
+	margin : 5px 1px;
+	border-radius: 8px;
+	width : 16px;
+	height : 16px;
+	line-height: 16px;
+	font-size: 53.3%;
 }
 .dots-9 span.dot {
-	margin : 0.31em 0.05em 0.31em 0.05em;
-	border-radius: 0.34em;
-	width : 0.68em;
-	height : 0.68em;
+	margin : 6px 1px;
+	border-radius: 7px;
+	width : 14px;
+	height : 14px;
+	line-height: 14px;
+	font-size: 46.7%;
 }
 .dots-10 span.dot,
 .dots-11 span.dot {
-	margin : 0.34em 0.04em 0.34em 0.04em;
-	border-radius: 0.31em;
-	width : 0.61em;
-	height : 0.61em;
+	margin : 7px 1px;
+	border-radius: 6px;
+	width : 12px;
+	height : 12px;
+	line-height: 12px;
+	font-size: 40%;
 }
 
 .dot.green { background-color : #00c000; }

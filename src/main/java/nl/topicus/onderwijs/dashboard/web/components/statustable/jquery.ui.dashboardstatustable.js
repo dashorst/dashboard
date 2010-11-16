@@ -9,7 +9,7 @@ $.conversions.identity = function(value) {
 $.conversions.dots = function(value) {
 	var ret = "<div class='dots-"+value.length+"'>";
 	$.each(value, function(index, curDot) {
-		ret += '<span class="dot '+curDot.toLowerCase()+'"></span>';
+		ret += '<span class="dot '+curDot.color.toLowerCase()+'">'+curDot.character+'</span>';
 	});
 	ret += "</div>";
 	return ret;

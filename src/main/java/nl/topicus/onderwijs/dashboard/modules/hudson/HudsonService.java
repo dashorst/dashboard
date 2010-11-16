@@ -1,7 +1,6 @@
 package nl.topicus.onderwijs.dashboard.modules.hudson;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -93,7 +92,7 @@ public class HudsonService implements Retriever {
 				String url = hudsonSettingsForProject.get("url").toString();
 
 				@SuppressWarnings("unchecked")
-				Collection<String> patterns = (Collection<String>) hudsonSettingsForProject
+				Map<String, String> patterns = (Map<String, String>) hudsonSettingsForProject
 						.get("matchers");
 
 				if (!url.endsWith("/"))
@@ -108,9 +107,11 @@ public class HudsonService implements Retriever {
 
 				for (JobReference jobReference : hudson.getJobs()) {
 					String name = jobReference.getName();
-					for (String pattern : patterns) {
-						if (Pattern.matches(pattern, name)) {
-							refreshData(project, jobReference);
+					for (Entry<String, String> patternEntry : patterns
+							.entrySet()) {
+						if (Pattern.matches(patternEntry.getValue(), name)) {
+							refreshData(project, jobReference, patternEntry
+									.getKey());
 						}
 					}
 				}
@@ -121,8 +122,8 @@ public class HudsonService implements Retriever {
 		}
 	}
 
-	private void refreshData(Project project, JobReference jobReference)
-			throws Exception {
+	private void refreshData(Project project, JobReference jobReference,
+			String code) throws Exception {
 		StatusPageResponse response = RetrieverUtils.getStatuspage(jobReference
 				.getUrl()
 				+ "api/json");
@@ -130,6 +131,7 @@ public class HudsonService implements Retriever {
 			return;
 		}
 		Job job = mapper.readValue(response.getPageContent(), Job.class);
+		job.setCode(code);
 
 		List<Job> jobs = jobsCache.putIfAbsent(project, new ArrayList<Job>());
 		if (jobs == null)
@@ -157,7 +159,7 @@ public class HudsonService implements Retriever {
 		for (Job job : jobs) {
 			for (int i = 0; i < Math.min(5, job.getBuilds().size()); i++) {
 				BuildReference buildReference = job.getBuilds().get(i);
-				Build build = getBuild(project, buildReference);
+				Build build = getBuild(project, buildReference, job);
 				builds.add(build);
 			}
 		}
@@ -165,7 +167,7 @@ public class HudsonService implements Retriever {
 		return builds;
 	}
 
-	public Build getBuild(Project project, BuildReference reference) {
+	public Build getBuild(Project project, BuildReference reference, Job job) {
 		if (buildsCache.containsKey(HudsonKey.of(project, reference))) {
 			return buildsCache.get(HudsonKey.of(project, reference));
 		}
@@ -180,6 +182,7 @@ public class HudsonService implements Retriever {
 			}
 			Build build = mapper.readValue(response.getPageContent(),
 					Build.class);
+			build.setJob(job);
 			if (!build.isBuilding()) {
 				// don't store the build result in the cache when it's still
 				// building.
@@ -201,7 +204,7 @@ public class HudsonService implements Retriever {
 		for (Job job : jobs) {
 			for (int i = 0; i < Math.min(1, job.getBuilds().size()); i++) {
 				BuildReference buildReference = job.getBuilds().get(i);
-				Build build = getBuild(project, buildReference);
+				Build build = getBuild(project, buildReference, job);
 				builds.put(job.getName(), build);
 			}
 		}

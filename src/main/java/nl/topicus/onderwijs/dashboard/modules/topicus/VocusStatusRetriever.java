@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
@@ -86,8 +87,8 @@ class VocusStatusRetriever implements Retriever,
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
 				.entrySet()) {
 			Key project = configEntry.getKey();
-			List<String> urls = (List<String>) configEntry.getValue().get(
-					"urls");
+			Map<String, String> urls = (Map<String, String>) configEntry
+					.getValue().get("urls");
 			TopicusApplicationStatus status = getProjectData(project, urls);
 			newStatusses.put(project, status);
 		}
@@ -95,24 +96,25 @@ class VocusStatusRetriever implements Retriever,
 	}
 
 	private TopicusApplicationStatus getProjectData(Key project,
-			List<String> urls) {
+			Map<String, String> urls) {
 		TopicusApplicationStatus status = new TopicusApplicationStatus();
 		if (urls == null || urls.isEmpty()) {
 			return status;
 		}
-		int serverIndex = 0;
 		List<Alert> alerts = new ArrayList<Alert>();
-		for (String statusUrl : urls) {
-			TopicusServerStatus server = new TopicusServerStatus(statusUrl);
+		for (Entry<String, String> statusUrlEntry : urls.entrySet()) {
+			String statusCode = statusUrlEntry.getKey();
+			String statusUrl = statusUrlEntry.getValue();
+			TopicusServerStatus server = new TopicusServerStatus(statusCode,
+					statusUrl);
 			status.addServer(server);
-			serverIndex++;
 			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
 				if (statuspage.isOffline()) {
 					server.setServerStatus(DotColor.RED);
 					Alert alert = new Alert(oldAlert, DotColor.RED, project,
-							"Server " + serverIndex + " offline");
+							"Server " + statusCode + " offline");
 					oldAlerts.put(statusUrl, alert);
 					alerts.add(alert);
 					continue;

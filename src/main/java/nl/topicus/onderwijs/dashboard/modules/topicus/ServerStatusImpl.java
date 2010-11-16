@@ -3,7 +3,7 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
-import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 
 class ServerStatusImpl implements ServerStatus {
@@ -17,7 +17,7 @@ class ServerStatusImpl implements ServerStatus {
 	}
 
 	@Override
-	public List<DotColor> getValue() {
+	public List<Dot> getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
 		return status.getServerStatusses();
 	}

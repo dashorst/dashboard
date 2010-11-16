@@ -19,8 +19,10 @@ class TopicusServerStatus implements Serializable {
 	private Integer requestsPerMinute;
 	private Integer averageRequestDuration;
 	private String url;
+	private String code;
 
-	public TopicusServerStatus(String url) {
+	public TopicusServerStatus(String code, String url) {
+		this.code = code;
 		this.url = url;
 	}
 
@@ -78,6 +80,10 @@ class TopicusServerStatus implements Serializable {
 
 	public void setServerStatus(DotColor serverStatus) {
 		this.serverStatus = serverStatus;
+	}
+
+	public String getCode() {
+		return code;
 	}
 
 	public String getUrl() {

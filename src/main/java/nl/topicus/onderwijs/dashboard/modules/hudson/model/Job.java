@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Job implements Serializable {
 	private static final long serialVersionUID = 1L;
+	/** code is set by the application, and not retrieved from Hudson */
+	private String code;
 	private String description;
 	private String displayName;
 	private String name;
@@ -24,6 +26,14 @@ public class Job implements Serializable {
 	private BuildReference lastUnstableBuild;
 	private BuildReference lastUnsuccessfulBuild;
 	private int nextBuildNumber;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	public String getDescription() {
 		return description;

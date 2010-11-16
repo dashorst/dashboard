@@ -23,6 +23,7 @@ import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
+import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.datatypes.Issue;
@@ -130,12 +131,14 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 						value = "random";
 					else if (settings.type().equals(WeatherReport.class)) {
 						value = createRandomWeather();
-					} else if (settings.type().equals(DotColor.class)
+					} else if (settings.type().equals(Dot.class)
 							&& settings.list()) {
 						Random random = new Random();
-						List<DotColor> ret = new ArrayList<DotColor>();
-						for (int count = 4; count >= 0; count--) {
-							ret.add(DotColor.values()[random.nextInt(4)]);
+						List<Dot> ret = new ArrayList<Dot>();
+						for (int count = 0; count < 5; count++) {
+							ret.add(new Dot(
+									DotColor.values()[random.nextInt(4)],
+									Integer.toString(count + 1)));
 						}
 						value = ret;
 					} else if (settings.type().equals(Train.class)

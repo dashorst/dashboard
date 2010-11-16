@@ -83,7 +83,7 @@ settings for the enabled plugins.
 	        "password" : "<password>"
 	      },
 	      "nl.topicus.onderwijs.dashboard.modules.hudson.HudsonService" : {
-	        "matchers" : [ "<regex matching project name>" ],
+	        "matchers" : { "<code>" : "<regex matching project name>" },
 	        "url" : "<hudson url>"
 	      }
 	    }
@@ -106,12 +106,16 @@ scraper for it. In the `onConfigure` method you can add the `DataSource`
 implementations your retriever provides. See the `ParnassysStatusRetriever` as
 a typical example.
 
-Configuring a project for the status retrievers is simple:
+Configuring a project for the status retrievers is simple. Provide a list of
+URLs to fetch, each with a unique code. This code should be exactly one
+character.
 
 	"<classname of your Retriever implementation" : {
-	  "urls" : [
-	    "<(list of) url(s) to status page of this project>"
-	  ]
+	  "urls" : {
+			"<code-1>" : "<url-1>",
+			"<code-2>" : "<url-2>",
+      ...
+	  }
 	}
 
 
@@ -125,13 +129,17 @@ of the event, the event will be shown in the major events section.
 
 The hudson configuration per project consists of two parameters:
 
- 1. Project matchers
- 2. Hudson URL
+	"nl.topicus.onderwijs.dashboard.modules.hudson.HudsonService" : {
+	  "matchers" : { "<code>" : "<regex matching project name>" },
+	  "url" : "<hudson url>"
+	}
 
-The project matchers is a JSON list of regular expressions that match Hudson
-jobs for your project. As it is customary to have a seperate build for
-production branch, acceptance test branch and trunk, the Hudson plugin will
-aggregate build information accross the matched jobs.
+The project matchers is a list of regular expressions that match Hudson jobs for
+your project. As it is customary to have a seperate build for production branch,
+acceptance test branch and trunk, the Hudson plugin will aggregate build
+information accross the matched jobs. To differentiate between these branches,
+provide different regulare expressions for all branches, each with a different
+code. The code should be exactly one character.
 
 The Hudson url points to the root of your Hudson installation. The Hudson
 dashboard plugin will take it from there using the Hudson JSON API.

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
+import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
@@ -18,30 +19,31 @@ class HudsonBuildStatusImpl implements HudsonBuildStatus {
 	}
 
 	@Override
-	public List<DotColor> getValue() {
+	public List<Dot> getValue() {
 		List<Build> builds = service.getBuilds(project);
 
-		ArrayList<DotColor> result = new ArrayList<DotColor>();
+		ArrayList<Dot> result = new ArrayList<Dot>();
 		for (int i = 0; i < Math.min(5, builds.size()); i++) {
 			Build build = builds.get(i);
 			if (build.isBuilding()) {
-				result.add(DotColor.GRAY);
+				result.add(new Dot(DotColor.GRAY, build.getJob().getCode()));
 			} else {
 				switch (build.getResult()) {
 				case SUCCESS:
-					result.add(DotColor.GREEN);
+					result
+							.add(new Dot(DotColor.GREEN, build.getJob()
+									.getCode()));
 					break;
 				case UNSTABLE:
-					result.add(DotColor.YELLOW);
+					result.add(new Dot(DotColor.YELLOW, build.getJob()
+							.getCode()));
 					break;
 				case FAILURE:
-					result.add(DotColor.RED);
+					result.add(new Dot(DotColor.RED, build.getJob().getCode()));
 					break;
 				}
 			}
 		}
-		// DotColor min = Collections.min(result);
-		// result.add(0, min);
 		return result;
 	}
 }
