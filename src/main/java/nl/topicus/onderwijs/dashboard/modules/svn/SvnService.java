@@ -22,6 +22,8 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
+import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
+import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.internal.wc.DefaultSVNOptions;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNLogClient;
@@ -35,6 +37,8 @@ public class SvnService implements Retriever {
 	@Override
 	public void onConfigure(Repository repository) {
 		DAVRepositoryFactory.setup();
+		FSRepositoryFactory.setup();
+		SVNRepositoryFactoryImpl.setup();
 		for (Key key : Settings.get().getKeysWithConfigurationFor(
 				MantisService.class)) {
 			commits.put(key, Collections.<Commit> emptyList());
