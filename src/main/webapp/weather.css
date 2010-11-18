@@ -74,7 +74,7 @@
 	background-size: auto 75%;
 	background-position: right;
 	background-repeat: no-repeat;
-	background-image: url('weathericons/thermometer.png');
+	background-image: url('weathericons/thermometer.svg');
 }
 .temperature .max {
 	color: #f44;
