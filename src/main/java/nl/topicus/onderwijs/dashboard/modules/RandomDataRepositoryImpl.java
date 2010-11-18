@@ -41,12 +41,8 @@ import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService;
 
 import org.apache.wicket.util.time.Duration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RandomDataRepositoryImpl extends TimerTask implements Repository {
-	private static final Logger log = LoggerFactory
-			.getLogger(RandomDataRepositoryImpl.class);
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
@@ -318,16 +314,12 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 			private List<TwitterStatus> createRandomTweets(Key key) {
 				Random random = new Random();
 				List<TwitterStatus> ret = new ArrayList<TwitterStatus>();
-				if (startDelay < 6) {
-					log.info("Twitter delay at " + startDelay);
-					startDelay++;
-					return ret;
-				}
-				for (int count = 0; count < 2; count++) {
+				for (int count = 0; count < 10; count++) {
 					TwitterStatus status = new TwitterStatus(key);
 					status.setDate(new Date(System.currentTimeMillis()
 							- random.nextInt(24 * 3600 * 1000)));
 					status.setTags(Collections.<String> emptyList());
+					status.setUser("random");
 					status.setText("random tweet at " + count);
 					ret.add(status);
 				}
@@ -337,8 +329,6 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
 				new Class[] { dataSource }, handler);
 	}
-
-	private int startDelay = 0;
 
 	@Override
 	public void run() {

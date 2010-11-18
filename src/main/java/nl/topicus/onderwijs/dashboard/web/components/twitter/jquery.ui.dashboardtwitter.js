@@ -59,7 +59,7 @@ $.widget( "ui.dashboardTwitter", {
 				this.options.timelineUrl,
 				this._addItemsToTimeline,
 				this._animateTimeline,
-				15)
+				20)
 	},
 
 	_animateMentions: function() {
@@ -69,7 +69,7 @@ $.widget( "ui.dashboardTwitter", {
 				this.options.mentionsUrl,
 				this._addItemsToMentions,
 				this._animateMentions,
-				11)
+				15)
 	},
 
 	_animate: function(selector, generation, url, addFunction, animateFunction, speed) {
@@ -121,8 +121,10 @@ $.widget( "ui.dashboardTwitter", {
 				$.each(data, function(index, value) {
 					var item = $("<span class='item' />");
 					item.addClass("generation-"+generation);
+					var time = $("<span class='time'>"+value.timeAsString+"</span>");
+					var user = $("<span class='user'>"+value.user+"</span>");
 					var text = $("<span class='text'>"+value.text+"</span>");
-					item.append(text);
+					item.append(time).append(user).append(text);
 					list.append(item);
 				});
 			}

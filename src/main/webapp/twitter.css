@@ -12,3 +12,12 @@
 .twitter span.item { 
 	padding-right : 3em;
 }
+.twitter span.item span { 
+	padding-right : 0.3em;
+}
+.twitter span.time {
+	color: #dd5;
+}
+.twitter span.user {
+	color: #aaa;
+}
