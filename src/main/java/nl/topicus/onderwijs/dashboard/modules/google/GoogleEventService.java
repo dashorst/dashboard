@@ -75,52 +75,62 @@ public class GoogleEventService implements Retriever {
 								"https://www.google.com/calendar/feeds/default/owncalendars/full"));
 				CalendarFeed calendarFeed = service.query(calendarQuery,
 						CalendarFeed.class);
-				String color = null;
+				String color = "#ffffff";
 				for (CalendarEntry curCalendar : calendarFeed.getEntries()) {
 					if (curCalendar.getId().endsWith(
-							calendarId.replaceAll("@", "%40"))) {
+							calendarId.replaceAll("@", "%40"))
+							&& curCalendar.getColor() != null) {
 						color = curCalendar.getColor().getValue();
 						break;
 					}
 				}
 
-				CalendarQuery myQuery = new CalendarQuery(feedUrl);
-				Calendar cal = Calendar.getInstance();
-				myQuery.setMinimumStartTime(dateToGDateTime(cal.getTime()));
-				cal.add(Calendar.MONTH, 1);
-				myQuery.setMaximumStartTime(dateToGDateTime(cal.getTime()));
-				myQuery.setMaxResults(100);
-				myQuery.setIntegerCustomParameter("max-results", 100);
+				try {
+					CalendarQuery myQuery = new CalendarQuery(feedUrl);
+					Calendar cal = Calendar.getInstance();
+					myQuery.setMinimumStartTime(dateToGDateTime(cal.getTime()));
+					cal.add(Calendar.MONTH, 1);
+					myQuery.setMaximumStartTime(dateToGDateTime(cal.getTime()));
+					myQuery.setMaxResults(100);
+					myQuery.setIntegerCustomParameter("max-results", 100);
 
-				// Send the request and receive the response:
-				CalendarEventFeed resultFeed = service.query(myQuery,
-						CalendarEventFeed.class);
+					// Send the request and receive the response:
+					CalendarEventFeed resultFeed = service.query(myQuery,
+							CalendarEventFeed.class);
 
-				for (CalendarEventEntry eventEntry : resultFeed.getEntries()) {
-					for (When curTime : eventEntry.getTimes()) {
-						Event event = new Event();
-						event.setKey(curSettingEntry.getKey());
-						event.setTitle(eventEntry.getTitle().getPlainText());
-						// event.setOmschrijving(entry.getPlainTextContent());
-						event.setDateTime(gDateTimeToDate(curTime
-								.getStartTime()));
-						event.setColor(color);
-						Matcher m = TAG_PATTERN.matcher(eventEntry
-								.getPlainTextContent());
-						while (m.find()) {
-							String curTag = m.group();
-							event.getTags().add(curTag);
-							if ("#major".equals(curTag))
-								event.setMajor(true);
+					for (CalendarEventEntry eventEntry : resultFeed
+							.getEntries()) {
+						for (When curTime : eventEntry.getTimes()) {
+							Event event = new Event();
+							event.setKey(curSettingEntry.getKey());
+							event
+									.setTitle(eventEntry.getTitle()
+											.getPlainText());
+							// event.setOmschrijving(entry.getPlainTextContent());
+							event.setDateTime(gDateTimeToDate(curTime
+									.getStartTime()));
+							event.setColor(color);
+							Matcher m = TAG_PATTERN.matcher(eventEntry
+									.getPlainTextContent());
+							while (m.find()) {
+								String curTag = m.group();
+								event.getTags().add(curTag);
+								if ("#major".equals(curTag))
+									event.setMajor(true);
+							}
+							ret.add(event);
 						}
-						ret.add(event);
 					}
+				} catch (Exception e) {
+					log.error("Unable to refresh data from google for "
+							+ calendarId + ": " + e.getClass().getSimpleName(),
+							e);
 				}
 			}
 			events = ret;
 		} catch (Exception e) {
-			log.error("Unable to refresh data from google: {} {}", e.getClass()
-					.getSimpleName(), e.getMessage());
+			log.error("Unable to refresh data from google: "
+					+ e.getClass().getSimpleName(), e);
 		}
 	}
 
