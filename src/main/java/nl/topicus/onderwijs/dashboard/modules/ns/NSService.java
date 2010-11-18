@@ -51,20 +51,20 @@ public class NSService implements Retriever {
 				.entrySet()) {
 			Key location = configEntry.getKey();
 			String station = configEntry.getValue().get("station").toString();
-			newTrains.put(location, fetchDepartures(location, station));
+			List<Train> newDeps = fetchDepartures(location, station);
+			newTrains.put(location, newDeps == null ? trains.get(location)
+					: newDeps);
 		}
 		trains = newTrains;
 	}
 
 	private List<Train> fetchDepartures(Key location, String station) {
 		try {
-			// StatusPageResponse response = RetrieverUtils
-			// .getStatuspage("http://192.168.55.113/api/json");
 			StatusPageResponse response = RetrieverUtils
 					.getStatuspage("http://www.ns.nl/actuele-vertrektijden/main.link?station="
 							+ station);
 			if (response.getHttpStatusCode() != 200) {
-				return Collections.emptyList();
+				return null;
 			}
 			Source source = new Source(response.getPageContent());
 
@@ -103,7 +103,7 @@ public class NSService implements Retriever {
 		} catch (Exception e) {
 			log.error("Unable to refresh data from ns: {} {}", e.getClass()
 					.getSimpleName(), e.getMessage());
-			return Collections.emptyList();
+			return null;
 		}
 	}
 
