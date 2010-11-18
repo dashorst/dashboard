@@ -1,15 +1,14 @@
-.effects-enabled .twitter ul {
-	height : 2em; 
-	-webkit-marquee-direction:left;
-	-webkit-marquee-increment:medium;
-	-webkit-marquee-repetition:0;
-	-webkit-marquee-speed:normal;
-	-webkit-marquee-style:scroll;
+.twitter div {
 	white-space: nowrap;
 	overflow:hidden;
-	overflow-x:-webkit-marquee;
 }
-.twitter li { 
-	display: inline;
+.effects-enabled .twitter .list {
+	-webkit-transition-property: margin-left;
+	-webkit-transition-timing-function: linear;
+}
+.twitter .mentions {
+	font-size: 125%;
+}
+.twitter span.item { 
 	padding-right : 3em;
 }

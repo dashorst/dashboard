@@ -16,6 +16,10 @@ public class TwitterStatus implements Serializable {
 	private String text;
 	private List<String> tags;
 
+	public TwitterStatus(Key key) {
+		this.key = key;
+	}
+
 	public TwitterStatus(Key key, Status status) {
 		this.key = key;
 		this.date = status.getCreatedAt();

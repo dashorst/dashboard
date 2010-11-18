@@ -1,7 +1,10 @@
 package nl.topicus.onderwijs.dashboard.web.components.twitter;
 
+import java.util.List;
+
 import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
+import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -20,26 +23,39 @@ import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
 @WiQueryUIPlugin
 public class TwitterPanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
-	private JsonResourceBehavior<TwitterData> dataResource;
+	private JsonResourceBehavior<List<TwitterStatus>> timelineDataResource;
+	private JsonResourceBehavior<List<TwitterStatus>> mentionsDataResource;
 
 	public TwitterPanel(String id, final Key key) {
 		super(id);
 
-		this.dataResource = new JsonResourceBehavior<TwitterData>(
-				new AbstractReadOnlyModel<TwitterData>() {
+		this.timelineDataResource = new JsonResourceBehavior<List<TwitterStatus>>(
+				new AbstractReadOnlyModel<List<TwitterStatus>>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public TwitterData getObject() {
+					public List<TwitterStatus> getObject() {
 						Repository repository = WicketApplication.get()
 								.getRepository();
-						return new TwitterData(repository.getData(
-								TwitterTimeline.class).get(key).getValue(),
-								repository.getData(TwitterMentions.class).get(
-										key).getValue());
+						return repository.getData(TwitterTimeline.class).get(
+								key).getValue();
 					}
 				});
-		add(dataResource);
+		add(timelineDataResource);
+
+		this.mentionsDataResource = new JsonResourceBehavior<List<TwitterStatus>>(
+				new AbstractReadOnlyModel<List<TwitterStatus>>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public List<TwitterStatus> getObject() {
+						Repository repository = WicketApplication.get()
+								.getRepository();
+						return repository.getData(TwitterMentions.class).get(
+								key).getValue();
+					}
+				});
+		add(mentionsDataResource);
 	}
 
 	@Override
@@ -52,7 +68,10 @@ public class TwitterPanel extends Panel implements IWiQueryPlugin {
 	@Override
 	public JsStatement statement() {
 		Options options = new Options();
-		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
+		options.putLiteral("timelineUrl", timelineDataResource.getCallbackUrl()
+				.toString());
+		options.putLiteral("mentionsUrl", mentionsDataResource.getCallbackUrl()
+				.toString());
 		JsQuery jsq = new JsQuery(this);
 		return jsq.$()
 				.chain("dashboardTwitter", options.getJavaScriptOptions());

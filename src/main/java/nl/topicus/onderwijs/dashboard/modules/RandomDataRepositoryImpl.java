@@ -30,6 +30,7 @@ import nl.topicus.onderwijs.dashboard.datatypes.Issue;
 import nl.topicus.onderwijs.dashboard.datatypes.IssuePriority;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueSeverity;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
+import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherType;
 import nl.topicus.onderwijs.dashboard.keys.Key;
@@ -40,10 +41,12 @@ import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService;
 
 import org.apache.wicket.util.time.Duration;
-
-import twitter4j.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RandomDataRepositoryImpl extends TimerTask implements Repository {
+	private static final Logger log = LoggerFactory
+			.getLogger(RandomDataRepositoryImpl.class);
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
@@ -156,7 +159,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 					} else if (settings.type().equals(Event.class)
 							&& settings.list()) {
 						value = createRandomEvents(key);
-					} else if (settings.type().equals(Status.class)
+					} else if (settings.type().equals(TwitterStatus.class)
 							&& settings.list()) {
 						value = createRandomTweets(key);
 					} else
@@ -312,14 +315,30 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				return ret;
 			}
 
-			private List<Status> createRandomTweets(Key key) {
-				List<Status> ret = new ArrayList<Status>();
+			private List<TwitterStatus> createRandomTweets(Key key) {
+				Random random = new Random();
+				List<TwitterStatus> ret = new ArrayList<TwitterStatus>();
+				if (startDelay < 6) {
+					log.info("Twitter delay at " + startDelay);
+					startDelay++;
+					return ret;
+				}
+				for (int count = 0; count < 2; count++) {
+					TwitterStatus status = new TwitterStatus(key);
+					status.setDate(new Date(System.currentTimeMillis()
+							- random.nextInt(24 * 3600 * 1000)));
+					status.setTags(Collections.<String> emptyList());
+					status.setText("random tweet at " + count);
+					ret.add(status);
+				}
 				return ret;
 			}
 		};
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
 				new Class[] { dataSource }, handler);
 	}
+
+	private int startDelay = 0;
 
 	@Override
 	public void run() {
