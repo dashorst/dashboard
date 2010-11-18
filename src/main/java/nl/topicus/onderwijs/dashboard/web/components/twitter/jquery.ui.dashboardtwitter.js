@@ -127,6 +127,9 @@ $.widget( "ui.dashboardTwitter", {
 					item.append(time).append(user).append(text);
 					list.append(item);
 				});
+				var sep = $("<span class='item'>―</span>");
+				sep.addClass("generation-"+generation);
+				list.append(sep);
 			}
 		}
 	}

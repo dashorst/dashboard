@@ -1,6 +1,7 @@
 package nl.topicus.onderwijs.dashboard.modules.twitter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,7 @@ public class TwitterService {
 		for (Status curStatus : timeline.get(key)) {
 			ret.add(new TwitterStatus(key, curStatus));
 		}
+		Collections.reverse(ret);
 		return ret;
 	}
 
@@ -150,6 +152,7 @@ public class TwitterService {
 		for (Status curStatus : mentions.get(key)) {
 			ret.add(new TwitterStatus(key, curStatus));
 		}
+		Collections.reverse(ret);
 		return ret;
 	}
 }
