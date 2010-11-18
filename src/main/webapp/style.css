@@ -18,6 +18,11 @@ html, body {
 	overflow-x: hidden;
 	-webkit-user-select:none;
 }
+@media screen and (min-height:1670px) {
+	html, body {
+		overflow-y: hidden;
+	}
+}
 body {
 	background: -webkit-gradient(linear, right top, left bottom,
 		from(#000),
