@@ -107,7 +107,7 @@ $.widget( "ui.dashboardEvents", {
 			}
 		}
 		var list = this.element.find(".minorEvents ul");
-		list.css("margin-top", (this.minorIndex*-1.25)+"em");
+		list.css("margin-top", (this.minorIndex*-35)+"px");
 	}
 });
 

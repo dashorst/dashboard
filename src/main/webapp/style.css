@@ -1,6 +1,7 @@
 @import url('fonts/Yanone/stylesheet.css');
 @import url('fonts/DigitalDream/stylesheet.css');
 @import url('statustable.css');
+@import url('bars.css');
 @import url('dots.css');
 @import url('bargraph.css');
 @import url('table.css');
@@ -13,7 +14,7 @@
 html, body, h1, h2, h3, h4, h5, h6, p, li, td, th { font-family: 'Yanone Kaffeesatz', arial, serif; }
 html, body {
 	color : white;
-	font-size : 15pt;
+	font-size : 20px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	-webkit-user-select:none;
@@ -37,13 +38,13 @@ body {
 }
 
 .widget {
-	margin : 1.5em 1em;
+	margin : 30px 20px;
 	clear : both;
 	position: relative;
 	width: 1000px;
 }
 .widget.first {
-	margin-top: 2em;
+	margin-top: 40px;
 }
 .no-overflow {
 	overflow: hidden;
@@ -51,27 +52,7 @@ body {
 .widget h1 { text-align : center;}
 .ui-widget {
 	font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
-	font-size: 1.1em;
 }
-#twitter {
-	display: none;
-}
-.effects-enabled #twitter ul .disabled {
-	height : 2em; 
-	-webkit-marquee-direction:left;
-	-webkit-marquee-increment:small;
-	-webkit-marquee-repetition:0;
-	-webkit-marquee-speed:fast;
-	-webkit-marquee-style:slide;
-	white-space: nowrap;
-	overflow:hidden;
-	overflow-x:-webkit-marquee;
-}
-#twitter li { 
-	display: inline;
-	padding-right : 3em;
-}
-#twitter a, #twitter a:visited { color : #88f;}
 
 .effects-enabled {
 	-webkit-perspective: 1000;

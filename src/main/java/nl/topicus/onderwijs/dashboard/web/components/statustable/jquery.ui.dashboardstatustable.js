@@ -14,6 +14,19 @@ $.conversions.dots = function(value) {
 	ret += "</div>";
 	return ret;
 }
+$.conversions.bargraph = function(value) {
+	var max = 0;
+	$.each(value, function(index, curBar) {
+		max = Math.max(max, curBar);
+	});
+	var ret = "<div class='minibars minibars-"+value.length+"'>";
+	$.each(value, function(index, curBar) {
+		var height = max == 0 ? 0 : curBar*28/max;
+		ret += "<div class='minibar-cont'><div class='minibar' style='height: "+height+"px'/></div>";
+	});
+	ret += "</div>";
+	return ret;
+}
 	
 $.widget( "ui.dashboardStatusTable", {
 

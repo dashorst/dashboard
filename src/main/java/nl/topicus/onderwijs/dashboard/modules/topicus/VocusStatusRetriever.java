@@ -19,6 +19,7 @@ import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsersPerServer;
 import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
@@ -74,6 +75,8 @@ class VocusStatusRetriever implements Retriever,
 					new ServerStatusImpl(project, this));
 			repository.addDataSource(project, ServerAlerts.class,
 					new AlertsImpl(project, this));
+			repository.addDataSource(project, NumberOfUsersPerServer.class,
+					new NumberOfUsersPerServerImpl(project, this));
 		}
 	}
 
@@ -111,10 +114,11 @@ class VocusStatusRetriever implements Retriever,
 			Alert oldAlert = oldAlerts.get(statusUrl);
 			try {
 				StatusPageResponse statuspage = getStatuspage(statusUrl);
-				if (statuspage.isOffline()) {
+				if (!statuspage.isOk()) {
 					server.setServerStatus(DotColor.RED);
 					Alert alert = new Alert(oldAlert, DotColor.RED, project,
-							"Server " + statusCode + " offline");
+							"Server " + statusCode + " offline with HTTP code "
+									+ statuspage.getHttpStatusCode());
 					oldAlerts.put(statusUrl, alert);
 					alerts.add(alert);
 					continue;

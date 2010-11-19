@@ -1,7 +1,7 @@
 .bargraph {
-	height: 15em;
-	padding-left: 2em;
-	font-size: 14.5pt;
+	height: 285px;
+	padding-left: 40px;
+	font-size: 19px;
 }
 .bargraph h1 {
 	position: absolute;
@@ -9,55 +9,51 @@
 	text-align: center;
 	color: #999;
 	left: 0;
-	bottom: 0.5em;
+	bottom: 10px;
 	-webkit-transform: rotate(270deg);
 	-webkit-transform-origin: bottom left;
-	padding-right: 0.1em;
-	margin-left: 1.1em;
+	padding-right: 2px;
+	margin-left: 20px;
 }
 .bargraph .bar-box {
-	height: 11em;
+	height: 210px;
 	float: left;
 	position: relative;
 	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.9, transparent), to(rgba(255,255,255,0.5)));
 }
 .bargraph .bar-box {
-	width: 10em;
-	margin: 0 1em;
+	width: 190px;
+	margin: 0 20px;
 }
 .bargraph.bars-5 .bar-box {
-	width: 8em;
-	margin: 0 0.75em;
+	width: 162px;
+	margin: 0 15px;
 }
 .bargraph.bars-6 .bar-box {
-	width: 7em;
-	margin: 0 0.5em;
-}
-.bargraph.bars-6 .bar-box {
-	width: 7em;
-	margin: 0 0.5em;
+	width: 140px;
+	margin: 0 10px;
 }
 .bargraph.bars-7 .bar-box {
-	width: 6em;
-	margin: 0 0.4em;
+	width: 123px;
+	margin: 0 8px;
 }
 .bargraph.bars-8 .bar-box {
-	width: 5.2em;
-	margin: 0 0.4em;
+	width: 106px;
+	margin: 0 8px;
 }
 .bargraph.bars-9 .bar-box {
-	width: 4.6em;
-	margin: 0 0.4em;
+	width: 92px;
+	margin: 0 8px;
 }
 .bargraph.bars-10 .bar-box {
-	width: 4.1em;
-	margin: 0 0.4em;
+	width: 82px;
+	margin: 0 8px;
 }
 .bargraph .bar-box h3 {
 	display: block;
 	position: absolute;
-	bottom: -2.5em;
-	width: 8em;
+	bottom: -55px;
+	width: 180px;
 	right: 25%;
 	text-align: right;
 	text-shadow: 0px 0px 3px #000;
@@ -76,10 +72,10 @@
 	-webkit-transition-property: height, background-color;
 	-webkit-transition-duration: 2s;
 	position: absolute;
-	bottom: 0em;
+	bottom: 0;
 	width: 100%;
-	-webkit-border-top-left-radius: 1px;
-	-webkit-border-top-right-radius: 1px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
 }
 .color-1 .bargraph .bar { background-color: #abc507;}
 .color-2 .bargraph .bar { background-color: #ec1559;}

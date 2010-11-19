@@ -11,8 +11,8 @@
 .events .minorEvents {
 	overflow: hidden;
 	font-size: 125%;
-	height: 3.75em;
-	margin-top: 0.7em;
+	height: 105px;
+	margin-top: 20px;
 	clear: both;
 }
 .events .minorEvents ul {
@@ -23,11 +23,11 @@
 	-webkit-transition-duration: 2s;
 }
 .events .minorEvents li {
-	height: 1.25em;
+	height: 35px;
 }
 
 .events span {
-	margin: 0 0.1em;
+	margin: 0 3px;
 	display: block;
 	float: left;
 }
@@ -44,11 +44,11 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	max-width: 15em;
+	max-width: 520px;
 }
 .events .date {
-	margin-left: 0.5em;
-	margin-top: 1em;
+	margin-left: 6px;
+	margin-top: 13px;
 	font-size: 50%;
 	color: #888;
 }

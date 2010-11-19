@@ -3,7 +3,7 @@
 	height: 100%;
 }
 .weatherHeader {
-	-webkit-border-radius: 1em;
+	border-radius: 20px;
 	font-size: 150%;
 	font-weight: bold;
 	background-color: #1059c2;
@@ -11,24 +11,24 @@
 	text-align: center;
 }
 .weatherIcon {
-	width: 7em;
-	height: 7em;
+	width: 150px;
+	height: 150px;
 	background-size: auto 90%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	margin-left: 1em;
+	margin-left: 20px;
 	float: left;
 }
 .wind {
-	margin-top: 1em;
-	width: 5em;
-	height: 5em;
+	margin-top: 20px;
+	width: 110px;
+	height: 110px;
 	float: left;
 }
 .wind .icon {
-	margin: 1em 1em 0em 1em;
-	width: 3em;
-	height: 3em;
+	margin: 20px 20px 0 20px;
+	width: 70px;
+	height: 70px;
 	background-size: auto 75%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
@@ -40,8 +40,8 @@
 }
 .sun {
 	float: left;
-	margin: 0.5em;
-	width: 5em;
+	margin: 10px;
+	width: 110px;
 	background-size: auto 75%;
 	background-position: right;
 	background-repeat: no-repeat;
@@ -53,14 +53,14 @@
 	background-image: url('weathericons/weather-clear-night.svg');
 }
 .sun .rise {
-	padding-left: 1.2em;
+	padding-left: 25px;
 	background-size: auto 75%;
 	background-position: left;
 	background-repeat: no-repeat;
 	background-image: url('weathericons/arrow-up.svg');
 }
 .sun .set {
-	padding-left: 1.2em;
+	padding-left: 25px;
 	background-size: auto 75%;
 	background-position: left;
 	background-repeat: no-repeat;
@@ -69,8 +69,8 @@
 .temperature {
 	float: left;
 	clear: both;
-	margin: 0.5em 1.5em;
-	width: 4em;
+	margin: 10px 30px;
+	width: 85px;
 	background-size: auto 75%;
 	background-position: right;
 	background-repeat: no-repeat;
@@ -84,8 +84,8 @@
 }
 .credits {
 	position: absolute;
-	bottom: 0.5em;
-	right: 1em;
+	bottom: 5px;
+	right: 15px;
 	font-size: 60%;
 }
 .credits a {

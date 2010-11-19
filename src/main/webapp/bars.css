@@ -1,0 +1,31 @@
+div.minibar-cont {
+	position: relative;
+	float :left;
+	width: 29px;
+	height: 31px;
+}
+div.minibar {
+	background-color: blue;
+	width: 80%;
+	bottom: 0;
+	position: absolute;
+}
+
+div.minibars-6 div.minibar-cont {
+	width: 24px;
+}
+div.minibars-7 div.minibar-cont {
+	width: 20px;
+}
+div.minibars-8 div.minibar-cont {
+	width: 18px;
+}
+div.minibars-9 div.minibar-cont {
+	width: 16px;
+}
+div.minibars-10 div.minibar-cont {
+	width: 14px;
+}
+div.minibars-11 div.minibar-cont {
+	width: 13px;
+}

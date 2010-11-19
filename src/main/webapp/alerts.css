@@ -1,9 +1,9 @@
 .alerts-overlay {
 	position: fixed;
-	top: 0.5em;
-	left: 0.5em;
-	width: 35em;
-	height: 11em;
+	top: 20px;
+	left: 20px;
+	width: 960px;
+	height: 300px;
 	font-size: 125%;
 	border: 3px solid red;
 	z-index: 10;
@@ -11,7 +11,7 @@
 	background-size: auto 75%;
 	background-position: 3% 50%;
 	background-repeat: no-repeat;	
-	border-radius: 1em;
+	border-radius: 30px;
 	opacity: 1;
 	-webkit-transform: scale(0, 0.03);
 	-webkit-transition-property: -webkit-transform, opacity;
@@ -36,7 +36,7 @@
 	display: none;
 	list-style: none;
 	padding: 0;
-	margin: 0.5em 0 0 5em;
+	margin: 13px 0 0 135px;
 }
 .alerts-overlay li {
 	clear: both;
@@ -46,7 +46,7 @@
 }
 
 .alerts-overlay li span {
-	margin: 0.1em 0.2em;
+	margin: 2px 5px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -54,15 +54,15 @@
 	float: left;
 }
 .alerts-overlay span.dot {
-	margin-top: 0.3em;
+	margin-top: 8px;
 }
 .alerts-overlay span.time {
-	width: 2em;
+	width: 55px;
 	text-align: right;
 }
 .alerts-overlay span.project {
-	width: 6em;
+	width: 165px;
 }
 .alerts-overlay span.message {
-	width: 19em;
+	width: 530px;
 }

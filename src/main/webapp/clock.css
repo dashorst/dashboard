@@ -2,7 +2,7 @@
 	position: fixed;
 	top: 0;
 	right: 0;
-	padding: 0.2em 0.5em;
+	padding: 6px 15px;
 	font-size: 150%;
 }
 .clock .time {

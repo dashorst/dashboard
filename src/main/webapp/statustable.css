@@ -1,14 +1,14 @@
 .statusses {
-	height: 13em;
+	height: 260px;
 }
 .statusses div.col { 
 	float:left;
-	height:10.7em;
-	width:6em;
-	margin: 0 0.4em;
-	padding: 0.5em 1em;
-	border-radius: 0.5em;
-	line-height : 2em;
+	height: 235px;
+	width: 132px;
+	margin: 0 8px;
+	padding: 11px 22px;
+	border-radius: 10px;
+	line-height : 44px;
 }
 .effects-enabled .statusses .col { 
 	-webkit-transform-style: preserve-3d;
@@ -19,7 +19,7 @@
 }
 .statusses .flip {
 	position: absolute;
-	width:6em;
+	width: 132px;
 }
 .effects-enabled .statusses .flip {
 	-webkit-backface-visibility: hidden;
@@ -46,9 +46,9 @@
 }
 .col h3 {
 	padding : 0;
-	margin : 0  auto 0.3em auto;
+	margin : 0  auto 7px auto;
 	text-align : center;
-	line-height : 1em;
+	line-height : 22px;
 	text-shadow: 0px 0px 3px #000;
 }
 
@@ -56,26 +56,26 @@
 	position: relative;
 }
 .statusses .button.row {
-	height: 1.5em;
+	height: 33px;
 	position: absolute;
 }
 .statusses .prev.button.row {
-	top: -1.5em;
+	top: -33px;
 }
 .statusses .next.button.row {
-	bottom: -1.5em;
+	bottom: -33px;
 }
 .statusses .button.row .inner-row {
-	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	-webkit-transition-property: opacity, background-color;
 	-webkit-transition-duration: 0.3s;
 	opacity: 0;
 	text-align: center;
-	width: 2.63em;
-	margin-left: 2em;
-	margin-right: 2em;
-	height: 1em;
-	line-height : 1em;
+	width: 57px;
+	margin-left: 44px;
+	margin-right: 44px;
+	height: 22px;
+	line-height : 22px;
 	cursor: pointer;
 }
 .statusses .button.row .inner-row:hover {
@@ -85,18 +85,18 @@
 	opacity: 1;
 }
 .statusses div.row {
-	margin : 0 -1.4em;
+	margin : 0 -30px;
 	clear: both;
-	height: 1.8em;
+	height: 39px;
 	overflow: hidden;
 }
 .statusses .row .inner-row {
-	height: 1.3em;
-	line-height : 1.3em;
-	width: 6.65em;
+	height: 28px;
+	line-height : 28px;
+	width: 146px;
 	background-color : rgba(64,64,64,0.5);
-	margin-top: 0.2em;
-	padding : 0.20em 1.1em;
+	margin-top: 4px;
+	padding : 4px 24px;
 }
 
 .statusses.alert-enabled .row.alert-red .inner-row {
@@ -154,12 +154,12 @@
 
 
 .statusses div.col:first-child .inner-row {
-	-webkit-border-top-left-radius: 10px;
-	-webkit-border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 .statusses div.col:last-child .inner-row {
-	-webkit-border-top-right-radius: 10px;
-	-webkit-border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 .project-transition .statusses .row {
 	-webkit-transition-property: height;
@@ -178,22 +178,22 @@
 	-webkit-transition-duration: 0.5s;
 }
 .project-transition .statusses .row:first-child {
-	height: 0em!important;
+	height: 0!important;
 }
 .project-transition.animate .statusses .row:first-child {
-	height: 1.8em!important;
+	height: 39px!important;
 }
 .project-transition .statusses .row:first-child .inner-row {
-	margin-top: -1.6em!important;
+	margin-top: -35px!important;
 }
 .project-transition.animate .statusses .row:first-child .inner-row {
-	margin-top: 0.2em!important;
+	margin-top: 4px!important;
 }
 .project-transition .statusses .row:last-child {
-	height: 1.8em!important;
+	height: 39px!important;
 }
 .project-transition.animate .statusses .row:last-child {
-	height: 0em!important;
+	height: 0!important;
 }
 .rotate-invert.rotate-disabled .flip-front {
 	display: none;
@@ -202,7 +202,7 @@
 	display: none;
 }
 
-.statusses .number .row { text-align : right; padding-right : 1.1em;}
+.statusses .number .row { text-align : right; padding-right : 24px;}
 .statusses .color-1, .statusses .color-1 .flip { background-color : #abc507;}
 .statusses .color-2, .statusses .color-2 .flip { background-color : #ec1559;}
 .statusses .color-3, .statusses .color-3 .flip { background-color : #74c6f1;}

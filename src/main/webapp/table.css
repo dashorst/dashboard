@@ -1,21 +1,21 @@
 .table {
-	height: 15.5em;
-	-webkit-border-radius: 1em;
+	height: 310px;
+	border-radius: 20px;
 	float: left;
 	background-color: rgba(64, 64, 64, 0.496094);
 	color: white;
-	margin-right: 1.5em;
-	width: 15.5em;
+	margin-right: 30px;
+	width: 310px;
 }
 .table table {
 	border-collapse: collapse;
-	width: 14em;
+	width: 310px;
 }
 .table.double {
-	width: 32.5em;
+	width: 650px;
 }
 .table.double table {
-	width: 29.5em;
+	width: 650px;
 }
 .table table td {
 	overflow: hidden;
@@ -26,7 +26,7 @@
 	margin-right: 0;
 }
 .table thead tr th {
-	-webkit-border-radius: 1em;
+	border-radius: 20px;
 }
 .table th {
 	font-size: 150%;
@@ -40,7 +40,7 @@
 	display: none;
 }
 .table tbody tr:first-child td {
-	padding-top: 0.7em;
+	padding-top: 13px;
 }
 .table .old {
 	-webkit-animation-name: old;
@@ -72,14 +72,14 @@
 	color: #006;
 }
 .table.ns .type {
-	width: 2em;
+	width: 47px;
 }
 .table.ns .type div {
 	background-size: 65% auto;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	width: 2.4em;
-	height: 1em;
+	width: 47px;
+	height: 19px;
 }
 .table.ns .type .sprinter {
 	background-image: url('images/sp.svg');
@@ -103,9 +103,9 @@
 	background-image: url('images/x.svg');
 }
 .table.ns .departureTime {
-	width: 2em;
+	width: 38px;
 	text-align: right;
-	padding-right: 0.3em;
+	padding-right: 5px;
 }
 .table.ns .delay,
 .table.ns .platform.change {
@@ -113,44 +113,14 @@
 	font-weight: bold;
 }
 .table.ns .delay {
-	width: 2em;
+	width: 36px;
 }
 .table.ns .platform {
-	width: 1.5em;
+	width: 26px;
 }
 .table.ns .destination {
-	max-width: 8em;
+	max-width: 155px;
 }
-
-.table.alerts {
-	background-image: url('images/alert.svg');
-	background-size: auto 75%;
-	background-position: 50% 60%;
-	background-repeat: no-repeat;
-}
-.table.alerts thead tr th {
-	background-color: #fdb42d;
-}
-.table.alerts th {
-	color: #800;
-}
-.table.alerts .color {
-	width: 1.3em;
-	padding-left: 0.5em;
-}
-.table.alerts .time {
-	width: 2em;
-	text-align: right;
-	padding-right: 0.7em;
-}
-.table.alerts .project {
-	max-width: 4em;
-	width: 4em;
-}
-.table.alerts .message {
-	max-width: 7.75em;
-}
-
 
 .table.issues {
 	background-image: url('images/mantis.svg');
@@ -165,14 +135,14 @@
 	color: #200;
 }
 .table.issues .priority {
-	width: 2em;
+	width: 39px;
 }
 .table.issues .priority div {
 	background-size: auto 100%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	width: 2em;
-	height: 1em;
+	width: 39px;
+	height: 19px;
 }
 .table.issues .priority .none {
 	background-image: url('images/none.svg');
@@ -193,14 +163,14 @@
 	background-image: url('images/immediate.svg');
 }
 .table.issues .id {
-	width: 3em;
+	width: 59px;
 }
 .table.issues .project {
-	max-width: 5em;
-	width: 5em;
+	max-width: 99px;
+	width: 99px;
 }
 .table.issues .summary {
-	max-width: 22em;
+	max-width: 450px;
 }
 
 .table.commits tr {
@@ -222,25 +192,25 @@
 	color: #fff;
 }
 .table.commits .revision {
-	padding-left: 0.5em;
-	width: 3em;
+	padding-left: 9px;
+	width: 59px;
 }
 .table.commits .project {
-	max-width: 5em;
-	width: 5em;
+	max-width: 99px;
+	width: 99px;
 }
 .table.commits .message {
-	max-width: 23em;
+	max-width: 480px;
 }
 .table.commits .details {
 	font-size: 60%;
 	color: #aaa;
-	padding-left: 4em;
+	padding-left: 55px;
 }
 .table.commits .details .detail {
-	padding-left: 1em;
+	padding-left: 13px;
 	display: block;
-	width: 10em;
+	width: 130px;
 	float: left;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -249,5 +219,5 @@
 .table.commits .details em {
 	font-style: normal;
 	color: #fff;
-	padding: 0 0.3em;
+	padding: 0 3px;
 }

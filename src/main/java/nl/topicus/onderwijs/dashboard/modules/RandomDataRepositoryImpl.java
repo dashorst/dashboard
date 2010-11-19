@@ -118,12 +118,20 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args)
 					throws Throwable {
+				Random random = new Random();
 				if (method.getName().equals("getValue")) {
 					String dataKey = key.getCode() + "-" + dataSource.getName();
 					Object value;
-					if (settings.type().equals(Integer.class))
-						value = Math.round(Math.random() * 1000);
-					else if (settings.type().equals(Duration.class))
+					if (settings.type().equals(Integer.class)) {
+						if (settings.list()) {
+							List<Integer> ret = new ArrayList<Integer>();
+							for (int count = 0; count < 5; count++)
+								ret.add(random.nextInt(200));
+							value = ret;
+						} else {
+							value = random.nextInt(1000);
+						}
+					} else if (settings.type().equals(Duration.class))
 						value = Duration.milliseconds(Math
 								.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
@@ -132,7 +140,6 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 						value = createRandomWeather();
 					} else if (settings.type().equals(Dot.class)
 							&& settings.list()) {
-						Random random = new Random();
 						List<Dot> ret = new ArrayList<Dot>();
 						for (int count = 0; count < 5; count++) {
 							ret.add(new Dot(

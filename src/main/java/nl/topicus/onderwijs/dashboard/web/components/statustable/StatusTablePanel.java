@@ -14,6 +14,7 @@ import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsersPerServer;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
@@ -68,6 +69,7 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 		final Map<String, List<Class<? extends DataSource<?>>>> columns = new TreeMap<String, List<Class<? extends DataSource<?>>>>();
 		List<Class<? extends DataSource<?>>> sources1 = new ArrayList<Class<? extends DataSource<?>>>();
 		sources1.add(NumberOfUsers.class);
+		sources1.add(NumberOfUsersPerServer.class);
 		sources1.add(RequestsPerMinute.class);
 		sources1.add(AverageRequestTime.class);
 
