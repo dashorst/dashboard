@@ -25,7 +25,6 @@ public class TwitterStatus implements Serializable {
 
 	public TwitterStatus(Key key, Status status) {
 		this.key = key;
-		System.out.println(status.getCreatedAt());
 		this.date = status.getCreatedAt();
 		this.user = status.getUser().getName();
 		this.text = status.getText();

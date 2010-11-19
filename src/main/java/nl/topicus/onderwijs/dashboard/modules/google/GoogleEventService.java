@@ -89,8 +89,9 @@ public class GoogleEventService implements Retriever {
 					CalendarQuery myQuery = new CalendarQuery(feedUrl);
 					Calendar cal = Calendar.getInstance();
 					myQuery.setMinimumStartTime(dateToGDateTime(cal.getTime()));
-					cal.add(Calendar.MONTH, 1);
+					cal.add(Calendar.MONTH, 3);
 					myQuery.setMaximumStartTime(dateToGDateTime(cal.getTime()));
+					cal.add(Calendar.MONTH, -2);
 					myQuery.setMaxResults(100);
 					myQuery.setIntegerCustomParameter("max-results", 100);
 
@@ -118,7 +119,10 @@ public class GoogleEventService implements Retriever {
 								if ("#major".equals(curTag))
 									event.setMajor(true);
 							}
-							ret.add(event);
+							if (event.isMajor()
+									|| event.getDateTime()
+											.before(cal.getTime()))
+								ret.add(event);
 						}
 					}
 				} catch (Exception e) {
