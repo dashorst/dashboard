@@ -25,12 +25,17 @@ html, body {
 	}
 }
 body {
-	background: -webkit-gradient(linear, right top, left bottom,
+	height: 1680px;
+	padding: 0;
+	margin: 0;
+	background: black -webkit-gradient(linear, right top, left bottom,
 		from(#000),
 		color-stop(0.5, #222),
 		to(#000));
 }
-
+#cb {
+	margin: 8px;
+}
 .debug {
 	position: fixed;
 	top: 0;
