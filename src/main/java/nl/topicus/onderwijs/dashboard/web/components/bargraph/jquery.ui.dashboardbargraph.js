@@ -53,22 +53,32 @@ $.widget( "ui.dashboardBarGraph", {
 		if (allData) {
 			var dataSetKey = $(document).data("dashboard-bar-graph-data-set");
 			var data = allData[dataSetKey];
-			this.element.find(".bar").css("height", data.height+"em");
-			var valueElement = this.element.find(".value");
-			var oldTextValue = valueElement.text();
-			valueElement.css("bottom", data.height+"em");
-			if (isNaN(parseInt(data.value)) || isNaN(parseInt(oldTextValue))) {
-				valueElement.text(data.value);
+			if (data) {
+				if (this.element.hasClass("hide"))
+					this.element.removeClass("hide");
+				this.element.find(".bar").css("height", (1.8*data.height)+"px");
+				var valueElement = this.element.find(".value");
+				var oldTextValue = valueElement.text();
+				valueElement.css("bottom", (1.8*data.height)+"px");
+				if (isNaN(parseInt(data.value)) || isNaN(parseInt(oldTextValue))) {
+					valueElement.text(data.value);
+				} else {
+					var count = 0;
+					this.element.everyTime("60ms", "bar-redraw-value", function() {
+						count++;
+						var oldValue = parseInt(oldTextValue);
+						var newValue = parseInt(data.value);
+						var curValue = Math.round(oldValue+(newValue - oldValue)/30*count);
+						valueElement.text(curValue);
+					}, 30);
+				}
 			} else {
-				var count = 0;
-				this.element.everyTime("60ms", "bar-redraw-value", function() {
-					count++;
-					var oldValue = parseInt(oldTextValue);
-					var newValue = parseInt(data.value);
-					var curValue = Math.round(oldValue+(newValue - oldValue)/30*count);
-					valueElement.text(curValue);
-				}, 30);
+				if (!this.element.hasClass("hide"))
+					this.element.addClass("hide");
 			}
+			var parent = this.element.parent(); 
+			var bars = parent.find(".bar-box").size() - parent.find(".bar-box.hide").size();
+			parent.attr("class", "bargraph bars-"+bars);
 		}
 	}
 });

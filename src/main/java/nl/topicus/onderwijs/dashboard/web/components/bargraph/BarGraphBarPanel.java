@@ -73,16 +73,12 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 			}
 
 			Number sourceValue = datasource.getValue();
-			if (sourceValue == null) {
-				ret.put(datasourceType.getSimpleName(), new BarData(0, "n/a"));
-			} else {
+			if (sourceValue != null) {
 				long number = sourceValue.longValue();
-				double value = max == 0 ? 0 : (10.0 * number) / max;
+				double value = max == 0 ? 0 : (100.0 * number) / max;
 				ret.put(datasourceType.getSimpleName(), new BarData(value,
 						sourceValue.toString()));
 			}
-		} else {
-			ret.put(datasourceType.getSimpleName(), new BarData(0, "n/a"));
 		}
 	}
 

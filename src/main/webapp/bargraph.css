@@ -19,7 +19,23 @@
 	height: 210px;
 	float: left;
 	position: relative;
+	-webkit-transition-property: width, margin;
+	-webkit-transition-duration: 2s;
 	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.9, transparent), to(rgba(255,255,255,0.5)));
+}
+.bargraph .bar-box.hide {
+	width: 0!important;
+	margin: 0!important;
+}
+.bargraph .bar-box.hide .bar {
+	height: 0!important;
+}
+.bargraph .bar-box.hide span.value {
+	bottom: 0!important;
+	opacity: 0;
+}
+.bargraph .bar-box.hide h3 {
+	opacity: 0;
 }
 .bargraph .bar-box {
 	width: 190px;
@@ -59,9 +75,11 @@
 	text-shadow: 0px 0px 3px #000;
 	-webkit-transform-origin: bottom right;
 	-webkit-transform: rotate(-30deg);
+	-webkit-transition-property: opacity;
+	-webkit-transition-duration: 2s;
 }
 .bargraph .bar-box span.value {
-	-webkit-transition-property: bottom;
+	-webkit-transition-property: bottom, opacity;
 	-webkit-transition-duration: 2s;
 	display: block;
 	position: absolute;

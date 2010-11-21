@@ -20,7 +20,9 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 import nl.topicus.onderwijs.dashboard.datasources.Alerts;
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
+import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.datatypes.Dot;
@@ -43,6 +45,7 @@ import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService;
 import org.apache.wicket.util.time.Duration;
 
 public class RandomDataRepositoryImpl extends TimerTask implements Repository {
+	private static final Object NULL = new Object();
 	private Repository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
@@ -129,7 +132,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 								ret.add(random.nextInt(200));
 							value = ret;
 						} else {
-							value = random.nextInt(1000);
+							value = createInteger(key, dataSource, random);
 						}
 					} else if (settings.type().equals(Duration.class))
 						value = Duration.milliseconds(Math
@@ -169,12 +172,28 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
 					Object ret = dataCache.putIfAbsent(dataKey, value);
-					return ret == null ? value : ret;
+					ret = ret == null ? value : ret;
+					return ret == NULL ? null : ret;
 				} else if (method.getName().equals("toString")) {
 					String dataKey = key.getCode() + "-" + dataSource.getName();
 					return dataKey;
 				}
 				throw new UnsupportedOperationException();
+			}
+
+			private Object createInteger(Key key,
+					Class<? extends DataSource<?>> dataSource, Random random) {
+				if (dataSource.equals(NumberOfUsers.class)) {
+					if (key.getCode().equals("iris")
+							|| key.getCode().equals("atvo"))
+						return NULL;
+				} else if (dataSource.equals(AverageRequestTime.class)) {
+					if (key.getCode().equals("iris")
+							|| key.getCode().equals("atvo_ouders")
+							|| key.getCode().equals("parnassys_ouders"))
+						return NULL;
+				}
+				return random.nextInt(1000);
 			}
 
 			private WeatherReport createRandomWeather() {
@@ -230,7 +249,7 @@ public class RandomDataRepositoryImpl extends TimerTask implements Repository {
 				for (int count = 0; count < random.nextInt(3); count++) {
 					Alert alert = new Alert();
 					alert.setProject(key);
-					alert.setOverlayVisible(random.nextInt(10) == 0);
+					alert.setOverlayVisible(false);
 					alert.setColor(DotColor.values()[random.nextInt(3)]);
 					int minute = random.nextInt(60);
 					alert.setTime(random.nextInt(24) + ":"
