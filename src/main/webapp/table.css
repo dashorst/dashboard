@@ -1,7 +1,21 @@
+.tablestack {
+	position: relative;
+	float: left;
+}
+.tablestack .table {
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-transition-property: opacity;
+	-webkit-transition-duration: 2s;
+}
+.tablestack .table.hide {
+	opacity: 0;
+}
 .table {
 	height: 310px;
-	border-radius: 20px;
 	float: left;
+	border-radius: 20px;
 	background-color: rgba(64, 64, 64, 0.496094);
 	color: white;
 	margin-right: 30px;

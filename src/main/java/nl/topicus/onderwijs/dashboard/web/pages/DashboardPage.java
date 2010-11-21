@@ -19,6 +19,7 @@ import nl.topicus.onderwijs.dashboard.web.components.alerts.AlertsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
+import nl.topicus.onderwijs.dashboard.web.components.table.StackedTablesPanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.twitter.TwitterPanel;
 import nl.topicus.onderwijs.dashboard.web.components.weather.WeatherPanel;
@@ -70,10 +71,23 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new StatusTablePanel("table"));
 		add(new TablePanel("ns", Trains.class, WicketApplication.get()
 				.getRepository().getKeys(Location.class).get(0), true));
-		add(new TablePanel("commits", Commits.class, Summary.get(), false));
+
+		StackedTablesPanel tablestack1 = new StackedTablesPanel("tablestack1");
+		tablestack1.addTable(new TablePanel(tablestack1.nextTableId(),
+				Commits.class, Summary.get(), false));
+		tablestack1.addTable(new TablePanel(tablestack1.nextTableId(),
+				Issues.class, Summary.get(), false));
+		add(tablestack1);
+
+		StackedTablesPanel tablestack2 = new StackedTablesPanel("tablestack2");
+		tablestack2.addTable(new TablePanel(tablestack2.nextTableId(),
+				Issues.class, Summary.get(), false));
+		tablestack2.addTable(new TablePanel(tablestack2.nextTableId(),
+				Commits.class, Summary.get(), false));
+		add(tablestack2);
+
 		add(new WeatherPanel("weather", WicketApplication.get().getRepository()
 				.getKeys(Location.class).get(0)));
-		add(new TablePanel("issues", Issues.class, Summary.get(), false));
 		add(new EventsPanel("events", Events.class, Summary.get()));
 		add(new AlertsPanel("alerts"));
 		add(new TwitterPanel("twitter", WicketApplication.get().getRepository()
