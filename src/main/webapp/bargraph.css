@@ -37,7 +37,10 @@
 .bargraph .bar-box.hide h3 {
 	opacity: 0;
 }
-.bargraph .bar-box {
+.bargraph.bars-1 .bar-box,
+.bargraph.bars-2 .bar-box,
+.bargraph.bars-3 .bar-box,
+.bargraph.bars-4 .bar-box {
 	width: 190px;
 	margin: 0 20px;
 }
