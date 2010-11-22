@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.topicus.onderwijs.dashboard.config.Settings;
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository("online")
 public class RepositoryImpl implements DashboardRepository {
 	@Autowired
-	private Settings settings;
+	private ISettings settings;
 	private Map<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>> index1 = new HashMap<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>>();
 	private Map<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>> index2 = new HashMap<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>>();
 

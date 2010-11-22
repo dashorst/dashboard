@@ -17,7 +17,7 @@ import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.KeyDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
-public class Settings {
+public class Settings implements ISettings {
 
 	/**
 	 * Custom JSON deserializer for projects that are used as key values in a
@@ -36,7 +36,7 @@ public class Settings {
 		}
 	}
 
-	public static Settings create() {
+	public static ISettings create() {
 		ConfigurationRepository configurationRepository = new ConfigurationRepository();
 		if (!configurationRepository.configurationExists(Settings.class))
 			throw new IllegalStateException("No configuration exists for "
@@ -53,6 +53,7 @@ public class Settings {
 			keys.add(key);
 	}
 
+	@Override
 	public List<Key> getKeys() {
 		return Collections.unmodifiableList(keys);
 	}
@@ -72,25 +73,7 @@ public class Settings {
 				projectSettings);
 	}
 
-	public void addProjectSettings(Project project, String setter,
-			Map<String, ?> settings) {
-		Map<String, Map<String, ?>> map = projectSettings.get(project);
-		if (map == null) {
-			map = new HashMap<String, Map<String, ?>>();
-			projectSettings.put(project, map);
-		}
-		map.put(setter, settings);
-	}
-
-	@SuppressWarnings( { "unchecked", "rawtypes" })
-	public Map<String, ?> getProjectSettings(Project project, Class<?> service) {
-		Map<String, Map<String, ?>> map = projectSettings.get(project);
-		if (map != null) {
-			return map.get(service.getName());
-		}
-		return new HashMap();
-	}
-
+	@Override
 	public Map<Key, Map<String, ?>> getServiceSettings(Class<?> service) {
 		Map<Key, Map<String, ?>> serviceSettings = new HashMap<Key, Map<String, ?>>();
 		String key = service.getName();
@@ -105,6 +88,7 @@ public class Settings {
 		return serviceSettings;
 	}
 
+	@Override
 	public Set<Key> getKeysWithConfigurationFor(Class<?> service) {
 		return getServiceSettings(service).keySet();
 	}
