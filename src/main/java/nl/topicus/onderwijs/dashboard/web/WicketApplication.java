@@ -136,6 +136,18 @@ public class WicketApplication extends WebApplication {
 		return Application.DEVELOPMENT.equals(getConfigurationType());
 	}
 
+	public boolean isContextMenuDisabled() {
+		if (isDevelopment())
+			return false;
+		try {
+			return !Boolean.parseBoolean(System
+					.getProperty("dashboard.enableContext"));
+		} catch (Exception e) {
+			// Ignore - we're not allowed to read system properties.
+		}
+		return false;
+	}
+
 	public DashboardRepository getRepository() {
 		if (getMode() == DashboardMode.RandomData)
 			return randomRepository;

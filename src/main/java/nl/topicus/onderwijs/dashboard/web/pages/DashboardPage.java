@@ -108,7 +108,10 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 
 	@Override
 	public JsStatement statement() {
-		return new JsQuery(this).$().chain("dashboardClock",
-				"'resources/application/starttime'");
+		return new JsQuery(this).$().chain(
+				"dashboardClock",
+				"'resources/application/starttime'",
+				Boolean.toString(WicketApplication.get()
+						.isContextMenuDisabled()));
 	}
 }

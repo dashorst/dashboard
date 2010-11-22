@@ -1,7 +1,13 @@
 (function($) {
-	jQuery.fn.dashboardClock = function(starttimeUrl) {
+	jQuery.fn.dashboardClock = function(starttimeUrl, disableContext) {
 		var starttime = '';
 		var doc = $(document);
+
+		if (disableContext) {
+			doc.bind("contextmenu", function(e) {
+				e.preventDefault();
+			});
+		}
 
 		doc.data("dashboard-heartbeat-enabled", true);
 		doc.data("dashboard-heartbeat-count", 0);
@@ -22,8 +28,7 @@
 		});
 		doc.everyTime("200ms", "clock-update", function() {
 			var date = new Date();
-			$(".clock .time").text(date.toTimeString().substring(0,8));
-			// $(".clock .date").text(date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear());
+			$(".clock .time").text(date.toTimeString().substring(0, 8));
 			$(".clock .date").text(date.toLocaleDateString());
 		});
 		$("#stoplink").click(function() {
