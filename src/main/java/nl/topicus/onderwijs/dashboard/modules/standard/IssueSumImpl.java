@@ -8,7 +8,7 @@ import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datatypes.Issue;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 public class IssueSumImpl implements Issues {
@@ -18,7 +18,7 @@ public class IssueSumImpl implements Issues {
 	@Override
 	public List<Issue> getValue() {
 		List<Issue> ret = new ArrayList<Issue>();
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 		for (Key curKey : repository.getKeys(Key.class)) {
 			Collection<DataSource<?>> dataSources = repository.getData(curKey);
 			for (DataSource<?> curDataSource : dataSources) {

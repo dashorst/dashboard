@@ -10,7 +10,7 @@ import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 public class EventSumImpl implements Events {
@@ -20,7 +20,7 @@ public class EventSumImpl implements Events {
 	@Override
 	public List<Event> getValue() {
 		List<Event> ret = new ArrayList<Event>();
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 		for (Key curKey : repository.getKeys(Key.class)) {
 			Collection<DataSource<?>> dataSources = repository.getData(curKey);
 			for (DataSource<?> curDataSource : dataSources) {

@@ -8,17 +8,20 @@ import java.util.Map;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
 import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.twitter.TwitterSettings.OAuthKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import twitter4j.RateLimitStatus;
 import twitter4j.ResponseList;
@@ -31,7 +34,9 @@ import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.Authorization;
 import twitter4j.http.AuthorizationFactory;
 
-public class TwitterService {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class TwitterService extends AbstractService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(TwitterService.class);
 	private Map<Key, List<Twitter>> twitters = new HashMap<Key, List<Twitter>>();
@@ -42,8 +47,8 @@ public class TwitterService {
 	public TwitterService() {
 	}
 
-	public void onConfigure(Repository repository) {
-		for (Entry<Key, Map<String, ?>> settingsEntry : Settings.get()
+	public void onConfigure(DashboardRepository repository) {
+		for (Entry<Key, Map<String, ?>> settingsEntry : getSettings()
 				.getServiceSettings(TwitterService.class).entrySet()) {
 			Key key = settingsEntry.getKey();
 
@@ -83,13 +88,8 @@ public class TwitterService {
 		}
 	}
 
-	public static void main(String[] args) {
-		TwitterService twitterService = new TwitterService();
-		twitterService.onConfigure(null);
-		twitterService.performTwitterUpdate();
-	}
-
-	public void performTwitterUpdate() {
+	@Override
+	public void refreshData() {
 		for (Entry<Key, List<Twitter>> twitterEntry : twitters.entrySet()) {
 			for (Twitter twitter : twitterEntry.getValue()) {
 				pullTweets(twitterEntry.getKey(), twitter);

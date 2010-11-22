@@ -8,7 +8,7 @@ import nl.topicus.onderwijs.dashboard.datasources.Commits;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 public class CommitSumImpl implements Commits {
@@ -18,7 +18,7 @@ public class CommitSumImpl implements Commits {
 	@Override
 	public List<Commit> getValue() {
 		List<Commit> ret = new ArrayList<Commit>();
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 		for (Key curKey : repository.getKeys(Key.class)) {
 			Collection<DataSource<?>> dataSources = repository.getData(curKey);
 			for (DataSource<?> curDataSource : dataSources) {

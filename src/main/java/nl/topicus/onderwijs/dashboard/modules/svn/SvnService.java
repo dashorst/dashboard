@@ -5,18 +5,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.datasources.Commits;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.mantis.MantisService;
 import nl.topicus.onderwijs.dashboard.modules.ns.NSService;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
@@ -29,17 +31,19 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNLogClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
-public class SvnService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class SvnService extends AbstractService {
 	private static final Logger log = LoggerFactory.getLogger(NSService.class);
 
 	private Map<Key, List<Commit>> commits = new HashMap<Key, List<Commit>>();
 
 	@Override
-	public void onConfigure(Repository repository) {
+	public void onConfigure(DashboardRepository repository) {
 		DAVRepositoryFactory.setup();
 		FSRepositoryFactory.setup();
 		SVNRepositoryFactoryImpl.setup();
-		for (Key key : Settings.get().getKeysWithConfigurationFor(
+		for (Key key : getSettings().getKeysWithConfigurationFor(
 				MantisService.class)) {
 			commits.put(key, Collections.<Commit> emptyList());
 			repository.addDataSource(key, Commits.class, new CommitsImpl(key,
@@ -50,7 +54,7 @@ public class SvnService implements Retriever {
 	@Override
 	public void refreshData() {
 		Map<Key, List<Commit>> newCommits = new HashMap<Key, List<Commit>>();
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(SvnService.class);
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
 				.entrySet()) {

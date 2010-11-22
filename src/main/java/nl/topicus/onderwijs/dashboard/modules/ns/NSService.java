@@ -5,24 +5,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
+import nl.topicus.onderwijs.dashboard.datatypes.train.Train;
+import nl.topicus.onderwijs.dashboard.datatypes.train.TrainType;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
-import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
-import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-public class NSService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class NSService extends AbstractService {
 	private static final Logger log = LoggerFactory.getLogger(NSService.class);
 
 	private static final int TIME = 0;
@@ -33,8 +37,8 @@ public class NSService implements Retriever {
 	private Map<Key, List<Train>> trains = new HashMap<Key, List<Train>>();
 
 	@Override
-	public void onConfigure(Repository repository) {
-		for (Key key : Settings.get().getKeysWithConfigurationFor(
+	public void onConfigure(DashboardRepository repository) {
+		for (Key key : getSettings().getKeysWithConfigurationFor(
 				NSService.class)) {
 			trains.put(key, Collections.<Train> emptyList());
 			repository.addDataSource(key, Trains.class, new TrainsImpl(key,
@@ -45,7 +49,7 @@ public class NSService implements Retriever {
 	@Override
 	public void refreshData() {
 		Map<Key, List<Train>> newTrains = new HashMap<Key, List<Train>>();
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(NSService.class);
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
 				.entrySet()) {

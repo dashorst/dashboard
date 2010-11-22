@@ -5,7 +5,7 @@ import java.util.List;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -38,7 +38,7 @@ public class EventsPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public EventData getObject() {
-						Repository repository = WicketApplication.get()
+						DashboardRepository repository = WicketApplication.get()
 								.getRepository();
 						return new EventData(repository.getData(
 								EventsPanel.this.dataSource).get(

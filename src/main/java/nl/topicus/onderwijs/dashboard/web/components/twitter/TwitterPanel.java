@@ -6,7 +6,7 @@ import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
 import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -35,7 +35,7 @@ public class TwitterPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public List<TwitterStatus> getObject() {
-						Repository repository = WicketApplication.get()
+						DashboardRepository repository = WicketApplication.get()
 								.getRepository();
 						return repository.getData(TwitterTimeline.class).get(
 								key).getValue();
@@ -49,7 +49,7 @@ public class TwitterPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public List<TwitterStatus> getObject() {
-						Repository repository = WicketApplication.get()
+						DashboardRepository repository = WicketApplication.get()
 								.getRepository();
 						return repository.getData(TwitterMentions.class).get(
 								key).getValue();

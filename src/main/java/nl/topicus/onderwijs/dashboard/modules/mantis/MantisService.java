@@ -7,15 +7,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datatypes.Issue;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.ns.NSService;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
 
 import org.mantisbt.connect.IMCSession;
 import org.mantisbt.connect.MCException;
@@ -23,15 +24,18 @@ import org.mantisbt.connect.axis.MCSession;
 import org.mantisbt.connect.model.IIssueHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-public class MantisService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class MantisService extends AbstractService {
 	private static final Logger log = LoggerFactory.getLogger(NSService.class);
 
 	private Map<Key, List<Issue>> issues = new HashMap<Key, List<Issue>>();
 
 	@Override
-	public void onConfigure(Repository repository) {
-		for (Key key : Settings.get().getKeysWithConfigurationFor(
+	public void onConfigure(DashboardRepository repository) {
+		for (Key key : getSettings().getKeysWithConfigurationFor(
 				MantisService.class)) {
 			issues.put(key, Collections.<Issue> emptyList());
 			repository.addDataSource(key, Issues.class, new IssuesImpl(key,
@@ -43,7 +47,7 @@ public class MantisService implements Retriever {
 	@Override
 	public void refreshData() {
 		Map<Key, List<Issue>> newIssues = new HashMap<Key, List<Issue>>();
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(MantisService.class);
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
 				.entrySet()) {

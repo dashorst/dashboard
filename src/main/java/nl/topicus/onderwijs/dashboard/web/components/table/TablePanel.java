@@ -5,7 +5,7 @@ import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
 import nl.topicus.onderwijs.dashboard.modules.KeyProperty;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -46,7 +46,7 @@ public class TablePanel extends Panel implements IWiQueryPlugin {
 					@Override
 					public Object getObject() {
 						try {
-							Repository repository = WicketApplication.get()
+							DashboardRepository repository = WicketApplication.get()
 									.getRepository();
 							return repository.getData(
 									TablePanel.this.dataSource).get(

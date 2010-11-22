@@ -7,7 +7,7 @@ import java.util.Map;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -57,7 +57,7 @@ public class BarGraphBarPanel extends Panel implements IWiQueryPlugin {
 
 	private void getDataFromDataSource(Map<String, BarData> ret,
 			Class<? extends DataSource<? extends Number>> datasourceType) {
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 
 		Project project = getProject();
 

@@ -7,18 +7,20 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.google.gdata.client.calendar.CalendarQuery;
 import com.google.gdata.client.calendar.CalendarService;
@@ -29,17 +31,18 @@ import com.google.gdata.data.calendar.CalendarEventFeed;
 import com.google.gdata.data.calendar.CalendarFeed;
 import com.google.gdata.data.extensions.When;
 
-public class GoogleEventService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class GoogleEventService extends AbstractService {
 	private static final Logger log = LoggerFactory
 			.getLogger(GoogleEventService.class);
 	private static final Pattern TAG_PATTERN = Pattern.compile("#\\w*");
+
 	private List<Event> events = new ArrayList<Event>();
 
 	@Override
-	public void onConfigure(Repository repository) {
-		Settings settings = Settings.get();
-
-		Map<Key, Map<String, ?>> serviceSettings = settings
+	public void onConfigure(DashboardRepository repository) {
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(GoogleEventService.class);
 		for (Key key : serviceSettings.keySet()) {
 			repository.addDataSource(key, Events.class, new EventsImpl(key,
@@ -50,8 +53,7 @@ public class GoogleEventService implements Retriever {
 	@Override
 	public void refreshData() {
 		try {
-			Settings settings = Settings.get();
-			Map<Key, Map<String, ?>> serviceSettings = settings
+			Map<Key, Map<String, ?>> serviceSettings = getSettings()
 					.getServiceSettings(GoogleEventService.class);
 			List<Event> ret = new ArrayList<Event>();
 			for (Map.Entry<Key, Map<String, ?>> curSettingEntry : serviceSettings

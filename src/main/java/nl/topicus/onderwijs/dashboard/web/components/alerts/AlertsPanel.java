@@ -8,7 +8,7 @@ import java.util.List;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -36,7 +36,7 @@ public class AlertsPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public List<Alert> getObject() {
-						Repository repository = WicketApplication.get()
+						DashboardRepository repository = WicketApplication.get()
 								.getRepository();
 						List<Alert> ret = new ArrayList<Alert>(repository
 								.getData(ProjectAlerts.class)

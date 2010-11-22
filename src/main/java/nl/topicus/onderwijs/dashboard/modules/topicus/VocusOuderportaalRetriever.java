@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
@@ -26,14 +27,18 @@ import nl.topicus.onderwijs.dashboard.datasources.Uptime;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-public class VocusOuderportaalRetriever implements Retriever,
+@Service
+@ServiceConfiguration(interval = 30, unit = TimeUnit.SECONDS)
+public class VocusOuderportaalRetriever extends AbstractService implements
 		TopicusApplicationStatusProvider {
 	private static final Logger log = LoggerFactory
 			.getLogger(VocusOuderportaalRetriever.class);
@@ -46,8 +51,8 @@ public class VocusOuderportaalRetriever implements Retriever,
 	}
 
 	@Override
-	public void onConfigure(Repository repository) {
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+	public void onConfigure(DashboardRepository repository) {
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(VocusOuderportaalRetriever.class);
 		for (Key project : serviceSettings.keySet()) {
 			statusses.put(project, new TopicusApplicationStatus());
@@ -79,7 +84,7 @@ public class VocusOuderportaalRetriever implements Retriever,
 	@Override
 	public void refreshData() {
 		HashMap<Key, TopicusApplicationStatus> newStatusses = new HashMap<Key, TopicusApplicationStatus>();
-		Map<Key, Map<String, ?>> serviceSettings = Settings.get()
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(VocusOuderportaalRetriever.class);
 
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings

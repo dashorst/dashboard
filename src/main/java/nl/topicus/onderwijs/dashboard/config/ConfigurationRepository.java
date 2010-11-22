@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.persistence.config;
+package nl.topicus.onderwijs.dashboard.config;
 
 import java.io.File;
 

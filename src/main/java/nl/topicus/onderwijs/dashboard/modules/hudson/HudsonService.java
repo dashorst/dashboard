@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import nl.topicus.onderwijs.dashboard.datasources.HudsonAlerts;
@@ -16,17 +17,17 @@ import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Build;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.BuildReference;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Hudson;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Job;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.JobReference;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Result;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.BuildReference;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Hudson;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Job;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.JobReference;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Result;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
@@ -34,8 +35,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-public class HudsonService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
+public class HudsonService extends AbstractService {
 	private static final Logger log = LoggerFactory
 			.getLogger(HudsonService.class);
 
@@ -51,10 +55,8 @@ public class HudsonService implements Retriever {
 	}
 
 	@Override
-	public void onConfigure(Repository repository) {
-		Settings settings = Settings.get();
-
-		Map<Key, Map<String, ?>> serviceSettings = settings
+	public void onConfigure(DashboardRepository repository) {
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(HudsonService.class);
 		for (Key key : serviceSettings.keySet()) {
 			if (key instanceof Project) {
@@ -71,15 +73,9 @@ public class HudsonService implements Retriever {
 		}
 	}
 
-	public static void main(String[] args) {
-		new HudsonService().refreshData();
-	}
-
 	public void refreshData() {
 		try {
-			Settings settings = Settings.get();
-
-			Map<Key, Map<String, ?>> serviceSettings = settings
+			Map<Key, Map<String, ?>> serviceSettings = getSettings()
 					.getServiceSettings(HudsonService.class);
 			for (Entry<Key, Map<String, ?>> entry : serviceSettings.entrySet()) {
 				if (!(entry.getKey() instanceof Project))

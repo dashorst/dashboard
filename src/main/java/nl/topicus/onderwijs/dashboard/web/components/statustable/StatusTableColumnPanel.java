@@ -10,7 +10,7 @@ import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -68,7 +68,7 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 
 	private <T extends DataSource<?>> ColumnData getColumn(String label,
 			Class<T> datasourceType) {
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 		ColumnData column = new ColumnData();
 		column.setLabel(label);
 		Map<Key, T> data = repository.getData(datasourceType);

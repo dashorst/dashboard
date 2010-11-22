@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules;
+package nl.topicus.onderwijs.dashboard.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
-import nl.topicus.onderwijs.dashboard.persistence.config.ConfigurationRepository;
 
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -19,8 +18,6 @@ import org.codehaus.jackson.map.KeyDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 public class Settings {
-
-	private static Settings INSTANCE;
 
 	/**
 	 * Custom JSON deserializer for projects that are used as key values in a
@@ -39,15 +36,12 @@ public class Settings {
 		}
 	}
 
-	public static Settings get() {
-		if (INSTANCE == null) {
-			ConfigurationRepository configurationRepository = new ConfigurationRepository();
-			if (!configurationRepository.configurationExists(Settings.class))
-				throw new IllegalStateException("No configuration exists for "
-						+ Settings.class.getName());
-			INSTANCE = configurationRepository.getConfiguration(Settings.class);
-		}
-		return INSTANCE;
+	public static Settings create() {
+		ConfigurationRepository configurationRepository = new ConfigurationRepository();
+		if (!configurationRepository.configurationExists(Settings.class))
+			throw new IllegalStateException("No configuration exists for "
+					+ Settings.class.getName());
+		return configurationRepository.getConfiguration(Settings.class);
 	}
 
 	private static ArrayList<Key> keys = new ArrayList<Key>();

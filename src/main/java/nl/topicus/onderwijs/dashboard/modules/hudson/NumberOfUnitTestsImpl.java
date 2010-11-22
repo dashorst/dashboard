@@ -5,9 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUnitTests;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Action;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Build;
 import nl.topicus.onderwijs.dashboard.keys.Project;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Action;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
 
 class NumberOfUnitTestsImpl implements NumberOfUnitTests {
 	private Project project;

@@ -9,8 +9,8 @@ import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.modules.RandomDataRepositoryImpl;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
 import nl.topicus.onderwijs.dashboard.modules.RepositoryImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.AlertSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.CommitSumImpl;
@@ -31,6 +31,7 @@ import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Application object for your web application. If you want to run this
@@ -41,14 +42,18 @@ import org.slf4j.LoggerFactory;
 public class WicketApplication extends WebApplication {
 	private static final Logger log = LoggerFactory
 			.getLogger(WicketApplication.class);
+	@Autowired
 	private Updater updater;
 
-	private RepositoryImpl repository = new RepositoryImpl();
+	@Autowired
+	private RepositoryImpl repository;
 
-	private RandomDataRepositoryImpl randomRepository = new RandomDataRepositoryImpl(
-			repository);
+	@Autowired
+	private RandomDataRepositoryImpl randomRepository;
+
 	private boolean terminated;
 	private Date startTime = new Date();
+	private DashboardMode mode;
 
 	@Override
 	public Class<DashboardPage> getHomePage() {
@@ -73,9 +78,15 @@ public class WicketApplication extends WebApplication {
 		getSharedResources().add("starttime", new StartTimeResource());
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
-		getRequestLoggerSettings().setRequestLoggerEnabled(true);
+		getRequestLoggerSettings().setRequestLoggerEnabled(false);
 		getRequestLoggerSettings().setRequestsWindowSize(200);
 		getRequestLoggerSettings().setRecordSessionSize(true);
+
+		if (isDevelopment()) {
+			mode = DashboardMode.RandomData;
+		} else {
+			mode = DashboardMode.LiveData;
+		}
 
 		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,
 				new AlertSumImpl());
@@ -101,21 +112,15 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public synchronized void enableLiveUpdater() {
-		if (updater == null) {
-			updater = new Updater(this, randomRepository);
-			updater.start();
-		}
+		updater.start();
 	}
 
 	public synchronized void disableLiveUpdater() {
-		if (updater != null) {
-			updater.stop();
-			updater = null;
-		}
+		updater.stop();
 	}
 
 	public boolean isUpdaterEnabled() {
-		return updater != null;
+		return updater.isEnabled();
 	}
 
 	@Override
@@ -131,10 +136,25 @@ public class WicketApplication extends WebApplication {
 		return Application.DEVELOPMENT.equals(getConfigurationType());
 	}
 
-	public Repository getRepository() {
-		if (DashboardWebSession.get().getMode() == DashboardMode.RandomData)
+	public DashboardRepository getRepository() {
+		if (getMode() == DashboardMode.RandomData)
 			return randomRepository;
 		return repository;
+	}
+
+	public DashboardMode getMode() {
+		return mode;
+	}
+
+	public void switchMode() {
+		mode = mode.switchToOtherMode();
+		switch (mode) {
+		case LiveData:
+			WicketApplication.get().enableLiveUpdater();
+			break;
+		case RandomData:
+			WicketApplication.get().disableLiveUpdater();
+		}
 	}
 
 	public boolean isShuttingDown() {

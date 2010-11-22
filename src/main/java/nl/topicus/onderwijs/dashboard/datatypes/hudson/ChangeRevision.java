@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules.hudson.model;
+package nl.topicus.onderwijs.dashboard.datatypes.hudson;
 
 import java.io.Serializable;
 

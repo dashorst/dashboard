@@ -3,7 +3,7 @@ package nl.topicus.onderwijs.dashboard.web.components.weather;
 import nl.topicus.onderwijs.dashboard.datasources.Weather;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
@@ -33,7 +33,7 @@ public class WeatherPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public WeatherReport getObject() {
-						Repository repository = WicketApplication.get()
+						DashboardRepository repository = WicketApplication.get()
 								.getRepository();
 						return repository.getData(Weather.class).get(key)
 								.getValue();

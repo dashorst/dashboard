@@ -19,6 +19,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Resource;
+
 import nl.topicus.onderwijs.dashboard.datasources.Alerts;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
@@ -35,25 +37,31 @@ import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
 import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherType;
+import nl.topicus.onderwijs.dashboard.datatypes.train.Train;
+import nl.topicus.onderwijs.dashboard.datatypes.train.TrainType;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
-import nl.topicus.onderwijs.dashboard.modules.ns.model.Train;
-import nl.topicus.onderwijs.dashboard.modules.ns.model.TrainType;
 import nl.topicus.onderwijs.dashboard.modules.wettercom.WetterComService;
 
 import org.apache.wicket.util.time.Duration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-public class RandomDataRepositoryImpl extends TimerTask implements Repository {
+@Repository("random")
+public class RandomDataRepositoryImpl extends TimerTask implements
+		DashboardRepository {
 	private static final Object NULL = new Object();
-	private Repository base;
+
+	@Autowired
+	@Resource(name = "online")
+	private DashboardRepository base;
 	private Set<Class<? extends DataSource<?>>> sources = new HashSet<Class<? extends DataSource<?>>>();
 	private ConcurrentHashMap<String, Object> dataCache = new ConcurrentHashMap<String, Object>();
 	private Map<Key, List<Event>> eventCache = new HashMap<Key, List<Event>>();
 	private Timer timer;
 
-	public RandomDataRepositoryImpl(Repository base) {
-		this.base = base;
+	public RandomDataRepositoryImpl() {
 		start();
 	}
 

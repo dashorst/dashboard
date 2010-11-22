@@ -6,8 +6,8 @@ import java.util.List;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
 import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
+import nl.topicus.onderwijs.dashboard.datatypes.hudson.Build;
 import nl.topicus.onderwijs.dashboard.keys.Project;
-import nl.topicus.onderwijs.dashboard.modules.hudson.model.Build;
 
 class HudsonBuildStatusImpl implements HudsonBuildStatus {
 	private Project project;

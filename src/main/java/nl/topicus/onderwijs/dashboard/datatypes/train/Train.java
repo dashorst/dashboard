@@ -1,4 +1,4 @@
-package nl.topicus.onderwijs.dashboard.modules.ns.model;
+package nl.topicus.onderwijs.dashboard.datatypes.train;
 
 import java.io.IOException;
 import java.io.Serializable;

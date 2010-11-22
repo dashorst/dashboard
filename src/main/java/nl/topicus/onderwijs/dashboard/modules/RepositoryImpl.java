@@ -7,11 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.topicus.onderwijs.dashboard.config.Settings;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
 
-public class RepositoryImpl implements Repository {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository("online")
+public class RepositoryImpl implements DashboardRepository {
+	@Autowired
+	private Settings settings;
 	private Map<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>> index1 = new HashMap<Key, Map<Class<? extends DataSource<?>>, DataSource<?>>>();
 	private Map<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>> index2 = new HashMap<Class<? extends DataSource<?>>, Map<Key, DataSource<?>>>();
 
@@ -42,7 +49,7 @@ public class RepositoryImpl implements Repository {
 
 	public <T extends Key> List<T> getKeys(Class<T> keyType) {
 		List<T> ret = new ArrayList<T>();
-		for (Key curKey : Settings.get().getKeys())
+		for (Key curKey : settings.getKeys())
 			if (keyType.isInstance(curKey))
 				ret.add(keyType.cast(curKey));
 		if (keyType.isAssignableFrom(Summary.class))

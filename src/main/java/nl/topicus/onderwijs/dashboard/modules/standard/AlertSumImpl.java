@@ -8,7 +8,7 @@ import nl.topicus.onderwijs.dashboard.datasources.ProjectAlerts;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 public class AlertSumImpl implements ProjectAlerts {
@@ -18,7 +18,7 @@ public class AlertSumImpl implements ProjectAlerts {
 	@Override
 	public List<Alert> getValue() {
 		List<Alert> ret = new ArrayList<Alert>();
-		Repository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get().getRepository();
 		for (Project curProject : repository.getProjects()) {
 			Collection<DataSource<?>> dataSources = repository
 					.getData(curProject);

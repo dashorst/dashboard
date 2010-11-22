@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,31 +16,33 @@ import nl.topicus.onderwijs.dashboard.datasources.Weather;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherType;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.Repository;
-import nl.topicus.onderwijs.dashboard.modules.Settings;
-import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
+import nl.topicus.onderwijs.dashboard.modules.AbstractService;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class WetterComService implements Retriever {
+@Service
+@ServiceConfiguration(interval = 10, unit = TimeUnit.MINUTES)
+public class WetterComService extends AbstractService {
 	private static final Logger log = LoggerFactory
 			.getLogger(WetterComService.class);
 
 	private Map<Key, WeatherReport> reports = new ConcurrentHashMap<Key, WeatherReport>();
 
 	@Override
-	public void onConfigure(Repository repository) {
-		Settings settings = Settings.get();
-		for (Key key : settings
-				.getKeysWithConfigurationFor(WetterComService.class)) {
+	public void onConfigure(DashboardRepository repository) {
+		for (Key key : getSettings().getKeysWithConfigurationFor(
+				WetterComService.class)) {
 			repository.addDataSource(key, Weather.class, new WeatherImpl(key,
 					this));
 		}
@@ -48,8 +51,7 @@ public class WetterComService implements Retriever {
 	@Override
 	public void refreshData() {
 		try {
-			Settings settings = Settings.get();
-			Map<Key, Map<String, ?>> serviceSettings = settings
+			Map<Key, Map<String, ?>> serviceSettings = getSettings()
 					.getServiceSettings(WetterComService.class);
 			for (Map.Entry<Key, Map<String, ?>> curSettingEntry : serviceSettings
 					.entrySet()) {

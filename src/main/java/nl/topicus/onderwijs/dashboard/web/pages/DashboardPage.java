@@ -13,7 +13,7 @@ import nl.topicus.onderwijs.dashboard.keys.Location;
 import nl.topicus.onderwijs.dashboard.keys.Misc;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.web.DashboardWebSession;
+import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.alerts.AlertsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
@@ -48,7 +48,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				((DashboardWebSession) getSession()).switchMode();
+				WicketApplication.get().switchMode();
 				target.addComponent(this);
 			}
 
@@ -60,7 +60,7 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		};
 		add(liveToRandomModeSwitch);
 		liveToRandomModeSwitch.add(new Label("label",
-				new PropertyModel<String>(getSession(), "mode")));
+				new PropertyModel<String>(this, "mode")));
 		ArrayList<Class<? extends DataSource<? extends Number>>> datasources = new ArrayList<Class<? extends DataSource<? extends Number>>>();
 		datasources.add(NumberOfUsers.class);
 		datasources.add(AverageRequestTime.class);
@@ -92,6 +92,10 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new AlertsPanel("alerts"));
 		add(new TwitterPanel("twitter", WicketApplication.get().getRepository()
 				.getKeys(Misc.class).get(0)));
+	}
+
+	public DashboardMode getMode() {
+		return WicketApplication.get().getMode();
 	}
 
 	@Override
