@@ -49,7 +49,7 @@ body {
 	width: 1000px;
 }
 .widget.first {
-	margin-top: 40px;
+	margin-top: 60px;
 }
 .no-overflow {
 	overflow: hidden;
@@ -62,4 +62,16 @@ body {
 .effects-enabled {
 	-webkit-perspective: 1000;
 	-webkit-perspective-origin: center 45%;
+}
+
+.block-widget {
+	position: relative;
+	height: 100%;
+}
+.block-widget .header {
+	border-radius: 20px;
+	font-size: 150%;
+	font-weight: bold;
+	padding: 1px;
+	text-align: center;
 }
