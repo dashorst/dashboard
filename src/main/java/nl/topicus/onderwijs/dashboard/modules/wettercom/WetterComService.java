@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Weather;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
 import nl.topicus.onderwijs.dashboard.datatypes.WeatherType;
@@ -24,6 +25,7 @@ import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -38,6 +40,11 @@ public class WetterComService extends AbstractService {
 			.getLogger(WetterComService.class);
 
 	private Map<Key, WeatherReport> reports = new ConcurrentHashMap<Key, WeatherReport>();
+
+	@Autowired
+	public WetterComService(ISettings settings) {
+		super(settings);
+	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {

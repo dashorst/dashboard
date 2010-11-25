@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Issues;
 import nl.topicus.onderwijs.dashboard.datatypes.Issue;
 import nl.topicus.onderwijs.dashboard.datatypes.IssueStatus;
@@ -24,6 +25,7 @@ import org.mantisbt.connect.axis.MCSession;
 import org.mantisbt.connect.model.IIssueHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +34,11 @@ public class MantisService extends AbstractService {
 	private static final Logger log = LoggerFactory.getLogger(NSService.class);
 
 	private Map<Key, List<Issue>> issues = new HashMap<Key, List<Issue>>();
+
+	@Autowired
+	public MantisService(ISettings settings) {
+		super(settings);
+	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {

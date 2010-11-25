@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterMentions;
 import nl.topicus.onderwijs.dashboard.datasources.TwitterTimeline;
 import nl.topicus.onderwijs.dashboard.datatypes.TwitterStatus;
@@ -21,6 +22,7 @@ import nl.topicus.onderwijs.dashboard.modules.twitter.TwitterSettings.OAuthKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import twitter4j.RateLimitStatus;
@@ -44,7 +46,9 @@ public class TwitterService extends AbstractService {
 	private Map<Key, NavigableSet<Status>> timeline = new HashMap<Key, NavigableSet<Status>>();
 	private Map<Key, NavigableSet<Status>> mentions = new HashMap<Key, NavigableSet<Status>>();
 
-	public TwitterService() {
+	@Autowired
+	public TwitterService(ISettings settings) {
+		super(settings);
 	}
 
 	public void onConfigure(DashboardRepository repository) {

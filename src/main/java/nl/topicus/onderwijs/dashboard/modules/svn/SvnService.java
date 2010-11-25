@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Commits;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.keys.Key;
@@ -18,6 +19,7 @@ import nl.topicus.onderwijs.dashboard.modules.ns.NSService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNException;
@@ -37,6 +39,11 @@ public class SvnService extends AbstractService {
 	private static final Logger log = LoggerFactory.getLogger(NSService.class);
 
 	private Map<Key, List<Commit>> commits = new HashMap<Key, List<Commit>>();
+
+	@Autowired
+	public SvnService(ISettings settings) {
+		super(settings);
+	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {

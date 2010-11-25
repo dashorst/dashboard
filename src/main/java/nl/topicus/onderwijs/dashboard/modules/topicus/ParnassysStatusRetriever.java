@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
@@ -34,6 +35,7 @@ import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,7 +49,9 @@ public class ParnassysStatusRetriever extends AbstractService implements
 
 	private Map<String, Alert> oldAlerts = new HashMap<String, Alert>();
 
-	public ParnassysStatusRetriever() {
+	@Autowired
+	public ParnassysStatusRetriever(ISettings settings) {
+		super(settings);
 	}
 
 	@Override

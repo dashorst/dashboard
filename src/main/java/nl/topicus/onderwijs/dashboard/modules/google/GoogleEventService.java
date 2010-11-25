@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.keys.Key;
@@ -20,6 +21,7 @@ import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gdata.client.calendar.CalendarQuery;
@@ -39,6 +41,11 @@ public class GoogleEventService extends AbstractService {
 	private static final Pattern TAG_PATTERN = Pattern.compile("#\\w*");
 
 	private List<Event> events = new ArrayList<Event>();
+
+	@Autowired
+	public GoogleEventService(ISettings settings) {
+		super(settings);
+	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {
@@ -165,9 +172,5 @@ public class GoogleEventService extends AbstractService {
 				ret.add(curEvent);
 		}
 		return ret;
-	}
-
-	public static void main(String[] args) {
-		new GoogleEventService().refreshData();
 	}
 }

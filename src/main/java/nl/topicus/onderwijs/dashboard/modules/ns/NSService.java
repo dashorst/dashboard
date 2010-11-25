@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Trains;
 import nl.topicus.onderwijs.dashboard.datatypes.train.Train;
 import nl.topicus.onderwijs.dashboard.datatypes.train.TrainType;
@@ -22,6 +23,7 @@ import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,6 +37,11 @@ public class NSService extends AbstractService {
 	private static final int DETAILS = 4;
 
 	private Map<Key, List<Train>> trains = new HashMap<Key, List<Train>>();
+
+	@Autowired
+	public NSService(ISettings settings) {
+		super(settings);
+	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {

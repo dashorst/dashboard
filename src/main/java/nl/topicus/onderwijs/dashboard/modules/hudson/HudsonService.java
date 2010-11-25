@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildNumber;
 import nl.topicus.onderwijs.dashboard.datasources.HudsonBuildStatus;
@@ -35,6 +36,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,7 +51,9 @@ public class HudsonService extends AbstractService {
 	private ConcurrentHashMap<Project, List<Job>> jobsCache = new ConcurrentHashMap<Project, List<Job>>();
 	private ConcurrentHashMap<String, Alert> alertsCache = new ConcurrentHashMap<String, Alert>();
 
-	public HudsonService() {
+	@Autowired
+	public HudsonService(ISettings settings) {
+		super(settings);
 		mapper.getDeserializationConfig().disable(
 				Feature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
