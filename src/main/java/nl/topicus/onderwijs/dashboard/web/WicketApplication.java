@@ -86,6 +86,7 @@ public class WicketApplication extends WebApplication {
 			mode = DashboardMode.RandomData;
 		} else {
 			mode = DashboardMode.LiveData;
+			updater.start();
 		}
 
 		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,

@@ -42,8 +42,6 @@ public class Updater implements InitializingBean {
 		for (Retriever curRetriever : retrievers) {
 			curRetriever.onConfigure(repository);
 		}
-		if (!application.isDevelopment())
-			start();
 	}
 
 	public synchronized void start() {
