@@ -187,10 +187,10 @@
 	max-width: 450px;
 }
 
-.table.commits tr {
+.table.commits>table tr {
 	display: table-row;
 }
-.table.commits tr:nth-child(n+13) {
+.table.commits>table tr:nth-child(n+13) {
 	display: none;
 }
 .table.commits {
