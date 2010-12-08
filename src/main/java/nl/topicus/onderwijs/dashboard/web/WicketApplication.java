@@ -28,6 +28,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.session.ISessionStore;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,7 @@ public class WicketApplication extends WebApplication {
 	protected void onDestroy() {
 		terminated = true;
 		log.info("Shutting down the dashboard application");
-		disableLiveUpdater();
+		updater.stop();
 		randomRepository.stop();
 		log.info("Shutting down the dashboard application, finished");
 	}
@@ -73,6 +74,7 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
+		addComponentInstantiationListener(new SpringComponentInjector(this));
 		getMarkupSettings().setStripWicketTags(true);
 		getSharedResources().putClassAlias(Application.class, "application");
 		getSharedResources().add("starttime", new StartTimeResource());
@@ -86,8 +88,8 @@ public class WicketApplication extends WebApplication {
 			mode = DashboardMode.RandomData;
 		} else {
 			mode = DashboardMode.LiveData;
-			updater.start();
 		}
+		updater.restart();
 
 		randomRepository.addDataSource(Summary.get(), ProjectAlerts.class,
 				new AlertSumImpl());
@@ -110,18 +112,6 @@ public class WicketApplication extends WebApplication {
 
 	public List<Project> getProjects() {
 		return getRepository().getProjects();
-	}
-
-	public synchronized void enableLiveUpdater() {
-		updater.start();
-	}
-
-	public synchronized void disableLiveUpdater() {
-		updater.stop();
-	}
-
-	public boolean isUpdaterEnabled() {
-		return updater.isEnabled();
 	}
 
 	@Override
@@ -161,13 +151,7 @@ public class WicketApplication extends WebApplication {
 
 	public void switchMode() {
 		mode = mode.switchToOtherMode();
-		switch (mode) {
-		case LiveData:
-			WicketApplication.get().enableLiveUpdater();
-			break;
-		case RandomData:
-			WicketApplication.get().disableLiveUpdater();
-		}
+		updater.restart();
 	}
 
 	public boolean isShuttingDown() {

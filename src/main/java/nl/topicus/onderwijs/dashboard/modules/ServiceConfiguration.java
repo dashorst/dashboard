@@ -14,4 +14,6 @@ public @interface ServiceConfiguration {
 	int interval();
 
 	TimeUnit unit();
+
+	boolean runInRandomMode() default false;
 }

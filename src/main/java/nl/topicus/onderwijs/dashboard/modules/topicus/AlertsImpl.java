@@ -18,6 +18,6 @@ public class AlertsImpl implements ServerAlerts {
 	@Override
 	public List<Alert> getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getAlerts();
+		return status == null ? null : status.getAlerts();
 	}
 }

@@ -16,6 +16,6 @@ public class ApplicationVersionImpl implements ApplicationVersion {
 	@Override
 	public String getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getVersion();
+		return status == null ? null : status.getVersion();
 	}
 }

@@ -16,6 +16,6 @@ class AverageRequestTimeImpl implements AverageRequestTime {
 	@Override
 	public Integer getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getAverageRequestDuration();
+		return status == null ? null : status.getAverageRequestDuration();
 	}
 }

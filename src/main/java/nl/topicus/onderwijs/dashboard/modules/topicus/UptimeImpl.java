@@ -17,7 +17,7 @@ class UptimeImpl implements Uptime {
 	@Override
 	public Duration getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		if (status.getUptime() == null)
+		if (status == null || status.getUptime() == null)
 			return null;
 		return Duration.valueOf(status.getUptime());
 	}

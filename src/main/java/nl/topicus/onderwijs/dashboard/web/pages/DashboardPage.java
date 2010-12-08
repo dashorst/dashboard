@@ -13,11 +13,14 @@ import nl.topicus.onderwijs.dashboard.keys.Location;
 import nl.topicus.onderwijs.dashboard.keys.Misc;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
+import nl.topicus.onderwijs.dashboard.modules.PlotSource;
+import nl.topicus.onderwijs.dashboard.modules.PlotSourcesService;
 import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.alerts.AlertsPanel;
 import nl.topicus.onderwijs.dashboard.web.components.bargraph.BarGraphPanel;
 import nl.topicus.onderwijs.dashboard.web.components.events.EventsPanel;
+import nl.topicus.onderwijs.dashboard.web.components.plot.PlotPanel;
 import nl.topicus.onderwijs.dashboard.web.components.statustable.StatusTablePanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.StackedTablesPanel;
 import nl.topicus.onderwijs.dashboard.web.components.table.TablePanel;
@@ -33,6 +36,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -41,6 +45,9 @@ import org.odlabs.wiquery.core.javascript.JsStatement;
 public class DashboardPage extends WebPage implements IWiQueryPlugin {
 
 	private static final long serialVersionUID = 1L;
+
+	@SpringBean
+	private PlotSourcesService plotSources;
 
 	public DashboardPage(final PageParameters parameters) {
 		AjaxLink<Void> liveToRandomModeSwitch = new AjaxLink<Void>("live") {
@@ -72,22 +79,21 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new TablePanel("ns", Trains.class, WicketApplication.get()
 				.getRepository().getKeys(Location.class).get(0), true));
 
-		StackedTablesPanel tablestack1 = new StackedTablesPanel("tablestack1");
-		tablestack1.addTable(new TablePanel(tablestack1.nextTableId(),
+		StackedTablesPanel tablestack = new StackedTablesPanel("tablestack");
+		tablestack.addTable(new TablePanel(tablestack.nextTableId(),
 				Commits.class, Summary.get(), false));
-		tablestack1.addTable(new TablePanel(tablestack1.nextTableId(),
+		tablestack.addTable(new TablePanel(tablestack.nextTableId(),
 				Issues.class, Summary.get(), false));
-		add(tablestack1);
-
-		StackedTablesPanel tablestack2 = new StackedTablesPanel("tablestack2");
-		tablestack2.addTable(new TablePanel(tablestack2.nextTableId(),
-				Issues.class, Summary.get(), false));
-		tablestack2.addTable(new TablePanel(tablestack2.nextTableId(),
-				Commits.class, Summary.get(), false));
-		add(tablestack2);
+		add(tablestack);
 
 		add(new WeatherPanel("weather", WicketApplication.get().getRepository()
 				.getKeys(Location.class).get(0)));
+		StackedTablesPanel plotstack = new StackedTablesPanel("plotstack");
+		for (PlotSource curSource : plotSources.getPlotSources()) {
+			plotstack.addTable(new PlotPanel(tablestack.nextTableId(),
+					curSource));
+		}
+		add(plotstack);
 		add(new EventsPanel("events", Events.class, Summary.get()));
 		add(new AlertsPanel("alerts"));
 		add(new TwitterPanel("twitter", WicketApplication.get().getRepository()

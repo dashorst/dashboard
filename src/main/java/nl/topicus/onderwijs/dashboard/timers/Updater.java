@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.topicus.Retriever;
+import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 
 import org.slf4j.Logger;
@@ -44,16 +45,20 @@ public class Updater implements InitializingBean {
 		}
 	}
 
-	public synchronized void start() {
+	public synchronized void restart() {
+		stop();
 		if (!isEnabled()) {
 			enabled = true;
 			timer = Executors.newScheduledThreadPool(4);
-			log.info("Scheduling timer tasks");
+			log.info("(Re)scheduling timer tasks");
 			for (Retriever curRetriever : retrievers) {
 				ServiceConfiguration config = curRetriever.getClass()
 						.getAnnotation(ServiceConfiguration.class);
-				timer.scheduleWithFixedDelay(new TimerTask(curRetriever), 0,
-						config.interval(), config.unit());
+				if (config.runInRandomMode()
+						|| application.getMode() == DashboardMode.LiveData) {
+					timer.scheduleWithFixedDelay(new TimerTask(curRetriever),
+							0, config.interval(), config.unit());
+				}
 			}
 		}
 	}
@@ -94,6 +99,7 @@ public class Updater implements InitializingBean {
 							+ retriever.getClass().getSimpleName());
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				log.error("Uncaught exception during update task "
 						+ retriever.getClass().getSimpleName() + ": "
 						+ e.getClass().getSimpleName() + ": " + e.getMessage());
@@ -101,7 +107,7 @@ public class Updater implements InitializingBean {
 		}
 	}
 
-	public boolean isEnabled() {
+	private boolean isEnabled() {
 		return enabled;
 	}
 }

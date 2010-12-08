@@ -19,6 +19,8 @@ class NumberOfUsersPerServerImpl implements NumberOfUsersPerServer {
 	@Override
 	public List<Integer> getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
+		if (status == null)
+			return null;
 		List<Integer> ret = new ArrayList<Integer>();
 		for (TopicusServerStatus curServer : status.getServers()) {
 			Integer curUsers = curServer.getNumberOfUsers();

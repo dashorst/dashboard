@@ -84,9 +84,11 @@ class TopicusApplicationStatus implements Serializable {
 		int div = 0;
 		int total = 0;
 		for (TopicusServerStatus curServer : getOnlineServers()) {
-			if (curServer.getAverageRequestDuration() != null) {
-				div++;
-				total += curServer.getAverageRequestDuration();
+			Integer rpm = curServer.getRequestsPerMinute();
+			Integer ard = curServer.getAverageRequestDuration();
+			if (rpm != null && ard != null) {
+				div += rpm;
+				total += (rpm * ard);
 			}
 		}
 		return div == 0 ? null : total / div;

@@ -19,6 +19,6 @@ class ServerStatusImpl implements ServerStatus {
 	@Override
 	public List<Dot> getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getServerStatusses();
+		return status == null ? null : status.getServerStatusses();
 	}
 }

@@ -16,6 +16,7 @@ class NumberOfServersOfflineImpl implements NumberOfServersOffline {
 	@Override
 	public Integer getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getNumberOfServers() - status.getNumberOfServersOnline();
+		return status == null ? null : status.getNumberOfServers()
+				- status.getNumberOfServersOnline();
 	}
 }

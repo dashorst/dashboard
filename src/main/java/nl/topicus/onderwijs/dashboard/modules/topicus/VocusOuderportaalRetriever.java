@@ -59,7 +59,6 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(VocusOuderportaalRetriever.class);
 		for (Key project : serviceSettings.keySet()) {
-			statusses.put(project, new TopicusApplicationStatus());
 			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
 			repository.addDataSource(project, NumberOfServers.class,

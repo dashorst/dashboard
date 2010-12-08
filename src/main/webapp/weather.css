@@ -1,14 +1,5 @@
-.weather {
-	position: relative;
-	height: 100%;
-}
-.weatherHeader {
-	border-radius: 20px;
-	font-size: 150%;
-	font-weight: bold;
+.weather .header {
 	background-color: #1059c2;
-	padding: 1px;
-	text-align: center;
 }
 .weatherIcon {
 	width: 150px;

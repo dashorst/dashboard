@@ -21,17 +21,17 @@
 	margin-right: 30px;
 	width: 310px;
 }
-.table table {
+.table>table {
 	border-collapse: collapse;
 	width: 310px;
 }
 .table.double {
 	width: 650px;
 }
-.table.double table {
+.table.double>table {
 	width: 650px;
 }
-.table table td {
+.table>table td {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -39,21 +39,21 @@
 .table:last-child {
 	margin-right: 0;
 }
-.table thead tr th {
+.table>table thead tr th {
 	border-radius: 20px;
 }
-.table th {
+.table>table th {
 	font-size: 150%;
 	font-weight: bold;
 }
-.table td {
+.table>table td {
 	padding: 0;
 	font-size: 90%;
 }
-.table tr:nth-child(n+10) {
+.table>table tr:nth-child(n+10) {
 	display: none;
 }
-.table tbody tr:first-child td {
+.table>table tbody tr:first-child td {
 	padding-top: 13px;
 }
 .table .old {
@@ -143,10 +143,10 @@
 	background-repeat: no-repeat;
 }
 .table.issues thead tr th {
-	background-color: #fcbdbd;
+	background-color: #809cc8;
 }
 .table.issues th {
-	color: #200;
+	color: #fff;
 }
 .table.issues .priority {
 	width: 39px;

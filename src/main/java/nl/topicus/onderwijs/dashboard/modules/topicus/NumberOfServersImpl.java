@@ -16,6 +16,6 @@ class NumberOfServersImpl implements NumberOfServers {
 	@Override
 	public Integer getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getNumberOfServers();
+		return status == null ? null : status.getNumberOfServers();
 	}
 }

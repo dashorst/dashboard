@@ -59,7 +59,6 @@ public class ParnassysStatusRetriever extends AbstractService implements
 		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(ParnassysStatusRetriever.class);
 		for (Key project : serviceSettings.keySet()) {
-			statusses.put(project, new TopicusApplicationStatus());
 			repository.addDataSource(project, RequestsPerMinute.class,
 					new RequestsPerMinuteImpl(project, this));
 			repository.addDataSource(project, AverageRequestTime.class,

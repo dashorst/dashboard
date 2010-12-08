@@ -16,6 +16,6 @@ class RequestsPerMinuteImpl implements RequestsPerMinute {
 	@Override
 	public Integer getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getRequestsPerMinute();
+		return status == null ? null : status.getRequestsPerMinute();
 	}
 }

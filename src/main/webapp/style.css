@@ -68,10 +68,16 @@ body {
 	position: relative;
 	height: 100%;
 }
-.block-widget .header {
+.block-widget .header,
+.block-widget .jqplot-title {
 	border-radius: 20px;
 	font-size: 150%;
 	font-weight: bold;
 	padding: 1px;
 	text-align: center;
+}
+.block-widget .jqplot-title {
+	font-family: 'Yanone Kaffeesatz', Arial, sans-serif !important;
+	background-color: #fcbdbd;
+	margin-bottom: 15px;
 }

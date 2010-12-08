@@ -15,6 +15,6 @@ class NumberOfUsersImpl implements NumberOfUsers {
 	@Override
 	public Integer getValue() {
 		TopicusApplicationStatus status = provider.getStatus(project);
-		return status.getNumberOfUsers();
+		return status == null ? null : status.getNumberOfUsers();
 	}
 }

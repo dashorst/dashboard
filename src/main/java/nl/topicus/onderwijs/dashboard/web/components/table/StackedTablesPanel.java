@@ -28,7 +28,7 @@ public class StackedTablesPanel extends Panel implements IWiQueryPlugin {
 		return tables.newChildId();
 	}
 
-	public void addTable(TablePanel table) {
+	public void addTable(Panel table) {
 		tables.add(table);
 	}
 
