@@ -25,11 +25,24 @@ Currently the dashboard has the following modules:
  * Twitter
  * Weather
 
-A twitter status module is in the works.
-
 The Topicus Onderwijs Dashboard only works in the latest webkit browsers. No
 effort has been done to make it work in Firefox, Opera or IE. Safari and
 Chromium work as advertised.
+
+## Dependencies ##
+
+Most dependencies will be fetched by Maven from the Maven central repository or
+from the repositories listed in the POM. However, three dependencies are not
+available in a Maven repository: the MantisBT connector, the WiQuery version and
+WQPlot.
+
+To use MantisBT 1.2, you need to rebuild the MantisBT connector 1.1.1.0 against
+a MantisBT 1.2 installation. Install the jar as
+org.mantisbt.mantisconnect:client-api:1.2.1.0 in your Maven repository.
+
+Both WiQuery and WQPlot can be found on GitHub under papegaaij/wiquery and
+hielkehoeve/wiquery-jqplot respectively. Simply checkout these projects and
+install them into your Maven repository.
 
 ## Configuration ##
 
