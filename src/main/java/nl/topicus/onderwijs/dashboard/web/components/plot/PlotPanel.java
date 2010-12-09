@@ -1,11 +1,13 @@
 package nl.topicus.onderwijs.dashboard.web.components.plot;
 
 import nl.topicus.onderwijs.dashboard.modules.PlotSource;
+import nl.topicus.onderwijs.dashboard.modules.PlotSourcesService;
 import nl.topicus.wqplot.components.JQPlot;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
 import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
 import org.odlabs.wiquery.core.javascript.JsQuery;
@@ -21,6 +23,7 @@ public class PlotPanel extends Panel implements IWiQueryPlugin {
 
 		@Override
 		protected void respond(AjaxRequestTarget target) {
+			replace(plot = getPlotSource().createPlot(plot.getId()));
 			target.addComponent(plot);
 		}
 
@@ -35,11 +38,21 @@ public class PlotPanel extends Panel implements IWiQueryPlugin {
 	private PlotUpdateBehavior updateBehavior;
 	private JQPlot plot;
 
-	public PlotPanel(String id, PlotSource plotSource) {
+	@SpringBean
+	private PlotSourcesService plotSources;
+
+	private int plotSourceIndex;
+
+	public PlotPanel(String id, int plotSourceIndex) {
 		super(id);
+		this.plotSourceIndex = plotSourceIndex;
 		updateBehavior = new PlotUpdateBehavior();
 		add(updateBehavior);
-		add(plot = plotSource.createPlot("plot"));
+		add(plot = getPlotSource().createPlot("plot"));
+	}
+
+	private PlotSource getPlotSource() {
+		return plotSources.getPlotSources().get(plotSourceIndex);
 	}
 
 	@Override

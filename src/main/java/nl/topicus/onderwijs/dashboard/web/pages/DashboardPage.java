@@ -13,7 +13,6 @@ import nl.topicus.onderwijs.dashboard.keys.Location;
 import nl.topicus.onderwijs.dashboard.keys.Misc;
 import nl.topicus.onderwijs.dashboard.keys.Summary;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
-import nl.topicus.onderwijs.dashboard.modules.PlotSource;
 import nl.topicus.onderwijs.dashboard.modules.PlotSourcesService;
 import nl.topicus.onderwijs.dashboard.web.DashboardMode;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
@@ -89,9 +88,8 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 		add(new WeatherPanel("weather", WicketApplication.get().getRepository()
 				.getKeys(Location.class).get(0)));
 		StackedTablesPanel plotstack = new StackedTablesPanel("plotstack");
-		for (PlotSource curSource : plotSources.getPlotSources()) {
-			plotstack.addTable(new PlotPanel(tablestack.nextTableId(),
-					curSource));
+		for (int index = 0; index < plotSources.getPlotSources().size(); index++) {
+			plotstack.addTable(new PlotPanel(tablestack.nextTableId(), index));
 		}
 		add(plotstack);
 		add(new EventsPanel("events", Events.class, Summary.get()));

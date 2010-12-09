@@ -29,8 +29,10 @@ $.widget( "ui.dashboardPlot", {
 	_initPlot: function() {
 		var self = this;
 		$(document).bind("dashboard-heartbeat", function(event, count) {
-			if (count % 5 == 0)
-				self.options.callback();
+			if ((count+5) % 30 == 0) {
+				if (self.element.hasClass("next"))
+					self.options.callback();
+			}
 		});
 	}
 });

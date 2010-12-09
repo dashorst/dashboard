@@ -28,7 +28,10 @@ $.widget( "ui.dashboardStackedTables", {
 
 	_initHeartBeat: function() {
 		this.tableIndex = 0;
+		var tables = this.element.find(".table");
+		var count = tables.size();
 		this.element.find(".table:gt(0)").addClass("hide");
+		$(tables.get(count > 1 ? 1 : 0)).addClass("next");
 		var self = this;
 		var switchTables = function() {
 			return self._switchTables.apply( self, arguments );
@@ -46,8 +49,10 @@ $.widget( "ui.dashboardStackedTables", {
 		var count = tables.size();
 		var oldTable = this.tableIndex;
 		var newTable = (oldTable+1) % count;
+		var nextTable = (oldTable+2) % count;
 		$(tables.get(oldTable)).addClass("hide");
-		$(tables.get(newTable)).removeClass("hide");
+		$(tables.get(newTable)).removeClass("hide next");
+		$(tables.get(nextTable)).addClass("next");
 		this.tableIndex = newTable;
 	}
 });
