@@ -21,8 +21,8 @@ public class RetrieverUtils {
 		StringBuilder sb = new StringBuilder();
 		HttpClient httpclient = new DefaultHttpClient();
 
-		httpclient.getParams().setParameter("http.socket.timeout", 5000);
-		httpclient.getParams().setParameter("http.connection.timeout", 5000);
+		httpclient.getParams().setParameter("http.socket.timeout", 10000);
+		httpclient.getParams().setParameter("http.connection.timeout", 10000);
 
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(url);
