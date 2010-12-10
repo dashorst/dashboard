@@ -16,13 +16,29 @@ import org.slf4j.LoggerFactory;
 public class RetrieverUtils {
 	private static final Logger log = LoggerFactory
 			.getLogger(RetrieverUtils.class);
+	private static final int MAX_RETRIES = 2;
+	private static final int TIMEOUT = 10000;
 
 	public static StatusPageResponse getStatuspage(String url) throws Exception {
+		int count = 0;
+		while (true) {
+			count++;
+			try {
+				return internalGetStatuspage(url);
+			} catch (Exception e) {
+				if (count > MAX_RETRIES)
+					throw e;
+			}
+		}
+	}
+
+	private static StatusPageResponse internalGetStatuspage(String url)
+			throws Exception {
 		StringBuilder sb = new StringBuilder();
 		HttpClient httpclient = new DefaultHttpClient();
 
-		httpclient.getParams().setParameter("http.socket.timeout", 10000);
-		httpclient.getParams().setParameter("http.connection.timeout", 10000);
+		httpclient.getParams().setParameter("http.socket.timeout", TIMEOUT);
+		httpclient.getParams().setParameter("http.connection.timeout", TIMEOUT);
 
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(url);
