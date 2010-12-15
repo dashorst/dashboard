@@ -82,7 +82,7 @@ public class WicketApplication extends WebApplication {
 
 		getRequestLoggerSettings().setRequestLoggerEnabled(true);
 		getRequestLoggerSettings().setRequestsWindowSize(200);
-		getRequestLoggerSettings().setRecordSessionSize(true);
+		getRequestLoggerSettings().setRecordSessionSize(false);
 
 		if (isDevelopment()) {
 			mode = DashboardMode.RandomData;
