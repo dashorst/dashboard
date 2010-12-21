@@ -92,6 +92,7 @@ public class SvnService extends AbstractService {
 							ret.add(new Commit(project, logEntry));
 						}
 					});
+			clientManager.dispose();
 			return ret;
 		} catch (SVNException e) {
 			log.error("Unable to refresh data from svn: {} {}", e.getClass()
