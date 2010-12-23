@@ -48,7 +48,7 @@ install them into your Maven repository.
 
 The configuration for the dashboard is stored in 
 
-	~/.dashboard/nl.topicus.onderwijs.dashboard.modules.Settings.json
+	~/.dashboard/nl.topicus.onderwijs.dashboard.config.Settings.json
 
 This JSON file contains the list of projects, locations and organizations (and
 possibly other types of keys) and for each key (project, location,...) the
