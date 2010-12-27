@@ -40,9 +40,14 @@ public class PlotService extends AbstractService {
 	@Override
 	public void onConfigure(DashboardRepository repository) {
 		for (Project curProject : repository.getKeys(Project.class)) {
-			addSeries(curProject, AverageRequestTime.class);
-			addSeries(curProject, NumberOfUsers.class);
-			addSeries(curProject, RequestsPerMinute.class);
+			if (repository.getData(AverageRequestTime.class).containsKey(
+					curProject))
+				addSeries(curProject, AverageRequestTime.class);
+			if (repository.getData(NumberOfUsers.class).containsKey(curProject))
+				addSeries(curProject, NumberOfUsers.class);
+			if (repository.getData(RequestsPerMinute.class).containsKey(
+					curProject))
+				addSeries(curProject, RequestsPerMinute.class);
 		}
 	}
 

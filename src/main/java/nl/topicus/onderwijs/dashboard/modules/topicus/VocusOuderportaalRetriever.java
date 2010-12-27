@@ -18,10 +18,12 @@ import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
+import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsersPerServer;
+import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
 import nl.topicus.onderwijs.dashboard.datasources.ServerAlerts;
 import nl.topicus.onderwijs.dashboard.datasources.ServerStatus;
 import nl.topicus.onderwijs.dashboard.datasources.Uptime;
@@ -75,6 +77,10 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					new AlertsImpl(project, this));
 			repository.addDataSource(project, NumberOfUsersPerServer.class,
 					new NumberOfUsersPerServerImpl(project, this));
+			repository.addDataSource(project, AverageRequestTime.class,
+					new AverageRequestTimeImpl(project, this));
+			repository.addDataSource(project, RequestsPerMinute.class,
+					new RequestsPerMinuteImpl(project, this));
 		}
 	}
 
@@ -133,16 +139,15 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 				source.fullSequentialParse();
 
 				List<Element> tableHeaders = source
-						.getAllElements(HTMLElementName.TH);
+						.getAllElements(HTMLElementName.H2);
 				for (Element tableHeader : tableHeaders) {
-					String contents = tableHeader.getContent().toString();
-					if ("Applicatie".equals(contents)) {
-						// getApplicationVersion(status, tableHeader);
-					} else if ("Actieve sessies|Live sessions"
-							.contains(contents)) {
-						getNumberOfUsers(server, tableHeader);
-					} else if ("Start tijd|Start time".contains(contents)) {
-						getStartTijd(server, tableHeader);
+					String contents = tableHeader.getTextExtractor().toString();
+					if ("Applicatie status".equals(contents)) {
+						fetchApplicationInfo(server, tableHeader
+								.getParentElement());
+					} else if ("Sessies/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader
+								.getParentElement());
 					}
 				}
 				server.setServerStatus(DotColor.GREEN);
@@ -163,6 +168,34 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 		return status;
 	}
 
+	private void fetchApplicationInfo(TopicusServerStatus server,
+			Element tableHeader) {
+		List<Element> tableRows = tableHeader
+				.getAllElements(HTMLElementName.TR);
+		for (Element curRow : tableRows) {
+			String name = curRow.getFirstElement("th").getTextExtractor()
+					.toString();
+			String value = curRow.getFirstElement("td").getTextExtractor()
+					.toString();
+			if ("Versie".equals(name)) {
+				server.setVersion(value);
+			} else if ("Start tijd".equals(name)) {
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"dd MMMM yyyy, hh:mm", new Locale("NL"));
+				try {
+					Date starttime = sdf.parse(value);
+					Date now = new Date();
+					server.setUptime(Duration.milliseconds(
+							now.getTime() - starttime.getTime())
+							.getMilliseconds());
+				} catch (ParseException e) {
+					log.error("Unable to parse starttime " + value
+							+ " according to format dd MMMM yyyy, hh:mm", e);
+				}
+			}
+		}
+	}
+
 	/*
 	 * <div class="yui-u first"> <h2><span>Sessies/Requests</span></h2> <table
 	 * style="width:100%;margin-left:20px;"> <colgroup><col style="width:50%"
@@ -172,44 +205,38 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 	 * sessies</th><td>706</td></tr> <tr><th>Actieve
 	 * requests</th><td>3</td></tr> </table> </div>
 	 */
-	private Integer getNumberOfUsers(TopicusServerStatus server,
+	private void fetchSessionAndRequestData(TopicusServerStatus server,
 			Element tableHeader) {
-		Element sessiesCell = tableHeader.getParentElement().getContent()
-				.getFirstElement("td");
-
-		String tdContents = sessiesCell.getContent().getTextExtractor()
-				.toString();
-		Integer numberOfUsersOnServer = Integer.valueOf(tdContents);
-		server.setNumberOfUsers(numberOfUsersOnServer);
-		return numberOfUsersOnServer;
-	}
-
-	/*
-	 * <div class="yui-u"> <h2><span>Applicatie status</span></h2> <table
-	 * style="width:100%;margin-left:20px;"> <colgroup><col style="width:50%"
-	 * /><col style="width:50%" /></colgroup> <tr><th>Start tijd</th><td>4
-	 * oktober 2010, 17:45</td></tr> <tr><th>Beschikbaarheid</th><td>6.1
-	 * days</td></tr> <tr><th>Volgende update instellingen</th><td>N/A</td></tr>
-	 * <tr><th>Status</th><td>OK</td></tr> </table> </div>
-	 */
-
-	private Date getStartTijd(TopicusServerStatus server, Element tableHeader) {
-		Element starttijdCell = tableHeader.getParentElement().getContent()
-				.getFirstElement("td");
-		String starttijdText = starttijdCell.getContent().getTextExtractor()
-				.toString();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, hh:mm",
-				new Locale("NL"));
-		try {
-			Date starttime = sdf.parse(starttijdText);
-			Date now = new Date();
-			server.setUptime(Duration.milliseconds(
-					now.getTime() - starttime.getTime()).getMilliseconds());
-			return starttime;
-		} catch (ParseException e) {
-			log.error("Unable to parse starttime " + starttijdText
-					+ " according to format dd MMMM yyyy, hh:mm", e);
-			return null;
+		List<Element> tableRows = tableHeader
+				.getAllElements(HTMLElementName.TR);
+		for (Element curRow : tableRows) {
+			String name = curRow.getFirstElement("th").getTextExtractor()
+					.toString();
+			String value = curRow.getFirstElement("td").getTextExtractor()
+					.toString();
+			if ("Actieve sessies".equals(name)) {
+				try {
+					server.setNumberOfUsers(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse number of users: " + value);
+				}
+			} else if ("Gem. request duur".equals(name)) {
+				try {
+					int space = value.indexOf(' ');
+					if (space > -1) {
+						value = value.substring(0, space);
+					}
+					server.setAverageRequestDuration(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse avg request duration: " + value);
+				}
+			} else if ("Requests per minuut".equals(name)) {
+				try {
+					server.setRequestsPerMinute(Integer.parseInt(value));
+				} catch (NumberFormatException e) {
+					log.error("Cannot parse req per minute: " + value);
+				}
+			}
 		}
 	}
 }
