@@ -132,6 +132,7 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					alerts.add(alert);
 					continue;
 				}
+				server.setServerStatus(DotColor.GREEN);
 				String page = statuspage.getPageContent();
 
 				Source source = new Source(page);
@@ -144,13 +145,12 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					String contents = tableHeader.getTextExtractor().toString();
 					if ("Applicatie status".equals(contents)) {
 						fetchApplicationInfo(server, tableHeader
-								.getParentElement());
+								.getParentElement(), oldAlert, alerts, project);
 					} else if ("Sessies/Requests".equals(contents)) {
 						fetchSessionAndRequestData(server, tableHeader
 								.getParentElement());
 					}
 				}
-				server.setServerStatus(DotColor.GREEN);
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
 				server.setServerStatus(DotColor.YELLOW);
@@ -169,7 +169,7 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 	}
 
 	private void fetchApplicationInfo(TopicusServerStatus server,
-			Element tableHeader) {
+			Element tableHeader, Alert oldAlert, List<Alert> alerts, Key project) {
 		List<Element> tableRows = tableHeader
 				.getAllElements(HTMLElementName.TR);
 		for (Element curRow : tableRows) {
@@ -192,19 +192,18 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					log.error("Unable to parse starttime " + value
 							+ " according to format dd MMMM yyyy, hh:mm", e);
 				}
+			} else if ("Status".equals(name)) {
+				if (!"OK".equals(value)) {
+					server.setServerStatus(DotColor.RED);
+					Alert alert = new Alert(oldAlert, DotColor.RED, project,
+							"Server " + server.getCode() + " reports " + value);
+					oldAlerts.put(server.getUrl(), alert);
+					alerts.add(alert);
+				}
 			}
 		}
 	}
 
-	/*
-	 * <div class="yui-u first"> <h2><span>Sessies/Requests</span></h2> <table
-	 * style="width:100%;margin-left:20px;"> <colgroup><col style="width:50%"
-	 * /><col style="width:50%" /></colgroup> <tr><th>Actieve
-	 * sessies</th><td>422</td></tr> <tr><th>Gecreëerde
-	 * sessies</th><td>90505</td></tr> <tr><th>Piek
-	 * sessies</th><td>706</td></tr> <tr><th>Actieve
-	 * requests</th><td>3</td></tr> </table> </div>
-	 */
 	private void fetchSessionAndRequestData(TopicusServerStatus server,
 			Element tableHeader) {
 		List<Element> tableRows = tableHeader
