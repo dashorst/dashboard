@@ -149,8 +149,8 @@ public class ParnassysStatusRetriever extends AbstractService implements
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
 				server.setServerStatus(DotColor.YELLOW);
-				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
-						.getMessage());
+				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project,
+						e.getMessage());
 				oldAlerts.put(statusUrl, alert);
 				alerts.add(alert);
 				log.warn("Could not retrieve status for '" + statusUrl + "': "
@@ -186,7 +186,7 @@ public class ParnassysStatusRetriever extends AbstractService implements
 					now.getTime() - starttime.getTime()).getMilliseconds());
 		} catch (ParseException e) {
 			log.error("Unable to parse starttime " + starttijdText
-					+ " according to format dd MMMM yyyy, hh:mm", e);
+					+ " according to format " + sdf.toPattern(), e);
 		}
 	}
 

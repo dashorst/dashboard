@@ -2,6 +2,7 @@ package nl.topicus.onderwijs.dashboard.modules.plots;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
@@ -46,5 +47,19 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 
 	public T getMaxValue() {
 		return maxValue;
+	}
+
+	/**
+	 * Removes any data with date older than ttlDate.
+	 * 
+	 * @param ttlDate
+	 */
+	public void cleanupEntries(Date ttlDate) {
+		Iterator<DataSourcePlotSeriesEntry<T>> iter = getData().iterator();
+		while (iter.hasNext()) {
+			DataSourcePlotSeriesEntry<T> entry = iter.next();
+			if (entry.getKey().before(ttlDate))
+				iter.remove();
+		}
 	}
 }
