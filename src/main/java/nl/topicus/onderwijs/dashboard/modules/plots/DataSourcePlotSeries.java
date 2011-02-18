@@ -60,6 +60,8 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 			DataSourcePlotSeriesEntry<T> entry = iter.next();
 			if (entry.getKey().before(ttlDate))
 				iter.remove();
+			else
+				return;	//stop if date is after ttlDate, the series is ordered chronologically. 
 		}
 	}
 }
