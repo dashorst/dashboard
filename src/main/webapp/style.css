@@ -17,6 +17,8 @@ html, body {
 	font-size : 20px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	-moz-user-select:none;
+	-ms-user-select:none;
 	-webkit-user-select:none;
 }
 @media screen and (min-height:1670px) {
@@ -60,6 +62,10 @@ body {
 }
 
 .effects-enabled {
+	-moz-perspective: 1000;
+	-moz-perspective-origin: center 45%;
+	-ms-perspective: 1000;
+	-ms-perspective-origin: center 45%;
 	-webkit-perspective: 1000;
 	-webkit-perspective-origin: center 45%;
 }

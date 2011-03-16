@@ -13,6 +13,12 @@
 	background-repeat: no-repeat;	
 	border-radius: 30px;
 	opacity: 1;
+	-moz-transform: scale(0, 0.03);
+	-moz-transition-property: -moz-transform, opacity;
+	-moz-transition-duration: 1s;
+	-ms-transform: scale(0, 0.03);
+	-ms-transition-property: -ms-transform, opacity;
+	-ms-transition-duration: 1s;
 	-webkit-transform: scale(0, 0.03);
 	-webkit-transition-property: -webkit-transform, opacity;
 	-webkit-transition-duration: 1s;
@@ -21,9 +27,13 @@
 	opacity: 0;
 }
 .alerts-overlay.showX {
+	-moz-transform: scale(1, 0.03);
+	-ms-transform: scale(1, 0.03);
 	-webkit-transform: scale(1, 0.03);
 }
 .alerts-overlay.showY {
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
 	-webkit-transform: scale(1);
 	background-color: rgba(64, 64, 64, 0.9);
 	background-image: url('images/alert-fg.svg');
