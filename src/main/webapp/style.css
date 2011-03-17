@@ -31,7 +31,8 @@ body {
 	padding: 0;
 	margin: 0;
 	background-color: black;
-	background: black -webkit-gradient(linear, right top, left bottom,
+	background-image: -moz-linear-gradient(right top, #000, #222, #000);
+	background-image: -webkit-gradient(linear, right top, left bottom,
 		from(#000),
 		color-stop(0.5, #222),
 		to(#000));
