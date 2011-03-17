@@ -30,6 +30,7 @@ body {
 	height: 1680px;
 	padding: 0;
 	margin: 0;
+	background-color: black;
 	background: black -webkit-gradient(linear, right top, left bottom,
 		from(#000),
 		color-stop(0.5, #222),
