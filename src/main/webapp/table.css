@@ -6,6 +6,10 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	-moz-transition-property: opacity;
+	-moz-transition-duration: 2s;
+	-ms-transition-property: opacity;
+	-ms-transition-duration: 2s;
 	-webkit-transition-property: opacity;
 	-webkit-transition-duration: 2s;
 }
@@ -57,10 +61,40 @@
 	padding-top: 13px;
 }
 .table .old {
+	-moz-animation-name: old;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: infinite;
+	-ms-animation-name: old;
+	-ms-animation-duration: 1s;
+	-ms-animation-iteration-count: infinite;
 	-webkit-animation-name: old;
 	-webkit-animation-duration: 1s;
 	-webkit-animation-iteration-count: infinite;
 }
+@-moz-keyframes old {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@-ms-keyframes old {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 @-webkit-keyframes old {
 	0% {
 		opacity: 1;

@@ -17,6 +17,8 @@ html, body {
 	font-size : 20px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	-moz-user-select:none;
+	-ms-user-select:none;
 	-webkit-user-select:none;
 }
 @media screen and (min-height:1670px) {
@@ -28,7 +30,9 @@ body {
 	height: 1680px;
 	padding: 0;
 	margin: 0;
-	background: black -webkit-gradient(linear, right top, left bottom,
+	background-color: black;
+	background-image: -moz-linear-gradient(right top, #000, #222, #000);
+	background-image: -webkit-gradient(linear, right top, left bottom,
 		from(#000),
 		color-stop(0.5, #222),
 		to(#000));
@@ -60,6 +64,10 @@ body {
 }
 
 .effects-enabled {
+	-moz-perspective: 1000;
+	-moz-perspective-origin: center 45%;
+	-ms-perspective: 1000;
+	-ms-perspective-origin: center 45%;
 	-webkit-perspective: 1000;
 	-webkit-perspective-origin: center 45%;
 }
