@@ -37,6 +37,7 @@ public class AverageRequestTimePerApplicationPlot extends
 		setDefaultOptions(options);
 		setSeriesLabels(options, series);
 		setAxisMinAndMax(options, series, 50);
+		options.getAxes().getYaxis().setRenderer("$.jqplot.LogAxisRenderer");
 		return ret;
 	}
 }
