@@ -162,8 +162,8 @@ public class VocusStatusRetriever extends AbstractService implements
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
 				server.setServerStatus(DotColor.YELLOW);
-				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
-						.getMessage());
+				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project,
+						e.getMessage());
 				oldAlerts.put(statusUrl, alert);
 				alerts.add(alert);
 				log.warn("Could not retrieve status for '" + statusUrl + "': "
@@ -219,9 +219,7 @@ public class VocusStatusRetriever extends AbstractService implements
 			Element tableHeader) {
 		Element versieCell = tableHeader.getParentElement().getParentElement()
 				.getContent().getFirstElement("class", "value_column", true);
-		server
-				.setVersion(versieCell.getContent().getTextExtractor()
-						.toString());
+		server.setVersion(versieCell.getContent().getTextExtractor().toString());
 	}
 
 	/*
@@ -242,8 +240,8 @@ public class VocusStatusRetriever extends AbstractService implements
 				starttime = sdf2.parse(starttijdText);
 			} catch (ParseException e2) {
 				log.error("Unable to parse starttime " + starttijdText
-						+ " according to format dd-MM-yyyy hh:mm:ss and"
-						+ " dd-MM-yyyy hh:mm", e);
+						+ " according to format " + sdf1.toPattern() + " and"
+						+ " " + sdf1.toPattern(), e);
 			}
 		}
 		if (starttime != null) {

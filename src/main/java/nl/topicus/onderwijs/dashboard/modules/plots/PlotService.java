@@ -1,6 +1,7 @@
 package nl.topicus.onderwijs.dashboard.modules.plots;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datasources.RequestsPerMinute;
+import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.keys.Project;
 import nl.topicus.onderwijs.dashboard.modules.AbstractService;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
@@ -59,7 +61,20 @@ public class PlotService extends AbstractService {
 
 	@Override
 	public void refreshData() {
+		Map<Key, Map<String, ?>> serviceSettings = getSettings()
+				.getServiceSettings(PlotService.class);
+
 		for (DataSourcePlotSeries<?, ?> curSeries : series.values()) {
+			if (serviceSettings.containsKey(curSeries.getKey())
+					&& serviceSettings.get(curSeries.getKey()).containsKey(
+							"timeToLive")) {
+				int dataTTL = Integer.parseInt(serviceSettings
+						.get(curSeries.getKey()).get("timeToLive").toString());
+				Calendar ttlDate = Calendar.getInstance();
+				ttlDate.add(Calendar.SECOND, 0 - dataTTL);
+
+				curSeries.cleanupEntries(ttlDate.getTime());
+			}
 			curSeries.addEntry(application.getRepository());
 		}
 	}
