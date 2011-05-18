@@ -4,8 +4,13 @@ import java.io.File;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConfigurationRepository {
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ConfigurationRepository.class);
+
 	/**
 	 * Returns whether the configuration file for clz exists.
 	 */
@@ -31,9 +36,8 @@ public class ConfigurationRepository {
 		try {
 			config = mapper.readValue(configFilename, clz);
 		} catch (Exception e) {
-			System.err.println("Unable to read configuration " + configFilename
-					+ ": " + e.getMessage());
-			e.printStackTrace();
+			LOG.error("Unable to read configuration " + configFilename + ": "
+					+ e.getMessage(), e);
 		}
 		return config;
 	}
@@ -53,9 +57,8 @@ public class ConfigurationRepository {
 			configdir.setWritable(true, true);
 		}
 		if (!configdir.exists()) {
-			System.err.println("Unable to create " + configdir
+			LOG.error("Unable to create " + configdir
 					+ " to store dashboard configuration. Exiting...");
-			System.exit(1);
 		}
 
 		File configFilename = new File(configdir, clz.getName() + ".json");
@@ -66,9 +69,8 @@ public class ConfigurationRepository {
 		try {
 			return clz.newInstance();
 		} catch (Exception e) {
-			System.err.println("Unable to instantiate " + clz
+			LOG.error("Unable to instantiate " + clz
 					+ " for a new configuration, exiting...");
-			System.exit(1);
 			return null;
 		}
 	}
