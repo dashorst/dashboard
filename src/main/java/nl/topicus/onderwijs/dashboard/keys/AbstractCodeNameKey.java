@@ -1,9 +1,12 @@
 package nl.topicus.onderwijs.dashboard.keys;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public abstract class AbstractCodeNameKey implements Key {
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String name;
+	private String color;
 
 	public AbstractCodeNameKey(String code) {
 		this.code = code;
@@ -20,6 +23,15 @@ public abstract class AbstractCodeNameKey implements Key {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	@JsonProperty("color")
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	@Override

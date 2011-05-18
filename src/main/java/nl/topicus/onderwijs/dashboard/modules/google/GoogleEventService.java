@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.Events;
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
+import nl.topicus.onderwijs.dashboard.keys.AbstractCodeNameKey;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.AbstractService;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
@@ -51,9 +52,52 @@ public class GoogleEventService extends AbstractService {
 	public void onConfigure(DashboardRepository repository) {
 		Map<Key, Map<String, ?>> serviceSettings = getSettings()
 				.getServiceSettings(GoogleEventService.class);
-		for (Key key : serviceSettings.keySet()) {
-			repository.addDataSource(key, Events.class, new EventsImpl(key,
-					this));
+
+		for (Map.Entry<Key, Map<String, ?>> curSettingEntry : serviceSettings
+				.entrySet()) {
+			repository.addDataSource(curSettingEntry.getKey(), Events.class,
+					new EventsImpl(curSettingEntry.getKey(), this));
+
+			if (curSettingEntry.getKey() instanceof AbstractCodeNameKey) {
+				AbstractCodeNameKey colorkey = ((AbstractCodeNameKey) curSettingEntry
+						.getKey());
+				if (colorkey.getColor() == null) {
+					try {
+						Map<String, ?> googleSettingsForProject = curSettingEntry
+								.getValue();
+						String username = googleSettingsForProject.get(
+								"username").toString();
+						String password = googleSettingsForProject.get(
+								"password").toString();
+						String calendarId = googleSettingsForProject.get(
+								"calendarId").toString();
+
+						CalendarService service = new CalendarService(
+								"Dashboard");
+						service.setUserCredentials(username, password);
+
+						CalendarQuery calendarQuery = new CalendarQuery(
+								new URL(
+										"https://www.google.com/calendar/feeds/default/owncalendars/full"));
+						CalendarFeed calendarFeed = service.query(
+								calendarQuery, CalendarFeed.class);
+						for (CalendarEntry curCalendar : calendarFeed
+								.getEntries()) {
+							if (curCalendar.getId().endsWith(
+									calendarId.replaceAll("@", "%40"))
+									&& curCalendar.getColor() != null) {
+								colorkey.setColor(curCalendar.getColor()
+										.getValue());
+								break;
+							}
+						}
+
+					} catch (Exception e) {
+						log.error("Unable to fetch color codes from google: "
+								+ e.getClass().getSimpleName(), e);
+					}
+				}
+			}
 		}
 	}
 
@@ -79,20 +123,6 @@ public class GoogleEventService extends AbstractService {
 
 				URL feedUrl = new URL("http://www.google.com/calendar/feeds/"
 						+ calendarId + "/private/full");
-				CalendarQuery calendarQuery = new CalendarQuery(
-						new URL(
-								"https://www.google.com/calendar/feeds/default/owncalendars/full"));
-				CalendarFeed calendarFeed = service.query(calendarQuery,
-						CalendarFeed.class);
-				String color = "#ffffff";
-				for (CalendarEntry curCalendar : calendarFeed.getEntries()) {
-					if (curCalendar.getId().endsWith(
-							calendarId.replaceAll("@", "%40"))
-							&& curCalendar.getColor() != null) {
-						color = curCalendar.getColor().getValue();
-						break;
-					}
-				}
 
 				try {
 					CalendarQuery myQuery = new CalendarQuery(feedUrl);
@@ -113,13 +143,13 @@ public class GoogleEventService extends AbstractService {
 						for (When curTime : eventEntry.getTimes()) {
 							Event event = new Event();
 							event.setKey(curSettingEntry.getKey());
-							event
-									.setTitle(eventEntry.getTitle()
-											.getPlainText());
+							event.setTitle(eventEntry.getTitle().getPlainText());
 							// event.setOmschrijving(entry.getPlainTextContent());
 							event.setDateTime(gDateTimeToDate(curTime
 									.getStartTime()));
-							event.setColor(color);
+							if (curSettingEntry.getKey() instanceof AbstractCodeNameKey)
+								event.setColor(((AbstractCodeNameKey) curSettingEntry
+										.getKey()).getColor());
 							Matcher m = TAG_PATTERN.matcher(eventEntry
 									.getPlainTextContent());
 							while (m.find()) {
@@ -151,8 +181,8 @@ public class GoogleEventService extends AbstractService {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(dateTime.getValue());
 		if (dateTime.isDateOnly()) {
-			cal.add(Calendar.MILLISECOND, -cal.getTimeZone().getOffset(
-					cal.getTimeInMillis()));
+			cal.add(Calendar.MILLISECOND,
+					-cal.getTimeZone().getOffset(cal.getTimeInMillis()));
 		}
 		return cal.getTime();
 	}
@@ -160,8 +190,8 @@ public class GoogleEventService extends AbstractService {
 	private DateTime dateToGDateTime(Date date) {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
-		cal.add(Calendar.MILLISECOND, cal.getTimeZone().getOffset(
-				cal.getTimeInMillis()));
+		cal.add(Calendar.MILLISECOND,
+				cal.getTimeZone().getOffset(cal.getTimeInMillis()));
 		return new DateTime(cal.getTime());
 	}
 

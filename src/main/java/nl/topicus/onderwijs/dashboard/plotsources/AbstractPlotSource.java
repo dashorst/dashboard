@@ -4,10 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import nl.topicus.onderwijs.dashboard.keys.AbstractCodeNameKey;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.plots.DataSourcePlotSeries;
 import nl.topicus.wqplot.options.PlotLegendPlacement;
 import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
 
 public class AbstractPlotSource<T extends Number, D extends DataSource<T>> {
 	public void setDefaultOptions(PlotOptions options) {
@@ -30,7 +32,11 @@ public class AbstractPlotSource<T extends Number, D extends DataSource<T>> {
 	public void setSeriesLabels(PlotOptions options,
 			List<DataSourcePlotSeries<T, D>> series) {
 		for (DataSourcePlotSeries<T, D> curSeries : series) {
-			options.addNewSeries().setLabel(curSeries.getKey().getName());
+			PlotSeries plotSeries = options.addNewSeries();
+			plotSeries.setLabel(curSeries.getKey().getName());
+			if (curSeries.getKey() instanceof AbstractCodeNameKey)
+				plotSeries.setColor(((AbstractCodeNameKey) curSeries.getKey())
+						.getColor());
 		}
 	}
 
@@ -51,8 +57,8 @@ public class AbstractPlotSource<T extends Number, D extends DataSource<T>> {
 					if (first == null || seriesStart.before(first))
 						first = seriesStart;
 				}
-				Date seriesEnd = curSeries.getData().get(
-						curSeries.getData().size() - 1).getKey();
+				Date seriesEnd = curSeries.getData()
+						.get(curSeries.getData().size() - 1).getKey();
 				if (seriesEnd != null) {
 					if (last == null || seriesEnd.after(last))
 						last = seriesEnd;
@@ -65,8 +71,8 @@ public class AbstractPlotSource<T extends Number, D extends DataSource<T>> {
 			options.getAxes().getYaxis().setMax(100);
 		} else {
 			long maxLong = max.longValue();
-			options.getAxes().getYaxis().setMax(
-					((maxLong - 1) / step) * step + step);
+			options.getAxes().getYaxis()
+					.setMax(((maxLong - 1) / step) * step + step);
 		}
 
 		if (first == null) {
