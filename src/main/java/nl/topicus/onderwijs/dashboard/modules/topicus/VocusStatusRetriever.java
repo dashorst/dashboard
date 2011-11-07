@@ -145,7 +145,11 @@ public class VocusStatusRetriever extends AbstractService implements
 						fetchApplicationVersion(server, tableHeader);
 					} else if ("Sessions/Requests".equals(contents)) {
 						fetchSessionAndRequestData(server, tableHeader);
+					} else if ("Wicket Sessions/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader);
 					} else if ("Sessies/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader);
+					} else if ("Wicket Sessies/Requests".equals(contents)) {
 						fetchSessionAndRequestData(server, tableHeader);
 					}
 				}
