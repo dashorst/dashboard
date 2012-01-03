@@ -32,8 +32,8 @@ import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
 import nl.topicus.onderwijs.dashboard.modules.topicus.RetrieverUtils;
 import nl.topicus.onderwijs.dashboard.modules.topicus.StatusPageResponse;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +56,7 @@ public class HudsonService extends AbstractService {
 		super(settings);
 		mapper.getDeserializationConfig().disable(
 				Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setDateFormat(new HudsonDateFormat());
 	}
 
 	@Override
@@ -110,8 +111,8 @@ public class HudsonService extends AbstractService {
 					for (Entry<String, String> patternEntry : patterns
 							.entrySet()) {
 						if (Pattern.matches(patternEntry.getValue(), name)) {
-							refreshData(project, jobReference, patternEntry
-									.getKey());
+							refreshData(project, jobReference,
+									patternEntry.getKey());
 						}
 					}
 				}
@@ -125,8 +126,7 @@ public class HudsonService extends AbstractService {
 	private void refreshData(Project project, JobReference jobReference,
 			String code) throws Exception {
 		StatusPageResponse response = RetrieverUtils.getStatuspage(jobReference
-				.getUrl()
-				+ "api/json");
+				.getUrl() + "api/json");
 		if (response.getHttpStatusCode() != 200) {
 			return;
 		}
@@ -190,9 +190,10 @@ public class HudsonService extends AbstractService {
 			}
 			return build;
 		} catch (Exception e) {
-			log.error("Unable to retrieve project " + project.getName()
-					+ " build " + reference.getNumber() + " from "
-					+ reference.getUrl(), e);
+			log.error(
+					"Unable to retrieve project " + project.getName()
+							+ " build " + reference.getNumber() + " from "
+							+ reference.getUrl(), e);
 			return null;
 		}
 	}

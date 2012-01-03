@@ -4,20 +4,21 @@ import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datatypes.Event;
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
+import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
-import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
+import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 @WiQueryUIPlugin
 public class EventsPanel extends Panel implements IWiQueryPlugin {
@@ -38,21 +39,22 @@ public class EventsPanel extends Panel implements IWiQueryPlugin {
 
 					@Override
 					public EventData getObject() {
-						DashboardRepository repository = WicketApplication.get()
-								.getRepository();
-						return new EventData(repository.getData(
-								EventsPanel.this.dataSource).get(
-								EventsPanel.this.key).getValue());
+						DashboardRepository repository = WicketApplication
+								.get().getRepository();
+						return new EventData(repository
+								.getData(EventsPanel.this.dataSource)
+								.get(EventsPanel.this.key).getValue());
 					}
 				});
 		add(dataResource);
 	}
 
 	@Override
-	public void contribute(WiQueryResourceManager manager) {
-		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(EventsPanel.class,
-				"jquery.ui.dashboardevents.js");
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(WidgetJavaScriptResourceReference
+				.get());
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				EventsPanel.class, "jquery.ui.dashboardevents.js"));
 	}
 
 	@Override

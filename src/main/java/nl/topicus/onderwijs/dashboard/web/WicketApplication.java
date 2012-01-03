@@ -18,16 +18,10 @@ import nl.topicus.onderwijs.dashboard.modules.standard.EventSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.IssueSumImpl;
 import nl.topicus.onderwijs.dashboard.modules.standard.ProjectAlertImpl;
 import nl.topicus.onderwijs.dashboard.timers.Updater;
-import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResource;
+import nl.topicus.onderwijs.dashboard.web.components.resource.StartTimeResourceReference;
 import nl.topicus.onderwijs.dashboard.web.pages.DashboardPage;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
-import org.apache.wicket.Session;
-import org.apache.wicket.protocol.http.HttpSessionStore;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.slf4j.Logger;
@@ -74,10 +68,12 @@ public class WicketApplication extends WebApplication {
 	protected void init() {
 		super.init();
 
-		addComponentInstantiationListener(new SpringComponentInjector(this));
+		getComponentInstantiationListeners().add(
+				new SpringComponentInjector(this));
 		getMarkupSettings().setStripWicketTags(true);
-		getSharedResources().putClassAlias(Application.class, "application");
-		getSharedResources().add("starttime", new StartTimeResource());
+		// getSharedResources().putClassAlias(Application.class, "application");
+		mountResource("/resources/application/starttime",
+				new StartTimeResourceReference());
 		getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
 
 		getRequestLoggerSettings().setRequestLoggerEnabled(true);
@@ -105,18 +101,8 @@ public class WicketApplication extends WebApplication {
 		}
 	}
 
-	@Override
-	protected ISessionStore newSessionStore() {
-		return new HttpSessionStore(this);
-	}
-
 	public List<Project> getProjects() {
 		return getRepository().getProjects();
-	}
-
-	@Override
-	public Session newSession(Request request, Response response) {
-		return new DashboardWebSession(request);
 	}
 
 	public static WicketApplication get() {
@@ -124,7 +110,7 @@ public class WicketApplication extends WebApplication {
 	}
 
 	public boolean isDevelopment() {
-		return Application.DEVELOPMENT.equals(getConfigurationType());
+		return usesDevelopmentConfig();
 	}
 
 	public boolean isContextMenuDisabled() {

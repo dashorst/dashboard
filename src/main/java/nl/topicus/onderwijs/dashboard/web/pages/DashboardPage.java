@@ -27,17 +27,17 @@ import nl.topicus.onderwijs.dashboard.web.components.twitter.TwitterPanel;
 import nl.topicus.onderwijs.dashboard.web.components.weather.WeatherPanel;
 import nl.topicus.onderwijs.dashboard.web.resources.ResourceLocator;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 
@@ -55,13 +55,12 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				WicketApplication.get().switchMode();
-				target.addComponent(this);
+				target.add(this);
 			}
 
 			@Override
 			public boolean isVisible() {
-				return Application.DEVELOPMENT.equals(getApplication()
-						.getConfigurationType());
+				return getApplication().usesDevelopmentConfig();
 			}
 		};
 		add(liveToRandomModeSwitch);
@@ -103,11 +102,11 @@ public class DashboardPage extends WebPage implements IWiQueryPlugin {
 	}
 
 	@Override
-	public void contribute(WiQueryResourceManager manager) {
-		manager.addJavaScriptResource(ResourceLocator.class,
-				"jquery.timers-1.1.3.js");
-		manager.addJavaScriptResource(DashboardPage.class,
-				"jquery.dashboardclock.js");
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				ResourceLocator.class, "jquery.timers-1.1.3.js"));
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				DashboardPage.class, "jquery.dashboardclock.js"));
 	}
 
 	@Override

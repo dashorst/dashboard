@@ -4,12 +4,13 @@ import java.io.IOException;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.request.IRequestCycle;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebResponse;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -30,20 +31,19 @@ public class JsonResourceBehavior<T> extends AbstractDefaultAjaxBehavior {
 	@Override
 	protected void respond(AjaxRequestTarget target) {
 		RequestCycle cycle = RequestCycle.get();
-		cycle.setRequestTarget(new IRequestTarget() {
+		cycle.scheduleRequestHandlerAfterCurrent(new IRequestHandler() {
 			@Override
-			public void detach(RequestCycle requestCycle) {
+			public void detach(IRequestCycle requestCycle) {
 			}
 
 			@Override
-			public void respond(RequestCycle requestCycle) {
+			public void respond(IRequestCycle requestCycle) {
 				WebResponse r = (WebResponse) requestCycle.getResponse();
 
 				// Determine encoding
 				final String encoding = Application.get()
 						.getRequestCycleSettings().getResponseRequestEncoding();
-				r.setCharacterEncoding(encoding);
-				r.setContentType("text/xml; charset=" + encoding);
+				r.setContentType("application/json; charset=" + encoding);
 
 				// Make sure it is not cached by a
 				r.setHeader("Expires", "Mon, 26 Jul 1997 05:00:00 GMT");

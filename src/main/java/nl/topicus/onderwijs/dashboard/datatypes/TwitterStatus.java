@@ -1,14 +1,14 @@
 package nl.topicus.onderwijs.dashboard.datatypes;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import nl.topicus.onderwijs.dashboard.keys.Key;
+import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
 public class TwitterStatus implements Serializable {
@@ -28,10 +28,12 @@ public class TwitterStatus implements Serializable {
 		this.date = status.getCreatedAt();
 		this.user = status.getUser().getName();
 		this.text = status.getText();
-		if (status.getHashtags() == null)
-			this.tags = Collections.emptyList();
-		else
-			this.tags = Arrays.asList(status.getHashtags());
+		this.tags = new ArrayList<String>();
+		if (status.getHashtagEntities() != null) {
+			for (HashtagEntity hash : status.getHashtagEntities()) {
+				tags.add(hash.getText());
+			}
+		}
 	}
 
 	public Key getKey() {

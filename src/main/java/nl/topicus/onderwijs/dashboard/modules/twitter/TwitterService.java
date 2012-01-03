@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import nl.topicus.onderwijs.dashboard.config.ISettings;
@@ -31,10 +31,10 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
 
 @Service
 @ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
@@ -56,8 +56,8 @@ public class TwitterService extends AbstractService {
 				.getServiceSettings(TwitterService.class).entrySet()) {
 			Key key = settingsEntry.getKey();
 
-			TwitterSettings settings = new TwitterSettings(settingsEntry
-					.getValue());
+			TwitterSettings settings = new TwitterSettings(
+					settingsEntry.getValue());
 
 			String oAuthConsumerKey = settings.getApplicationKey().getKey();
 			String oAuthConsumerSecret = settings.getApplicationKey()
@@ -76,8 +76,8 @@ public class TwitterService extends AbstractService {
 				builder.setOAuthAccessTokenSecret(token.getSecret());
 				Configuration conf = builder.build();
 
-				Authorization authorization = AuthorizationFactory.getInstance(
-						conf, true);
+				Authorization authorization = AuthorizationFactory
+						.getInstance(conf);
 				Twitter twitter = new TwitterFactory()
 						.getInstance(authorization);
 				keyTwitters.add(twitter);
@@ -110,19 +110,16 @@ public class TwitterService extends AbstractService {
 			double currentRate = (rateLimitStatus.getHourlyLimit() - rateLimitStatus
 					.getRemainingHits())
 					/ (3601 - rateLimitStatus.getSecondsUntilReset());
-			logger
-					.info(
-							"Current twitter refresh rate: {}/h, official refresh rate: {}",
-							String.format("%1.1f", currentRate),
-							rateLimitStatus.getHourlyLimit());
+			logger.info(
+					"Current twitter refresh rate: {}/h, official refresh rate: {}",
+					String.format("%1.1f", currentRate),
+					rateLimitStatus.getHourlyLimit());
 			if (currentRate > rateLimitStatus.getHourlyLimit()) {
-				logger
-						.info("Skipped refreshing Twitter feeds to limit the refresh rate");
+				logger.info("Skipped refreshing Twitter feeds to limit the refresh rate");
 				return;
 			}
 
-			ResponseList<Status> newFriendsTimeline = twitter
-					.getFriendsTimeline();
+			ResponseList<Status> newFriendsTimeline = twitter.getHomeTimeline();
 			ResponseList<Status> newMentions = twitter.getMentions();
 			synchronized (this) {
 				mergeStatuses(timeline.get(key), newFriendsTimeline);

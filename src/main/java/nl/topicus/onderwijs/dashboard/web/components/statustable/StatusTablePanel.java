@@ -26,19 +26,20 @@ import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.util.ListModel;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
-import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
+import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 @WiQueryUIPlugin
 public class StatusTablePanel extends Panel implements IWiQueryPlugin {
@@ -125,10 +126,12 @@ public class StatusTablePanel extends Panel implements IWiQueryPlugin {
 	}
 
 	@Override
-	public void contribute(WiQueryResourceManager manager) {
-		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTablePanel.class,
-				"jquery.ui.dashboardstatustablemaster.js");
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(WidgetJavaScriptResourceReference
+				.get());
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				StatusTablePanel.class,
+				"jquery.ui.dashboardstatustablemaster.js"));
 	}
 
 	@Override

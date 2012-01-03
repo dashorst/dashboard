@@ -8,26 +8,27 @@ import java.util.Map.Entry;
 
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.keys.Key;
+import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.onderwijs.dashboard.modules.DataSourceSettings;
-import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
-import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
+import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 @WiQueryUIPlugin
 public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
@@ -68,7 +69,8 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 
 	private <T extends DataSource<?>> ColumnData getColumn(String label,
 			Class<T> datasourceType) {
-		DashboardRepository repository = WicketApplication.get().getRepository();
+		DashboardRepository repository = WicketApplication.get()
+				.getRepository();
 		ColumnData column = new ColumnData();
 		column.setLabel(label);
 		Map<Key, T> data = repository.getData(datasourceType);
@@ -86,10 +88,12 @@ public class StatusTableColumnPanel extends Panel implements IWiQueryPlugin {
 	}
 
 	@Override
-	public void contribute(WiQueryResourceManager manager) {
-		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(StatusTableColumnPanel.class,
-				"jquery.ui.dashboardstatustable.js");
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(WidgetJavaScriptResourceReference
+				.get());
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				StatusTableColumnPanel.class,
+				"jquery.ui.dashboardstatustable.js"));
 	}
 
 	@Override

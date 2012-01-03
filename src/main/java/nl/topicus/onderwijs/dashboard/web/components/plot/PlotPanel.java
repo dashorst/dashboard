@@ -6,15 +6,16 @@ import nl.topicus.wqplot.components.JQPlot;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.commons.IWiQueryPlugin;
-import org.odlabs.wiquery.core.commons.WiQueryResourceManager;
+import org.odlabs.wiquery.core.IWiQueryPlugin;
 import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.odlabs.wiquery.core.options.Options;
 import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
-import org.odlabs.wiquery.ui.widget.WidgetJavascriptResourceReference;
+import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 @WiQueryUIPlugin
 public class PlotPanel extends Panel implements IWiQueryPlugin {
@@ -24,7 +25,7 @@ public class PlotPanel extends Panel implements IWiQueryPlugin {
 		@Override
 		protected void respond(AjaxRequestTarget target) {
 			replace(plot = getPlotSource().createPlot(plot.getId()));
-			target.addComponent(plot);
+			target.add(plot);
 		}
 
 		@Override
@@ -56,10 +57,11 @@ public class PlotPanel extends Panel implements IWiQueryPlugin {
 	}
 
 	@Override
-	public void contribute(WiQueryResourceManager manager) {
-		manager.addJavaScriptResource(WidgetJavascriptResourceReference.get());
-		manager.addJavaScriptResource(PlotPanel.class,
-				"jquery.ui.dashboardplot.js");
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(WidgetJavaScriptResourceReference
+				.get());
+		response.renderJavaScriptReference(new JavaScriptResourceReference(
+				PlotPanel.class, "jquery.ui.dashboardplot.js"));
 	}
 
 	@Override

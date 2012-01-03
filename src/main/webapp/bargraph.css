@@ -78,6 +78,18 @@
 	width: 80px;
 	margin: 0 8px;
 }
+.bargraph.bars-10 .bar-box {
+	width: 80px;
+	margin: 0 8px;
+}
+.bargraph.bars-11 .bar-box {
+	width: 75px;
+	margin: 0 6px;
+}
+.bargraph.bars-12 .bar-box {
+	width: 70px;
+	margin: 0 5px;
+}
 .bargraph .bar-box h3 {
 	display: block;
 	position: absolute;

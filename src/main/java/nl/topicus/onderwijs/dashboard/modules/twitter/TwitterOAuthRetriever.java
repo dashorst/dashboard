@@ -7,8 +7,8 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.http.AccessToken;
-import twitter4j.http.RequestToken;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 public class TwitterOAuthRetriever {
 	public static void main(String args[]) throws Exception {
@@ -51,7 +51,7 @@ public class TwitterOAuthRetriever {
 		System.exit(0);
 	}
 
-	private static void storeAccessToken(int useId, AccessToken accessToken) {
+	private static void storeAccessToken(long useId, AccessToken accessToken) {
 		System.out.printf("Use id %d, token: \"%s\", secret: \"%s\"\n", useId,
 				accessToken.getToken(), accessToken.getTokenSecret());
 	}
