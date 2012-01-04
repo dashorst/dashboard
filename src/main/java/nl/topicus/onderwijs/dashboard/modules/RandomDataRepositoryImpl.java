@@ -51,6 +51,8 @@ import org.springframework.stereotype.Repository;
 @Repository("random")
 public class RandomDataRepositoryImpl extends TimerTask implements
 		DashboardRepository {
+	private static final long HEX_10_DIGITS = 256L * 256L * 256L * 256L * 256L;
+
 	private static final Object NULL = new Object();
 
 	@Autowired
@@ -143,8 +145,8 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 							value = createInteger(key, dataSource, random);
 						}
 					} else if (settings.type().equals(Duration.class))
-						value = Duration.milliseconds(Math
-								.round(Math.random() * 100000000));
+						value = Duration
+								.milliseconds(Math.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
 						value = "random";
 					else if (settings.type().equals(WeatherReport.class)) {
@@ -207,16 +209,14 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 			private WeatherReport createRandomWeather() {
 				Random random = new Random();
 				WeatherReport ret = new WeatherReport();
-				ret.setMaxTemperature(Math
-						.round(random.nextDouble() * 500.0 - 150.0) / 10.0);
+				ret.setMaxTemperature(Math.round(random.nextDouble() * 500.0 - 150.0) / 10.0);
 				ret.setMinTemperature(Math.round(ret.getMaxTemperature() * 10.0
 						- random.nextDouble() * 100.0) / 10.0);
 				ret.setRainfallProbability(random.nextInt(100));
 				ret.setType(WeatherType.values()[random.nextInt(WeatherType
 						.values().length)]);
 				ret.setWindDirection(random.nextInt(360));
-				ret
-						.setWindSpeed(Math.round(random.nextDouble() * 1000.0) / 10.0);
+				ret.setWindSpeed(Math.round(random.nextDouble() * 1000.0) / 10.0);
 				double lat = 52.25;
 				double lon = 6.2;
 				ret.setSunrise(WetterComService.getSunrize(lat, lon));
@@ -280,7 +280,10 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 				for (int count = 0; count < 5; count++) {
 					Commit commit = new Commit();
 					commit.setProject(key);
-					commit.setRevision(random.nextInt(100000));
+					long rev = Math.abs(random.nextLong());
+					if (rev < HEX_10_DIGITS)
+						rev += HEX_10_DIGITS + 1;
+					commit.setRevision(Long.toString(rev, 16).substring(0, 8));
 					commit.setDateTime(new Date(System.currentTimeMillis()
 							- random.nextInt(3600000)));
 					commit.setMessage("random commit with long message");

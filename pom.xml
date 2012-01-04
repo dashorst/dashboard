@@ -116,9 +116,14 @@
 			<version>${twitter4j.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.mylyn.github</groupId>
+		  <artifactId>org.eclipse.egit.github.core</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.0.3</version>
+			<version>4.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.htmlparser.jericho</groupId>

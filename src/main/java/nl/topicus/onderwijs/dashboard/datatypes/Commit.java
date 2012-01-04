@@ -10,6 +10,7 @@ import nl.topicus.onderwijs.dashboard.keys.Key;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.eclipse.egit.github.core.RepositoryCommit;
 import org.tmatesoft.svn.core.SVNLogEntry;
 
 public class Commit implements Serializable {
@@ -19,21 +20,35 @@ public class Commit implements Serializable {
 
 	private Key project;
 	private Date dateTime;
-	private long revision;
+	private String revision;
 	private String message;
 	private String author;
 	private int filesChanged;
+	private String avatarUrl;
 
 	public Commit() {
+	}
+
+	public Commit(Key project, RepositoryCommit commit) {
+		this.project = project;
+		this.dateTime = commit.getCommit().getAuthor().getDate();
+		this.revision = commit.getSha().substring(0, 8);
+		this.message = commit.getCommit().getMessage();
+		this.author = commit.getCommit().getAuthor().getName();
+		this.filesChanged = commit.getFiles() == null ? 0 : commit.getFiles()
+				.size();
+		this.avatarUrl = commit.getAuthor() == null ? "" : commit.getAuthor()
+				.getAvatarUrl();
 	}
 
 	public Commit(Key project, SVNLogEntry logEntry) {
 		this.project = project;
 		this.dateTime = logEntry.getDate();
-		this.revision = logEntry.getRevision();
+		this.revision = "r" + Long.toString(logEntry.getRevision());
 		this.message = logEntry.getMessage();
 		this.author = logEntry.getAuthor();
 		this.filesChanged = logEntry.getChangedPaths().size();
+		this.avatarUrl = "";
 	}
 
 	public Key getProject() {
@@ -60,11 +75,11 @@ public class Commit implements Serializable {
 		return TIME_FORMAT.format(getDateTime());
 	}
 
-	public long getRevision() {
+	public String getRevision() {
 		return revision;
 	}
 
-	public void setRevision(long revision) {
+	public void setRevision(String revision) {
 		this.revision = revision;
 	}
 
@@ -92,6 +107,14 @@ public class Commit implements Serializable {
 		this.filesChanged = filesChanged;
 	}
 
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+
 	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -107,6 +130,6 @@ public class Commit implements Serializable {
 	}
 
 	public String getKey() {
-		return Long.toString(Long.MAX_VALUE - getRevision());
+		return Long.toString(Long.MAX_VALUE - getDateTime().getTime());
 	}
 }

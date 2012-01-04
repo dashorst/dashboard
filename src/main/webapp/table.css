@@ -239,26 +239,30 @@
 .table.commits th {
 	color: #fff;
 }
-.table.commits .revision {
+.table.commits .avatar {
 	padding-left: 9px;
-	width: 59px;
+	width: 40px;
+}
+.table.commits .avatar img {
+	margin-top: 4px;
+	border-radius: 3px;
 }
 .table.commits .project {
 	max-width: 99px;
 	width: 99px;
 }
 .table.commits .message {
-	max-width: 480px;
+	max-width: 499px;
 }
 .table.commits .details {
 	font-size: 60%;
 	color: #aaa;
-	padding-left: 55px;
+	padding-left: 25px;
 }
 .table.commits .details .detail {
 	padding-left: 13px;
 	display: block;
-	width: 130px;
+	width: 140px;
 	float: left;
 	overflow: hidden;
 	text-overflow: ellipsis;

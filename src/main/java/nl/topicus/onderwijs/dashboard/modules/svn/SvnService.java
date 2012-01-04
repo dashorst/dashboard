@@ -14,8 +14,6 @@ import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.AbstractService;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.modules.ServiceConfiguration;
-import nl.topicus.onderwijs.dashboard.modules.mantis.MantisService;
-import nl.topicus.onderwijs.dashboard.modules.ns.NSService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +34,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 @Service
 @ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES)
 public class SvnService extends AbstractService {
-	private static final Logger log = LoggerFactory.getLogger(NSService.class);
+	private static final Logger log = LoggerFactory.getLogger(SvnService.class);
 
 	private Map<Key, List<Commit>> commits = new HashMap<Key, List<Commit>>();
 
@@ -51,7 +49,7 @@ public class SvnService extends AbstractService {
 		FSRepositoryFactory.setup();
 		SVNRepositoryFactoryImpl.setup();
 		for (Key key : getSettings().getKeysWithConfigurationFor(
-				MantisService.class)) {
+				SvnService.class)) {
 			commits.put(key, Collections.<Commit> emptyList());
 			repository.addDataSource(key, Commits.class, new CommitsImpl(key,
 					this));
@@ -69,8 +67,8 @@ public class SvnService extends AbstractService {
 			String url = configEntry.getValue().get("url").toString();
 			String username = configEntry.getValue().get("username").toString();
 			String password = configEntry.getValue().get("password").toString();
-			newCommits.put(project, fetchCommits(project, url, username,
-					password));
+			newCommits.put(project,
+					fetchCommits(project, url, username, password));
 		}
 		commits = newCommits;
 	}
