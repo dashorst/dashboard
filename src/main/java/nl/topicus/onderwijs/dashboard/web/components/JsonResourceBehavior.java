@@ -52,7 +52,7 @@ public class JsonResourceBehavior<T> extends AbstractDefaultAjaxBehavior {
 
 				ObjectMapper mapper = new ObjectMapper();
 				try {
-					mapper.writeValue(r.getOutputStream(), model.getObject());
+					r.write(mapper.writeValueAsString(model.getObject()));
 				} catch (JsonGenerationException e) {
 					log.error("Unable to serialize value", e);
 				} catch (JsonMappingException e) {
