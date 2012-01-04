@@ -14,7 +14,7 @@
 		<twitter4j.version>2.2.5</twitter4j.version>
 		<jackson.version>1.9.3</jackson.version>
 		<wiquery.version>1.5.3</wiquery.version>
-		<wqplot.version>0.1-SNAPSHOT</wqplot.version>
+		<wqplot.version>0.2-SNAPSHOT</wqplot.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 	</properties>
 	<repositories>
