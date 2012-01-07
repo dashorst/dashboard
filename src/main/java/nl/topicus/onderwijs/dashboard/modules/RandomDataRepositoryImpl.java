@@ -26,6 +26,7 @@ import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
 import nl.topicus.onderwijs.dashboard.datasources.DataSourceAnnotationReader;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
+import nl.topicus.onderwijs.dashboard.datatypes.BuienRadar;
 import nl.topicus.onderwijs.dashboard.datatypes.Commit;
 import nl.topicus.onderwijs.dashboard.datatypes.Dot;
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
@@ -178,6 +179,8 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 					} else if (settings.type().equals(TwitterStatus.class)
 							&& settings.list()) {
 						value = createRandomTweets(key);
+					} else if (settings.type().equals(BuienRadar.class)) {
+						value = createRandomBuien();
 					} else
 						throw new IllegalStateException("Unsupported type "
 								+ settings.type());
@@ -221,6 +224,20 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 				double lon = 6.2;
 				ret.setSunrise(WetterComService.getSunrize(lat, lon));
 				ret.setSunset(WetterComService.getSunset(lat, lon));
+
+				return ret;
+			}
+
+			private BuienRadar createRandomBuien() {
+				Random random = new Random();
+				BuienRadar ret = new BuienRadar();
+
+				Integer[] rainForecast = new Integer[12];
+				for (int i = 0; i < rainForecast.length; i++) {
+					rainForecast[i] = 500 * random.nextInt(2);
+				}
+				ret.setRainForecast(rainForecast);
+
 				return ret;
 			}
 

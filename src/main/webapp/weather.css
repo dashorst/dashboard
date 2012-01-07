@@ -166,3 +166,35 @@
 .weatherIcon.unknown {
 	background-image: url('weathericons/weather-none-available.svg');
 }
+
+.buienbg {
+	z-index:0;
+	background-image: none;
+	float: left;
+	width: 100%;
+	border-radius: 1em;
+	display:block;
+}
+
+.buien {
+	z-index:1;
+	width:100%;
+	border-radius: 1em;
+	border: 1px solid #ccc;
+	color:#fff;
+}
+
+.buien .left{
+	float:left;
+	margin-left:.5em;
+}
+
+.buien .right{
+	float:right;
+	margin-right:.5em;
+}
+
+.buien .center{
+	margin-left:-2em;
+	padding-left:50%;
+}
