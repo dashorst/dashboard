@@ -18,6 +18,7 @@ import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
+import nl.topicus.onderwijs.dashboard.datasources.LastServerCheckTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
@@ -85,6 +86,8 @@ public class CobraStatusRetriever extends AbstractService implements
 					new AlertsImpl(project, this));
 			repository.addDataSource(project, NumberOfUsersPerServer.class,
 					new NumberOfUsersPerServerImpl(project, this));
+			repository.addDataSource(project, LastServerCheckTime.class,
+					new LastServerCheckTimeImpl(project, this));
 		}
 	}
 

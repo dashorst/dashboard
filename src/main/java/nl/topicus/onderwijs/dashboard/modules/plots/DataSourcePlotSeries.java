@@ -44,6 +44,8 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 	}
 
 	public void clear() {
+		minValue = null;
+		maxValue = null;
 		getData().clear();
 	}
 }

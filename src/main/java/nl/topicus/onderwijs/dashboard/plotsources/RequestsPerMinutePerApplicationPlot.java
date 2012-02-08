@@ -36,7 +36,7 @@ public class RequestsPerMinutePerApplicationPlot extends
 
 		setDefaultOptions(options);
 		setSeriesLabels(options, series);
-		setAxisMinAndMax(options, series, 500);
+		setAxisMinAndMax(options, series, 200);
 		return ret;
 	}
 }

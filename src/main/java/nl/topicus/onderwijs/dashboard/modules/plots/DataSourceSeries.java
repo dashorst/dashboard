@@ -48,11 +48,14 @@ public class DataSourceSeries<T extends Number, D extends DataSource<T>>
 		LastServerCheckTime time = repository
 				.getData(LastServerCheckTime.class).get(key);
 		Date timeValue = time == null ? null : time.getValue();
+		if (timeValue == null)
+			return;
 
 		D source = repository.getData(dataSource).get(key);
 		T value = source == null ? null : source.getValue();
 
-		if (data.isEmpty() || data.getLast().getKey().before(timeValue))
+		if ((data.isEmpty() || data.getLast().getKey().before(timeValue))
+				&& value != null)
 			data.add(new DataSourceSeriesEntry<T>(timeValue, value));
 	}
 
