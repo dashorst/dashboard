@@ -2,10 +2,8 @@ package nl.topicus.onderwijs.dashboard.modules.plots;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Iterator;
 
 import nl.topicus.onderwijs.dashboard.keys.Key;
-import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.modules.DataSource;
 import nl.topicus.wqplot.data.AbstractSeries;
 
@@ -14,18 +12,14 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 		Serializable {
 	private static final long serialVersionUID = 1L;
 	private Key key;
-	private Class<D> dataSource;
 	private T minValue;
 	private T maxValue;
 
-	public DataSourcePlotSeries(Key key, Class<D> dataSource) {
+	public DataSourcePlotSeries(Key key) {
 		this.key = key;
-		this.dataSource = dataSource;
 	}
 
-	public void addEntry(DashboardRepository repository) {
-		D source = repository.getData(dataSource).get(key);
-		T value = source == null ? null : source.getValue();
+	public void addEntry(Date time, T value) {
 		if (value != null) {
 			if (minValue == null
 					|| minValue.doubleValue() > value.doubleValue())
@@ -34,7 +28,7 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 					|| maxValue.doubleValue() < value.doubleValue())
 				maxValue = value;
 		}
-		addEntry(new DataSourcePlotSeriesEntry<T>(new Date(), value));
+		addEntry(new DataSourcePlotSeriesEntry<T>(time, value));
 	}
 
 	public Key getKey() {
@@ -49,19 +43,7 @@ public class DataSourcePlotSeries<T extends Number, D extends DataSource<T>>
 		return maxValue;
 	}
 
-	/**
-	 * Removes any data with date older than ttlDate.
-	 * 
-	 * @param ttlDate
-	 */
-	public void cleanupEntries(Date ttlDate) {
-		Iterator<DataSourcePlotSeriesEntry<T>> iter = getData().iterator();
-		while (iter.hasNext()) {
-			DataSourcePlotSeriesEntry<T> entry = iter.next();
-			if (entry.getKey().before(ttlDate))
-				iter.remove();
-			else
-				return;	//stop if date is after ttlDate, the series is ordered chronologically. 
-		}
+	public void clear() {
+		getData().clear();
 	}
 }

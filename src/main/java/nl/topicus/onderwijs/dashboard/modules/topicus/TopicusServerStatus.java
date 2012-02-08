@@ -2,6 +2,7 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.Date;
 
 import nl.topicus.onderwijs.dashboard.datatypes.DotColor;
 
@@ -11,6 +12,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 public class TopicusServerStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private Date lastCheckTime;
 	private String version;
 	private int numberOfUsers;
 	private int numberOfErrors;
@@ -24,6 +26,14 @@ public class TopicusServerStatus implements Serializable {
 	public TopicusServerStatus(String code, String url) {
 		this.code = code;
 		this.url = url;
+	}
+
+	public Date getTime() {
+		return lastCheckTime;
+	}
+
+	public void setTime(Date time) {
+		this.lastCheckTime = time;
 	}
 
 	public String getVersion() {
