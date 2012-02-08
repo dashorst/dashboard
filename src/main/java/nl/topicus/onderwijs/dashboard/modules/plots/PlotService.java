@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@ServiceConfiguration(interval = 10, unit = TimeUnit.SECONDS, runInRandomMode = true)
+@ServiceConfiguration(interval = 1, unit = TimeUnit.MINUTES, runInRandomMode = true)
 public class PlotService extends AbstractService {
 	private Map<PlotKey, DataSourceSeries<?, ?>> data = new HashMap<PlotKey, DataSourceSeries<?, ?>>();
 	private Map<PlotKey, DataSourcePlotSeries<?, ?>> series = new HashMap<PlotKey, DataSourcePlotSeries<?, ?>>();
