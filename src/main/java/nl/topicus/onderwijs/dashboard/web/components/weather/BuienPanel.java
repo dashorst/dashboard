@@ -1,14 +1,15 @@
 package nl.topicus.onderwijs.dashboard.web.components.weather;
 
-import nl.topicus.onderwijs.dashboard.datasources.Weather;
-import nl.topicus.onderwijs.dashboard.datatypes.WeatherReport;
+import java.util.Map;
+
+import nl.topicus.onderwijs.dashboard.datasources.Buien;
+import nl.topicus.onderwijs.dashboard.datatypes.BuienRadar;
 import nl.topicus.onderwijs.dashboard.keys.Key;
 import nl.topicus.onderwijs.dashboard.modules.DashboardRepository;
 import nl.topicus.onderwijs.dashboard.web.WicketApplication;
 import nl.topicus.onderwijs.dashboard.web.components.JsonResourceBehavior;
 
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -20,30 +21,28 @@ import org.odlabs.wiquery.ui.commons.WiQueryUIPlugin;
 import org.odlabs.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 @WiQueryUIPlugin
-public class WeatherPanel extends Panel implements IWiQueryPlugin {
+public class BuienPanel extends Panel implements IWiQueryPlugin {
 	private static final long serialVersionUID = 1L;
-	private JsonResourceBehavior<WeatherReport> dataResource;
-	private WebMarkupContainer panel;
+	private JsonResourceBehavior<BuienRadar> buienRadar;
 
-	public WeatherPanel(String id, final Key key) {
+	public BuienPanel(String id, final Key key) {
 		super(id);
 
-		this.dataResource = new JsonResourceBehavior<WeatherReport>(
-				new AbstractReadOnlyModel<WeatherReport>() {
+		this.buienRadar = new JsonResourceBehavior<BuienRadar>(
+				new AbstractReadOnlyModel<BuienRadar>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public WeatherReport getObject() {
+					public BuienRadar getObject() {
 						DashboardRepository repository = WicketApplication
 								.get().getRepository();
-						return repository.getData(Weather.class).get(key)
-								.getValue();
+						Map<Key, Buien> data = repository.getData(Buien.class);
+						Buien buien = data.get(key);
+						BuienRadar value = buien.getValue();
+						return value;
 					}
 				});
-		add(dataResource);
-		panel = new WebMarkupContainer("panel");
-		panel.add(new BuienPanel("buienpanel", key));
-		add(panel);
+		add(buienRadar);
 	}
 
 	@Override
@@ -51,15 +50,14 @@ public class WeatherPanel extends Panel implements IWiQueryPlugin {
 		response.renderJavaScriptReference(WidgetJavaScriptResourceReference
 				.get());
 		response.renderJavaScriptReference(new JavaScriptResourceReference(
-				WeatherPanel.class, "jquery.ui.dashboardweather.js"));
+				BuienPanel.class, "jquery.ui.dashboardbuien.js"));
 	}
 
 	@Override
 	public JsStatement statement() {
 		Options options = new Options();
-		options.putLiteral("dataUrl", dataResource.getCallbackUrl().toString());
-		JsQuery jsq = new JsQuery(panel);
-		return jsq.$()
-				.chain("dashboardWeather", options.getJavaScriptOptions());
+		options.putLiteral("dataUrl", buienRadar.getCallbackUrl().toString());
+		JsQuery jsq = new JsQuery(this);
+		return jsq.$().chain("dashboardbuien", options.getJavaScriptOptions());
 	}
 }
