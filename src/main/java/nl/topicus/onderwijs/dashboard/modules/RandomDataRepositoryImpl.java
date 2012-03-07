@@ -150,7 +150,9 @@ public class RandomDataRepositoryImpl extends TimerTask implements
 								.milliseconds(Math.round(Math.random() * 100000000));
 					else if (settings.type().equals(String.class))
 						value = "random";
-					else if (settings.type().equals(WeatherReport.class)) {
+					else if (settings.type().equals(Date.class)) {
+						value = new Date();
+					} else if (settings.type().equals(WeatherReport.class)) {
 						value = createRandomWeather();
 					} else if (settings.type().equals(Dot.class)
 							&& settings.list()) {

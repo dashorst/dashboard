@@ -3,6 +3,7 @@ package nl.topicus.onderwijs.dashboard.modules.topicus;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import nl.topicus.onderwijs.dashboard.datatypes.Alert;
@@ -112,6 +113,17 @@ class TopicusApplicationStatus implements Serializable {
 			if (curServer.getUptime() != null) {
 				if (ret == null || curServer.getUptime() < ret)
 					ret = curServer.getUptime();
+			}
+		}
+		return ret;
+	}
+
+	public Date getLastCheckTime() {
+		Date ret = null;
+		for (TopicusServerStatus curServer : getOnlineServers()) {
+			if (curServer.getTime() != null) {
+				if (ret == null || curServer.getTime().after(ret))
+					ret = curServer.getTime();
 			}
 		}
 		return ret;
