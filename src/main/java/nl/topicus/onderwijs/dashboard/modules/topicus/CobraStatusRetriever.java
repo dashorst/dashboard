@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +18,7 @@ import net.htmlparser.jericho.Source;
 import nl.topicus.onderwijs.dashboard.config.ISettings;
 import nl.topicus.onderwijs.dashboard.datasources.ApplicationVersion;
 import nl.topicus.onderwijs.dashboard.datasources.AverageRequestTime;
+import nl.topicus.onderwijs.dashboard.datasources.LastServerCheckTime;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServers;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfServersOffline;
 import nl.topicus.onderwijs.dashboard.datasources.NumberOfUsers;
@@ -42,27 +42,36 @@ import org.springframework.stereotype.Service;
 
 @Service
 @ServiceConfiguration(interval = 30, unit = TimeUnit.SECONDS)
-public class VocusOuderportaalRetriever extends AbstractService implements
+public class CobraStatusRetriever extends AbstractService implements
 		TopicusApplicationStatusProvider {
 	private static final Logger log = LoggerFactory
-			.getLogger(VocusOuderportaalRetriever.class);
+			.getLogger(CobraStatusRetriever.class);
 
 	private Map<Key, TopicusApplicationStatus> statusses = new HashMap<Key, TopicusApplicationStatus>();
 
 	private Map<String, Alert> oldAlerts = new HashMap<String, Alert>();
 
 	@Autowired
-	public VocusOuderportaalRetriever(ISettings settings) {
+	public CobraStatusRetriever(ISettings settings) {
 		super(settings);
+	}
+
+	@Override
+	public TopicusApplicationStatus getStatus(Key project) {
+		return statusses.get(project);
 	}
 
 	@Override
 	public void onConfigure(DashboardRepository repository) {
 		Map<Key, Map<String, ?>> serviceSettings = getSettings()
-				.getServiceSettings(VocusOuderportaalRetriever.class);
+				.getServiceSettings(CobraStatusRetriever.class);
 		for (Key project : serviceSettings.keySet()) {
 			repository.addDataSource(project, NumberOfUsers.class,
 					new NumberOfUsersImpl(project, this));
+			repository.addDataSource(project, AverageRequestTime.class,
+					new AverageRequestTimeImpl(project, this));
+			repository.addDataSource(project, RequestsPerMinute.class,
+					new RequestsPerMinuteImpl(project, this));
 			repository.addDataSource(project, NumberOfServers.class,
 					new NumberOfServersImpl(project, this));
 			repository.addDataSource(project, NumberOfServersOffline.class,
@@ -77,24 +86,17 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					new AlertsImpl(project, this));
 			repository.addDataSource(project, NumberOfUsersPerServer.class,
 					new NumberOfUsersPerServerImpl(project, this));
-			repository.addDataSource(project, AverageRequestTime.class,
-					new AverageRequestTimeImpl(project, this));
-			repository.addDataSource(project, RequestsPerMinute.class,
-					new RequestsPerMinuteImpl(project, this));
+			repository.addDataSource(project, LastServerCheckTime.class,
+					new LastServerCheckTimeImpl(project, this));
 		}
 	}
 
 	@Override
-	public TopicusApplicationStatus getStatus(Key project) {
-		return statusses.get(project);
-	}
-
 	@SuppressWarnings("unchecked")
-	@Override
 	public void refreshData() {
 		HashMap<Key, TopicusApplicationStatus> newStatusses = new HashMap<Key, TopicusApplicationStatus>();
 		Map<Key, Map<String, ?>> serviceSettings = getSettings()
-				.getServiceSettings(VocusOuderportaalRetriever.class);
+				.getServiceSettings(CobraStatusRetriever.class);
 
 		for (Map.Entry<Key, Map<String, ?>> configEntry : serviceSettings
 				.entrySet()) {
@@ -132,30 +134,43 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					alerts.add(alert);
 					continue;
 				}
-				server.setServerStatus(DotColor.GREEN);
-				String page = statuspage.getPageContent();
 
+				String page = statuspage.getPageContent();
 				Source source = new Source(page);
 
 				source.fullSequentialParse();
 
 				List<Element> tableHeaders = source
-						.getAllElements(HTMLElementName.H2);
+						.getAllElements(HTMLElementName.TH);
 				for (Element tableHeader : tableHeaders) {
-					String contents = tableHeader.getTextExtractor().toString();
-					if ("Applicatie status".equals(contents)) {
-						fetchApplicationInfo(server, tableHeader
-								.getParentElement(), oldAlert, alerts, project);
+					String contents = tableHeader.getContent().toString();
+					if ("Applicatie".equals(contents)) {
+						fetchApplicationVersion(server, tableHeader);
+					} else if ("Sessions/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader);
+					} else if ("Wicket Sessions/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader);
 					} else if ("Sessies/Requests".equals(contents)) {
-						fetchSessionAndRequestData(server, tableHeader
-								.getParentElement());
+						fetchSessionAndRequestData(server, tableHeader);
+					} else if ("Wicket Sessies/Requests".equals(contents)) {
+						fetchSessionAndRequestData(server, tableHeader);
 					}
 				}
+
+				List<Element> tdHeaders = source
+						.getAllElements(HTMLElementName.TD);
+				for (Element td : tdHeaders) {
+					String contents = td.getContent().toString();
+					if ("Starttijd".equals(contents)) {
+						getStartTime(server, td);
+					}
+				}
+				server.setServerStatus(DotColor.GREEN);
 				oldAlerts.put(statusUrl, null);
 			} catch (Exception e) {
 				server.setServerStatus(DotColor.YELLOW);
-				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project, e
-						.getMessage());
+				Alert alert = new Alert(oldAlert, DotColor.YELLOW, project,
+						e.getMessage());
 				oldAlerts.put(statusUrl, alert);
 				alerts.add(alert);
 				log.warn("Could not retrieve status for '" + statusUrl + "': "
@@ -168,52 +183,20 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 		return status;
 	}
 
-	private void fetchApplicationInfo(TopicusServerStatus server,
-			Element tableHeader, Alert oldAlert, List<Alert> alerts, Key project) {
-		List<Element> tableRows = tableHeader
-				.getAllElements(HTMLElementName.TR);
-		for (Element curRow : tableRows) {
-			String name = curRow.getFirstElement("th").getTextExtractor()
-					.toString();
-			String value = curRow.getFirstElement("td").getTextExtractor()
-					.toString();
-			if ("Versie".equals(name)) {
-				server.setVersion(value);
-			} else if ("Start tijd".equals(name)) {
-				SimpleDateFormat sdf = new SimpleDateFormat(
-						"dd MMMM yyyy, hh:mm", new Locale("NL"));
-				try {
-					Date starttime = sdf.parse(value);
-					Date now = new Date();
-					server.setUptime(Duration.milliseconds(
-							now.getTime() - starttime.getTime())
-							.getMilliseconds());
-				} catch (ParseException e) {
-					log.error("Unable to parse starttime " + value
-							+ " according to format dd MMMM yyyy, hh:mm", e);
-				}
-			} else if ("Status".equals(name)) {
-				if (!"OK".equals(value)) {
-					server.setServerStatus(DotColor.RED);
-					Alert alert = new Alert(oldAlert, DotColor.RED, project,
-							"Server " + server.getCode() + " reports " + value);
-					oldAlerts.put(server.getUrl(), alert);
-					alerts.add(alert);
-				}
-			}
-		}
-	}
-
 	private void fetchSessionAndRequestData(TopicusServerStatus server,
 			Element tableHeader) {
-		List<Element> tableRows = tableHeader
-				.getAllElements(HTMLElementName.TR);
+		List<Element> tableRows = tableHeader.getParentElement()
+				.getParentElement().getAllElements(HTMLElementName.TR);
 		for (Element curRow : tableRows) {
-			String name = curRow.getFirstElement("th").getTextExtractor()
-					.toString();
-			String value = curRow.getFirstElement("td").getTextExtractor()
-					.toString();
-			if ("Actieve sessies".equals(name)) {
+			Element nameColumn = curRow.getFirstElement("class", "name_column",
+					true);
+			if (nameColumn == null)
+				continue;
+			String name = nameColumn.getTextExtractor().toString();
+			String value = curRow
+					.getFirstElement("class", "value_column", true)
+					.getTextExtractor().toString();
+			if ("Live sessies".equals(name) || "Live Sessions".equals(name)) {
 				try {
 					server.setNumberOfUsers(Integer.parseInt(value));
 				} catch (NumberFormatException e) {
@@ -236,6 +219,43 @@ public class VocusOuderportaalRetriever extends AbstractService implements
 					log.error("Cannot parse req per minute: " + value);
 				}
 			}
+		}
+		server.setTime(new Date());
+	}
+
+	private void fetchApplicationVersion(TopicusServerStatus server,
+			Element tableHeader) {
+		Element versieCell = tableHeader.getParentElement().getParentElement()
+				.getContent().getFirstElement("class", "value_column", true);
+		server.setVersion(versieCell.getContent().getTextExtractor().toString());
+	}
+
+	/*
+	 * <tr><td class="name_column">Starttijd</td><td
+	 * class="value_column"><span>10-10-2010 03:51:22</span></td></tr>
+	 */
+	private void getStartTime(TopicusServerStatus server, Element td) {
+		Element starttijdCell = td.getParentElement().getFirstElement("class",
+				"value_column", true);
+		String starttijdText = starttijdCell.getTextExtractor().toString();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		Date starttime = null;
+		try {
+			starttime = sdf1.parse(starttijdText);
+		} catch (ParseException e) {
+			try {
+				starttime = sdf2.parse(starttijdText);
+			} catch (ParseException e2) {
+				log.error("Unable to parse starttime " + starttijdText
+						+ " according to format " + sdf1.toPattern() + " and"
+						+ " " + sdf1.toPattern(), e);
+			}
+		}
+		if (starttime != null) {
+			Date now = new Date();
+			server.setUptime(Duration.milliseconds(
+					now.getTime() - starttime.getTime()).getMilliseconds());
 		}
 	}
 }
