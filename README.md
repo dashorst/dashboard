@@ -165,7 +165,7 @@ The hudson configuration per project consists of two parameters:
 The project matchers is a list of regular expressions that match Hudson jobs for
 your project. As it is customary to have a seperate build for production branch,
 acceptance test branch and trunk, the Hudson plugin will aggregate build
-information accross the matched jobs. To differentiate between these branches,
+information across the matched jobs. To differentiate between these branches,
 provide different regulare expressions for all branches, each with a different
 code. The code should be exactly one character.
 
